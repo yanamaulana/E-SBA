@@ -20,6 +20,14 @@ $(document).ready(function () {
         let $input_group = $button.parent().parent(); // Referensi ke div input-group
 
         person = column_input.val().trim();
+        if (person == '') {
+            Swal.fire({
+                icon: "warning",
+                title: "Warning !",
+                html: `You must fill the NIK/username column first !`,
+            });
+            return;
+        }
         is_acc = column_input.attr('data-fin');
         is_dir = column_input.attr('data-dir');
 

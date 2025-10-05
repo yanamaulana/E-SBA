@@ -2,7 +2,7 @@
     <div class="col-xl-12">
         <div class="card shadow-sm">
             <div class="card-header">
-                <h3 class="card-title"><?= $page_title; ?> : Logistik (Hard Code)</h3>
+                <h3 class="card-title"><?= $page_title; ?></h3>
                 <div class="card-toolbar">
                     <a href="<?= base_url() ?>" class="btn btn-sm btn-light-danger">
                         <i class="fas fa-arrow-alt-circle-left"></i> Back
@@ -11,41 +11,131 @@
             </div>
             <div class="card-body">
                 <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
-
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Template Approval Name :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="Setting_Approval_Code" id="Setting_Approval_Code" placeholder="Input Template Approval Name" aria-label="Recipient's username" required>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
-                            <label class="form-label pr-5">APPROVAL Staff :</label>
+                            <label class="form-label pr-5">APPROVAL Chief :</label>
                             <div class="fv-row pt-5">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Staff" id="Staff_Yes" value="1">
-                                    <label class="form-check-label" for="Staff_Yes">YES</label>
+                                    <input class="form-check-input" type="radio" name="Chief" id="Chief_Yes" value="1">
+                                    <label class="form-check-label" for="Chief_Yes">YES</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Staff" id="Staff_No" value="0" checked>
-                                    <label class="form-check-label" for="Staff_No">NO</label>
+                                    <input class="form-check-input" type="radio" name="Chief" id="Chief_No" value="0" checked>
+                                    <label class="form-check-label" for="Chief_No">NO</label>
                                 </div>
 
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
-                            <label class="form-label pr-5">Staff PERSON :</label>
+                            <label class="form-label pr-5">Chief PERSON :</label>
                             <div class="input-group">
-                                <input type="text" class="form-control nik" name="Staff_person" id="Staff_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0">
+                                <input type="text" class="form-control nik" name="Chief_person" id="Chief_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Chief">
 
-                                <input type="hidden" name="Staff_valid" id="Staff_valid" class="validation" value="0">
+                                <input type="hidden" name="Chief_valid" id="Chief_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Chief Validation</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL Asst. Manager :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_Yes" value="1">
+                                    <label class="form-check-label" for="AsstManager_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_No" value="0" checked>
+                                    <label class="form-check-label" for="AsstManager_No">NO</label>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Asst. Manager PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="AsstManager_person" id="AsstManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Asst Manager">
 
+                                <input type="hidden" name="AsstManager_valid" id="AsstManager_valid" class="validation" value="0">
 
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> AsstManager Validation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL Manager :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Manager" id="Manager_Yes" value="1">
+                                    <label class="form-check-label" for="Manager_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Manager" id="Manager_No" value="0" checked>
+                                    <label class="form-check-label" for="Manager_No">NO</label>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Manager PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="Manager_person" id="Manager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Manager">
 
+                                <input type="hidden" name="Manager_valid" id="Manager_valid" class="validation" value="0">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Manager Validation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL Senior Manager :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_Yes" value="1">
+                                    <label class="form-check-label" for="SeniorManager_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_No" value="0" checked>
+                                    <label class="form-check-label" for="SeniorManager_No">NO</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Senior Manager PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="SeniorManager_person" id="SeniorManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Senior Manager">
+
+                                <input type="hidden" name="SeniorManager_valid" id="SeniorManager_valid" class="validation" value="0">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> SR. Manager Validation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL General Manager :</label>
@@ -64,13 +154,102 @@
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">General Manager PERSON :</label>
                             <div class="input-group">
-                                <input type="text" class="form-control nik" name="GeneralManager_person" id="GeneralManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" value="07826" data-fin="0" data-dir="0">
+                                <input type="text" class="form-control nik" name="GeneralManager_person" id="GeneralManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="General Manager">
 
                                 <input type="hidden" name="GeneralManager_valid" id="GeneralManager_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> GM Validation</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL Director :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Director" id="Director_Yes" value="1">
+                                    <label class="form-check-label" for="Director_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Director" id="Director_No" value="0" checked>
+                                    <label class="form-check-label" for="Director_No">NO</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Director PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="Director_person" id="Director_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="1" data-pos="Board Of Directors">
+
+                                <input type="hidden" name="Director_valid" id="Director_valid" class="validation" value="0">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Director Validation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL President Director :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_Yes" value="1">
+                                    <label class="form-check-label" for="PresidentDirector_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_No" value="0" checked>
+                                    <label class="form-check-label" for="PresidentDirector_No">NO</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">President Director PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="PresidentDirector_person" id="PresidentDirector_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="1" data-pos="Board Of Directors" value="90108" readonly>
+
+                                <input type="hidden" name="PresidentDirector_valid" id="PresidentDirector_valid" class="validation" value="1">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> President Director Validation</button>
+                                </div>
+                                <span class="valid-feedback d-block">Eric Kim (President Director)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">APPROVAL Finance Director :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_Yes" value="1">
+                                    <label class="form-check-label" for="FinanceDirector_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_No" value="0" checked>
+                                    <label class="form-check-label" for="FinanceDirector_No">NO</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Finance Director PERSON :</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control nik" name="FinanceDirector_person" id="FinanceDirector_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="1" data-dir="1" data-pos="Board Of Directors" value="90112" readonly>
+
+                                <input type="hidden" name="FinanceDirector_valid" id="FinanceDirector_valid" class="validation" value="1">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Finance Director Validation</button>
+                                </div>
+                                <span class="valid-feedback d-block">Ha Dong Hyun (Finance Director)</span>
                             </div>
                         </div>
                     </div>
