@@ -62,7 +62,6 @@ class Set_StepApprovalCbr extends CI_Controller
             ];
         }
 
-
         $name = "";
         $div = "";
         $position = "";

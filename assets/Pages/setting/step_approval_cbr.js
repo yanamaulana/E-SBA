@@ -11,6 +11,78 @@ $(document).ready(function () {
         }
     })
 
+
+    function Fn_Initialized_DataTable() {
+        $("#TableData").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            paging: true,
+            dom: '<"row"<"col-md-10"f><"col-md-2"l>>rtip',
+            orderCellsTop: true,
+            select: false,
+            "lengthMenu": [
+                [15, 30, 90, 100],
+                [15, 30, 90, 100]
+            ],
+            ajax: {
+                url: $('meta[name="base_url"]').attr('content') + "Set_StepApprovalCbr/DT_List_Template",
+                dataType: "json",
+                type: "POST",
+            },
+            columns: [
+                {
+                    data: 'CBReq_No',
+                    name: "CheckBox",
+                },
+                {
+                    data: "CBReq_No",
+                    name: "CBReq_No",
+                }],
+
+
+
+
+            order: [
+                [3, "DESC"]
+            ],
+            columnDefs: [{
+                className: "text-center",
+                targets: [0, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13],
+            }, {
+                className: "details-control pr-4 dt-nowrap",
+                targets: [1]
+            }, {
+                className: "dt-nowrap",
+                targets: [6]
+            }],
+            autoWidth: false,
+            responsive: false,
+            "rowCallback": function (row, data) {
+                // if (data.is_active == "0") {
+                // 	$('td', row).css('background-color', 'pink');
+                // }
+            },
+            preDrawCallback: function () {
+                $("#TableData tbody td").addClass("blurry");
+            },
+            language: {
+                processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
+                searchPlaceholder: "Search..."
+            },
+            drawCallback: function () {
+                $("#TableData tbody td").addClass("blurry");
+                setTimeout(function () {
+                    $("#TableData tbody td").removeClass("blurry");
+                });
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }
+        }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
+    }
+
+    // Fn_Initialized_DataTable()
+
+
     $(document).on('click', '.validate-person', function () {
         // 1. Simpan referensi ke tombol yang diklik (this)
         let $button = $(this);
@@ -186,4 +258,26 @@ $(document).ready(function () {
             }
         });
     }
+
+
+    function init_show_form() {
+        $('#main-form').show();
+        $('#submit-main-data').show();
+    }
+
+    function init_hide_form() {
+        $('#main-form').show();
+        $('#submit-main-data').show();
+    }
+
+    init_show_form()
+
+    function init_hide_table() {
+        $('#el-table').hide();
+    }
+
+    function init_show_table() {
+        $('#el-table').hide();
+    }
+
 })

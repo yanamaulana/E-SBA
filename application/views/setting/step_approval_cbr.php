@@ -10,7 +10,37 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
+                <div class="row" id="el-table" style="display: none;;">
+                    <div class="table-responsive">
+                        <table id="TableData" class="display compact table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
+                            <thead style="background-color: #3B6D8C;">
+                                <tr class="text-start text-white fw-bolder text-uppercase">
+                                    <th class="text-center text-white">#</th>
+                                    <th class="text-center text-white">Approval Name</th>
+                                    <th class="text-center text-white">Chief</th>
+                                    <th class="text-center text-white">Chief <i class="fas fa-user"></th>
+                                    <th class="text-center text-white">Asst.Manager</th>
+                                    <th class="text-center text-white">Asst.Manager <i class="fas fa-user"></th>
+                                    <th class="text-center text-white">Manager</th>
+                                    <th class="text-center text-white">Manager <i class="fas fa-user"></th>
+                                    <th class="text-center text-white">SR.Manager</th>
+                                    <th class="text-center text-white">SR.Manager <i class="fas fa-user"></th>
+                                    <th class="text-center text-white">GM</th>
+                                    <th class="text-center text-white">GM <i class="fas fa-user"></i></th>
+                                    <th class="text-center text-white">Director</th>
+                                    <th class="text-center text-white">Director <i class="fas fa-user"></i></th>
+                                    <th class="text-center text-white">PresDir</th>
+                                    <th class="text-center text-white">PresDir <i class="fas fa-user"></i></th>
+                                    <th class="text-center text-white">FinDir</th>
+                                    <th class="text-center text-white">FinDir <i class="fas fa-user"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-bold">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)" style="display: none;">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Template Approval Name :</label>
@@ -43,7 +73,7 @@
                                 <input type="hidden" name="Chief_valid" id="Chief_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Chief Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +102,7 @@
                                 <input type="hidden" name="AsstManager_valid" id="AsstManager_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> AsstManager Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +131,7 @@
                                 <input type="hidden" name="Manager_valid" id="Manager_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Manager Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +160,7 @@
                                 <input type="hidden" name="SeniorManager_valid" id="SeniorManager_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> SR. Manager Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +189,7 @@
                                 <input type="hidden" name="GeneralManager_valid" id="GeneralManager_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> GM Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +218,7 @@
                                 <input type="hidden" name="Director_valid" id="Director_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Director Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +247,7 @@
                                 <input type="hidden" name="PresidentDirector_valid" id="PresidentDirector_valid" class="validation" value="1">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> President Director Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                                 <span class="valid-feedback d-block">Eric Kim (President Director)</span>
                             </div>
@@ -247,7 +277,7 @@
                                 <input type="hidden" name="FinanceDirector_valid" id="FinanceDirector_valid" class="validation" value="1">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i> Finance Director Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
                                 <span class="valid-feedback d-block">Ha Dong Hyun (Finance Director)</span>
                             </div>
@@ -261,7 +291,7 @@
             </div>
             <div class="card-footer">
                 <a href="<?= base_url() ?>" class="btn btn-danger float-end"><i class="far fa-times-circle"></i> Cancel</a>
-                <button type="button" id="submit-main-data" class="btn btn-primary me-2 mb-2 shadow-sm">
+                <button type="button" id="submit-main-data" class="btn btn-primary me-2 mb-2 shadow-sm" style="display: none;">
                     <span class="svg-icon svg-icon-1 svg-icon-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="black" />
