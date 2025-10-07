@@ -11,6 +11,51 @@ $(document).ready(function () {
         }
     })
 
+    // $('[data-bs-toggle="tooltip"]').tooltip();
+
+    // Atau jika Anda menggunakan Bootstrap 4:
+    $('[data-bs-toggle="tooltip"]').tooltip({ html: true });
+
+    $('#Setting_Approval_Code').on('keypress', function (event) {
+        const validKeyRegex = /^[a-zA-Z0-9_]$/;
+
+        const charCode = event.which;
+        const char = String.fromCharCode(charCode);
+
+        // Jika tombol yang ditekan (char) TIDAK cocok dengan pola yang diizinkan
+        if (!validKeyRegex.test(char)) {
+            // Cek tambahan untuk tombol kontrol (misalnya: Backspace=8, Tab=9)
+            // Agar tombol-tombol ini tidak diblokir
+            if (charCode !== 0 && charCode !== 8 && charCode !== 9) {
+                event.preventDefault();
+                return false;
+            }
+        }
+    });
+
+    $('#Setting_Approval_Code').on('keyup', function () {
+        // Transformasi ke huruf kapital (uppercase) setiap kali tombol dilepas
+        const upperCaseValue = $(this).val().toUpperCase();
+        $(this).val(upperCaseValue);
+    });
+
+    /**
+     * Fungsi untuk merender ikon Font Awesome berdasarkan nilai 1 atau 0.
+     * @param {string|number} data - Nilai kolom (1 atau 0).
+     * @returns {string} HTML untuk ikon.
+     */
+    function renderStatusIcon(data) {
+        if (data == 1) {
+            // Ikon Check (Hijau)
+            return '<b class="text-success">✅</b>';
+        } else if (data == 0) {
+            // Ikon Times/Close (Merah)
+            return '<b class="text-danger">❌</b>';
+        }
+        // Nilai selain 1 atau 0 (misalnya null, undefined)
+        return '-';
+    }
+
 
     function Fn_Initialized_DataTable() {
         $("#TableData").DataTable({
@@ -18,7 +63,8 @@ $(document).ready(function () {
             processing: true,
             serverSide: true,
             paging: true,
-            dom: '<"row"<"col-md-10"f><"col-md-2"l>>rtip',
+            dom: '<"row"<"col-md-12"B><"col-md-11"f><"col-md-1"l>>rtip',
+
             orderCellsTop: true,
             select: false,
             "lengthMenu": [
@@ -32,29 +78,170 @@ $(document).ready(function () {
             },
             columns: [
                 {
-                    data: 'CBReq_No',
-                    name: "CheckBox",
+                    data: "SysId",
+                    name: "SysId",
+                    orderable: false, // Biasanya nomor urut tidak perlu diurutkan
+                    render: function (data, type, row, meta) {
+                        // Kolom Nomor Urut (Nomor Baris)
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
                 },
                 {
-                    data: "CBReq_No",
-                    name: "CBReq_No",
-                }],
-
-
-
-
+                    data: "Setting_Approval_Code",
+                    name: "Setting_Approval_Code",
+                    title: "Kode Setting"
+                },
+                // --- KOLOM JABATAN (Flag 1/0 dengan Ikon) ---
+                {
+                    data: "Chief",
+                    name: "Chief",
+                    title: "Chief",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "Chief_Person",
+                    name: "Chief_Person",
+                    title: "Chief Person"
+                },
+                {
+                    data: "AsstManager",
+                    name: "AsstManager",
+                    title: "Asst. Mgr",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "AsstManager_Person",
+                    name: "AsstManager_Person",
+                    title: "Asst. Mgr Person"
+                },
+                // --- Kolom Jabatan Lainnya ---
+                {
+                    data: "Manager",
+                    name: "Manager",
+                    title: "Manager",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "Manager_Person",
+                    name: "Manager_Person",
+                    title: "Manager Person"
+                },
+                {
+                    data: "SeniorManager",
+                    name: "SeniorManager",
+                    title: "Sr. Mgr",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "SeniorManager_Person",
+                    name: "SeniorManager_Person",
+                    title: "Sr. Mgr Person"
+                },
+                {
+                    data: "GeneralManager",
+                    name: "GeneralManager",
+                    title: "GM",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "GeneralManager_Person",
+                    name: "GeneralManager_Person",
+                    title: "GM Person"
+                },
+                {
+                    data: "Additional",
+                    name: "Additional",
+                    title: "Additional",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "Additional_Person",
+                    name: "Additional_Person",
+                    title: "Additional Person"
+                },
+                {
+                    data: "Director",
+                    name: "Director",
+                    title: "Director",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "Director_Person",
+                    name: "Director_Person",
+                    title: "Director Person"
+                },
+                {
+                    data: "PresidentDirector",
+                    name: "PresidentDirector",
+                    title: "Pres. Dir",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "PresidentDirector_Person",
+                    name: "PresidentDirector_Person",
+                    title: "Pres. Dir Person"
+                },
+                {
+                    data: "FinanceDirector",
+                    name: "FinanceDirector",
+                    title: "Fin. Dir",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderStatusIcon(data);
+                    }
+                },
+                {
+                    data: "FinanceDirector_Person",
+                    name: "FinanceDirector_Person",
+                    title: "Fin. Dir Person"
+                },
+                // --- Kolom Status Akhir ---
+                {
+                    data: "Doc_Legitimate_Pos_On",
+                    name: "Doc_Legitimate_Pos_On",
+                    title: "Legitimate Pos",
+                    render: function (data, type, row, meta) {
+                        // Tampilkan string, atau bisa dikondisikan jika null
+                        return data ? data : '-';
+                    }
+                }
+            ],
             order: [
-                [3, "DESC"]
+                [1, "ASC"]
             ],
             columnDefs: [{
                 className: "text-center",
-                targets: [0, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13],
+                targets: "_all"
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]
             }, {
                 className: "dt-nowrap",
-                targets: [6]
+                targets: []
             }],
             autoWidth: false,
             responsive: false,
@@ -76,11 +263,74 @@ $(document).ready(function () {
                     $("#TableData tbody td").removeClass("blurry");
                 });
                 $('[data-bs-toggle="tooltip"]').tooltip();
+            },
+            "buttons": [{
+                text: `<i class="fas fa-plus"></i> New Template`,
+                className: "btn btn-info",
+                action: function (e, dt, node, config) {
+                    init_hide_table();
+                    init_show_form();
+
+                }
+            },
+            {
+                text: `Export to :`,
+                className: "btn btn-default disabled",
+            },
+            // {
+            //     text: `<i class="fas fa-times text-white fs-3"></i> Reject (Not Send)`,
+            //     className: "btn btn-danger",
+            //     action: function (e, dt, node, config) {
+            //         Swal.fire({
+            //             title: 'System Message !',
+            //             text: `Are you sure to reject all checked submission ?`,
+            //             icon: 'warning',
+            //             showCancelButton: true,
+            //             confirmButtonColor: '#3085d6',
+            //             cancelButtonColor: '#d33',
+            //             confirmButtonText: 'Yes'
+            //         }).then((result) => {
+            //             if (result.isConfirmed) {
+            //                 Fn_Reject_Submission();
+            //             }
+            //         })
+            //     }
+            // },
+            // {
+            // 	text: `Export to :`,
+            // 	className: "btn disabled text-dark bg-white",
+            // }, {
+            // 	text: `<i class="far fa-copy fs-2"></i>`,
+            // 	extend: 'copy',
+            // 	className: "btn btn-light-warning",
+            // }, 
+            {
+                text: `<i class="far fa-file-excel fs-2"></i>`,
+                extend: 'excelHtml5',
+                title: $('.card-title').text() + '_' + moment().format("YYYY-MM-DD"),
+                className: "btn btn-light-success",
             }
+                //  {
+                // 	text: `<i class="far fa-file-pdf fs-2"></i>`,
+                // 	extend: 'pdfHtml5',
+                // 	title: $('#table-title').text() + '~' + moment().format("YYYY-MM-DD"),
+                // 	className: "btn btn-light-danger",
+                // 	orientation: "landscape"
+                // }, {
+                // 	text: `<i class="fas fa-print fs-2"></i>`,
+                // 	extend: 'print',
+                // 	className: "btn btn-light-dark",
+                // }
+            ],
         }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
     }
 
-    // Fn_Initialized_DataTable()
+    Fn_Initialized_DataTable();
+
+    $('#back-button').click(function () {
+        init_show_table();
+        init_hide_form();
+    });
 
 
     $(document).on('click', '.validate-person', function () {
@@ -102,6 +352,7 @@ $(document).ready(function () {
         }
         is_acc = column_input.attr('data-fin');
         is_dir = column_input.attr('data-dir');
+        data_pos = column_input.attr('data-pos');
 
         // Hapus feedback sebelumnya (PENTING: agar tidak menumpuk)
         $input_group.find('.valid-feedback, .invalid-feedback').remove();
@@ -113,7 +364,8 @@ $(document).ready(function () {
             data: {
                 person: person,
                 is_acc: is_acc,
-                is_dir: is_dir
+                is_dir: is_dir,
+                pos_must: data_pos
             },
             beforeSend: function () {
                 $button.prop("disabled", true); // Gunakan $button
@@ -141,7 +393,7 @@ $(document).ready(function () {
                     $input_group.find('input.validation').val('1');
 
                 } else {
-                    Toast.fire({
+                    Swal.fire({
                         icon: 'error',
                         title: response.msg
                     });
@@ -177,7 +429,7 @@ $(document).ready(function () {
         errorElement: 'span',
         errorPlacement: function (error, element) {
             error.addClass('invalid-feedback');
-            element.closest('.fv-row').append(error);
+            element.closest('.fv-row, .input-group').append(error);
         },
         highlight: function (element, errorClass, validClass) {
             $(element).addClass('is-invalid');
@@ -234,9 +486,12 @@ $(document).ready(function () {
             success: function (response) {
                 Swal.close()
                 if (response.code == 200) {
-                    Toast.fire({
+                    Swal.fire({
                         icon: 'success',
-                        title: response.msg
+                        title: response.msg,
+                        showConfirmButton: true
+                    }).then(() => {
+                        window.location.href = window.location.href;
                     });
                 } else {
                     Toast.fire({
@@ -248,6 +503,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 Swal.close()
+                BtnAction.prop("disabled", false);
                 var statusCode = xhr.status;
                 var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "there is an error : " + error;
                 Swal.fire({
@@ -264,20 +520,20 @@ $(document).ready(function () {
         $('#main-form').show();
         $('#submit-main-data').show();
     }
-
     function init_hide_form() {
-        $('#main-form').show();
-        $('#submit-main-data').show();
+        $('#main-form').hide();
+        $('#submit-main-data').hide();
     }
 
-    init_show_form()
+    init_hide_form()
 
     function init_hide_table() {
         $('#el-table').hide();
     }
-
     function init_show_table() {
-        $('#el-table').hide();
+        $('#el-table').show();
     }
+
+    init_show_table()
 
 })

@@ -4,18 +4,19 @@
             <div class="card-header">
                 <h3 class="card-title"><?= $page_title; ?></h3>
                 <div class="card-toolbar">
-                    <a href="<?= base_url() ?>" class="btn btn-sm btn-light-danger">
+                    <button type="button" class="btn btn-sm btn-light-danger" id="back-button">
                         <i class="fas fa-arrow-alt-circle-left"></i> Back
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="card-body">
-                <div class="row" id="el-table" style="display: none;;">
+                <div class="row" id="el-table">
                     <div class="table-responsive">
-                        <table id="TableData" class="display compact table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
+                        <table id="TableData" class="display compact nowrap table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
                             <thead style="background-color: #3B6D8C;">
                                 <tr class="text-start text-white fw-bolder text-uppercase">
                                     <th class="text-center text-white">#</th>
+                                    <th class="text-center text-white"><i class="fas fa-cogs"></i></th>
                                     <th class="text-center text-white">Approval Name</th>
                                     <th class="text-center text-white">Chief</th>
                                     <th class="text-center text-white">Chief <i class="fas fa-user"></th>
@@ -27,6 +28,8 @@
                                     <th class="text-center text-white">SR.Manager <i class="fas fa-user"></th>
                                     <th class="text-center text-white">GM</th>
                                     <th class="text-center text-white">GM <i class="fas fa-user"></i></th>
+                                    <th class="text-center text-white">Additional</th>
+                                    <th class="text-center text-white">Additional <i class="fas fa-user"></i></th>
                                     <th class="text-center text-white">Director</th>
                                     <th class="text-center text-white">Director <i class="fas fa-user"></i></th>
                                     <th class="text-center text-white">PresDir</th>
@@ -40,11 +43,11 @@
                         </table>
                     </div>
                 </div>
-                <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)" style="display: none;">
+                <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Template Approval Name :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" name="Setting_Approval_Code" id="Setting_Approval_Code" placeholder="Input Template Approval Name" aria-label="Recipient's username" required>
                             </div>
                         </div>
@@ -67,7 +70,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Chief PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="Chief_person" id="Chief_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Chief">
 
                                 <input type="hidden" name="Chief_valid" id="Chief_valid" class="validation" value="0">
@@ -96,7 +99,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Asst. Manager PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="AsstManager_person" id="AsstManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Asst Manager">
 
                                 <input type="hidden" name="AsstManager_valid" id="AsstManager_valid" class="validation" value="0">
@@ -125,7 +128,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Manager PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="Manager_person" id="Manager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Manager">
 
                                 <input type="hidden" name="Manager_valid" id="Manager_valid" class="validation" value="0">
@@ -154,7 +157,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Senior Manager PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="SeniorManager_person" id="SeniorManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="Senior Manager">
 
                                 <input type="hidden" name="SeniorManager_valid" id="SeniorManager_valid" class="validation" value="0">
@@ -183,10 +186,39 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">General Manager PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="GeneralManager_person" id="GeneralManager_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="General Manager">
 
                                 <input type="hidden" name="GeneralManager_valid" id="GeneralManager_valid" class="validation" value="0">
+
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="devider">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label pr-5">Additional APPROVAL :</label>
+                            <div class="fv-row pt-5">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Additional" id="Additional_Yes" value="1">
+                                    <label class="form-check-label" for="Additional_Yes">YES</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Additional" id="Additional_No" value="0" checked>
+                                    <label class="form-check-label" for="Additional_No">NO</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <label class="form-label pr-5">Additional PERSON :</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control nik" name="Additional_person" id="Additional_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="0" data-pos="">
+
+                                <input type="hidden" name="Additional_valid" id="Additional_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
                                     <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
@@ -212,13 +244,24 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Director PERSON :</label>
-                            <div class="input-group">
+                            <?php
+                            $tooltip_content = '';
+                            foreach ($dir_data as $dir) {
+                                // Gunakan <br> untuk baris baru
+                                $tooltip_content .= $dir->Emp_No . ' - ' . $dir->First_Name . ' (' . $dir->Pos_Name . ')' . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            }
+                            ?>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-append">
+                                    <button class="btn btn-light-info" type="button" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" data-bs-delay-hide="3000" data-bs-placement="top"
+                                        title="<?= $tooltip_content ?>"><i class="fas fa-list-alt"></i>List Director</button>
+                                </div>
                                 <input type="text" class="form-control nik" name="Director_person" id="Director_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="1" data-pos="Board Of Directors">
 
                                 <input type="hidden" name="Director_valid" id="Director_valid" class="validation" value="0">
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
+                                    <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Validation</button>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +284,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">President Director PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="PresidentDirector_person" id="PresidentDirector_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="1" data-pos="Board Of Directors" value="90108" readonly>
 
                                 <input type="hidden" name="PresidentDirector_valid" id="PresidentDirector_valid" class="validation" value="1">
@@ -249,9 +292,9 @@
                                 <div class="input-group-append">
                                     <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
-                                <span class="valid-feedback d-block">Eric Kim (President Director)</span>
                             </div>
                         </div>
+                        <p class="text-success"><b>Eric Kim (President Director)</b></p>
                     </div>
                     <hr class="devider">
                     <div class="row">
@@ -271,7 +314,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Finance Director PERSON :</label>
-                            <div class="input-group">
+                            <div class="input-group input-group-sm">
                                 <input type="text" class="form-control nik" name="FinanceDirector_person" id="FinanceDirector_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="1" data-dir="1" data-pos="Board Of Directors" value="90112" readonly>
 
                                 <input type="hidden" name="FinanceDirector_valid" id="FinanceDirector_valid" class="validation" value="1">
@@ -279,9 +322,9 @@
                                 <div class="input-group-append">
                                     <button class="btn btn-danger validate-person" type="button"><i class="fas fa-user"></i>Person Validation</button>
                                 </div>
-                                <span class="valid-feedback d-block">Ha Dong Hyun (Finance Director)</span>
                             </div>
                         </div>
+                        <p class="text-success"><b>Ha Dong Hyun (Finance Director)</b></p>
                     </div>
                     <hr class="devider">
 
@@ -291,7 +334,7 @@
             </div>
             <div class="card-footer">
                 <a href="<?= base_url() ?>" class="btn btn-danger float-end"><i class="far fa-times-circle"></i> Cancel</a>
-                <button type="button" id="submit-main-data" class="btn btn-primary me-2 mb-2 shadow-sm" style="display: none;">
+                <button type="button" id="submit-main-data" class="btn btn-primary me-2 mb-2 shadow-sm">
                     <span class="svg-icon svg-icon-1 svg-icon-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="black" />
