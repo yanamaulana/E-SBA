@@ -241,4 +241,11 @@ class Sales extends CI_Controller
         var_dump($this->input->get());
         die;
     }
+
+    public function customer_transaction_report()
+    {
+        $this->data['page_title'] = "Customer Report";
+
+        $this->load->view('Report/Sales/customer_report_view', $this->data);
+    }
 }
