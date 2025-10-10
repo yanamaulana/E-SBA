@@ -1,3 +1,25 @@
 {
-    "editor.inlineSuggest.showToolbar": "always"
+    "editor.inlineSuggest.showToolbar": "always",
+    "intelephense.format.enable": true,
+    // "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    // "[php]": {
+    //     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    // },
+    "files.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/.cache": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/vendor": true,
+        "**/.cache": true
+    },
+    "intelephense.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/vendor/**",
+        "**/storage/framework/views/**" // Khusus Laravel
+    ]
 }
+

@@ -2,8 +2,7 @@
 
 -- Drop table
 
--- DROP TABLE dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr;
-
+DROP TABLE dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr;
 CREATE TABLE dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr (
 	SysId bigint IDENTITY(1,1) NOT NULL,
 	Setting_Approval_Code varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -41,8 +40,7 @@ CREATE TABLE dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr (
 
 -- Drop table
 
--- DROP TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR;
-
+DROP TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR;
 CREATE TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR (
 	Dir_ID bigint IDENTITY(1,1) NOT NULL,
 	Emp_No varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,

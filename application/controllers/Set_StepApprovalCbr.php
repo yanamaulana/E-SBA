@@ -310,6 +310,18 @@ class Set_StepApprovalCbr extends CI_Controller
         }
     }
 
+    public function edit($SysId)
+    {
+        $this->data['page_title'] = "Edit Setting Approval Step Cash Book Requisition";
+        $this->data['page_content'] = "setting/edit_step_approval_cbr";
+
+        $this->data['dir_data'] = $this->db->get_where('Tmst_User_NonHR', ['is_active' => 1])->result();
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/setting/edit_step_approval_cbr.js"></script>';
+        $this->data['setting'] = $this->db->get_where($this->TmstTrxSettingSteppApprovalCbr, ['SysId' => $SysId])->row();
+
+        $this->load->view($this->layout, $this->data);
+    }
+
 
     // ============================================== DATATABLE SECTION
 

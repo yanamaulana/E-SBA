@@ -64,9 +64,8 @@ $(document).ready(function () {
             serverSide: true,
             paging: true,
             dom: '<"row"<"col-md-12"B><"col-md-11"f><"col-md-1"l>>rtip',
-
             orderCellsTop: true,
-            select: false,
+            select: true,
             "lengthMenu": [
                 [15, 30, 90, 100],
                 [15, 30, 90, 100]
@@ -265,7 +264,7 @@ $(document).ready(function () {
                 $('[data-bs-toggle="tooltip"]').tooltip();
             },
             "buttons": [{
-                text: `<i class="fas fa-plus"></i> New Template`,
+                text: `<i class="fas fa-plus"></i> Add New`,
                 className: "btn btn-info",
                 action: function (e, dt, node, config) {
                     init_hide_table();
@@ -274,54 +273,34 @@ $(document).ready(function () {
                 }
             },
             {
+                text: `<i class="fas fa-edit"></i> Edit Data`,
+                className: "btn btn-warning",
+                action: function (e, dt, node, config) {
+                    var RowData = dt.rows({
+                        selected: true
+                    }).data();
+                    if (RowData.length == 0 || RowData[0].isCancel == 1) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Ooppss...',
+                            text: 'Silahkan pilih data yang akan di cancel !',
+                            footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
+                        });
+                    } else {
+                        Fn_Init_Edit_Form(RowData[0].SysId)
+                    }
+                }
+            },
+            {
                 text: `Export to :`,
                 className: "btn btn-default disabled",
             },
-            // {
-            //     text: `<i class="fas fa-times text-white fs-3"></i> Reject (Not Send)`,
-            //     className: "btn btn-danger",
-            //     action: function (e, dt, node, config) {
-            //         Swal.fire({
-            //             title: 'System Message !',
-            //             text: `Are you sure to reject all checked submission ?`,
-            //             icon: 'warning',
-            //             showCancelButton: true,
-            //             confirmButtonColor: '#3085d6',
-            //             cancelButtonColor: '#d33',
-            //             confirmButtonText: 'Yes'
-            //         }).then((result) => {
-            //             if (result.isConfirmed) {
-            //                 Fn_Reject_Submission();
-            //             }
-            //         })
-            //     }
-            // },
-            // {
-            // 	text: `Export to :`,
-            // 	className: "btn disabled text-dark bg-white",
-            // }, {
-            // 	text: `<i class="far fa-copy fs-2"></i>`,
-            // 	extend: 'copy',
-            // 	className: "btn btn-light-warning",
-            // }, 
             {
                 text: `<i class="far fa-file-excel fs-2"></i>`,
                 extend: 'excelHtml5',
                 title: $('.card-title').text() + '_' + moment().format("YYYY-MM-DD"),
                 className: "btn btn-light-success",
-            }
-                //  {
-                // 	text: `<i class="far fa-file-pdf fs-2"></i>`,
-                // 	extend: 'pdfHtml5',
-                // 	title: $('#table-title').text() + '~' + moment().format("YYYY-MM-DD"),
-                // 	className: "btn btn-light-danger",
-                // 	orientation: "landscape"
-                // }, {
-                // 	text: `<i class="fas fa-print fs-2"></i>`,
-                // 	extend: 'print',
-                // 	className: "btn btn-light-dark",
-                // }
-            ],
+            }],
         }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
     }
 
@@ -535,5 +514,9 @@ $(document).ready(function () {
     }
 
     init_show_table()
+
+    function Fn_Init_Edit_Form(SysId) {
+        window.location.href = `${$('meta[name="base_url"]').attr('content')}Set_StepApprovalCbr/edit/${SysId}`
+    }
 
 })
