@@ -11,33 +11,7 @@ $(document).ready(function () {
         }
     })
 
-    // $('[data-bs-toggle="tooltip"]').tooltip();
-
-    // Atau jika Anda menggunakan Bootstrap 4:
-    $('[data-bs-toggle="tooltip"]').tooltip({ html: true });
-
-    $('#Setting_Approval_Code').on('keypress', function (event) {
-        const validKeyRegex = /^[a-zA-Z0-9_]$/;
-
-        const charCode = event.which;
-        const char = String.fromCharCode(charCode);
-
-        // Jika tombol yang ditekan (char) TIDAK cocok dengan pola yang diizinkan
-        if (!validKeyRegex.test(char)) {
-            // Cek tambahan untuk tombol kontrol (misalnya: Backspace=8, Tab=9)
-            // Agar tombol-tombol ini tidak diblokir
-            if (charCode !== 0 && charCode !== 8 && charCode !== 9) {
-                event.preventDefault();
-                return false;
-            }
-        }
-    });
-
-    $('#Setting_Approval_Code').on('keyup', function () {
-        // Transformasi ke huruf kapital (uppercase) setiap kali tombol dilepas
-        const upperCaseValue = $(this).val().toUpperCase();
-        $(this).val(upperCaseValue);
-    });
+    $('[data-bs-toggle="tooltip"]').tooltip();
 
 
     $(document).on('click', '.validate-person', function () {
@@ -144,7 +118,7 @@ $(document).ready(function () {
         if (main_form.valid()) {
             Swal.fire({
                 title: 'System Message !',
-                text: `Are you sure to save this record ?`,
+                text: `Are you sure to update this record ?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -167,7 +141,7 @@ $(document).ready(function () {
         $.ajax({
             dataType: "json",
             type: "POST",
-            url: $('meta[name="base_url"]').attr('content') + "Set_StepApprovalCbr/store",
+            url: $('meta[name="base_url"]').attr('content') + "Set_StepApprovalCbr/update",
             data: DataForm.serialize(),
             beforeSend: function () {
                 BtnAction.prop("disabled", true);
@@ -187,7 +161,7 @@ $(document).ready(function () {
                         title: response.msg,
                         showConfirmButton: true
                     }).then(() => {
-                        window.location.href = window.location.href;
+                        window.history.back();
                     });
                 } else {
                     Toast.fire({

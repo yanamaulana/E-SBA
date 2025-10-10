@@ -79,6 +79,7 @@ $(document).ready(function () {
                 {
                     data: "SysId",
                     name: "SysId",
+                    title: "#",
                     orderable: false, // Biasanya nomor urut tidak perlu diurutkan
                     render: function (data, type, row, meta) {
                         // Kolom Nomor Urut (Nomor Baris)
@@ -86,9 +87,18 @@ $(document).ready(function () {
                     }
                 },
                 {
+                    data: "Is_Active",
+                    name: "Is_Active",
+                    title: "Status",
+                    orderable: false, // Biasanya nomor urut tidak perlu diurutkan
+                    render: function (data, type, row, meta) {
+                        return '<button class="text-dark status_btn btn ' + (data == 1 ? 'btn-light-success btn-sm' : 'btn-light-danger btn-sm') + '">' + (data == 1 ? 'Active' : 'Inactive') + '</button>';
+                    }
+                },
+                {
                     data: "Setting_Approval_Code",
                     name: "Setting_Approval_Code",
-                    title: "Kode Setting"
+                    title: "Step Name"
                 },
                 // --- KOLOM JABATAN (Flag 1/0 dengan Ikon) ---
                 {
@@ -101,9 +111,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "Chief_Person",
-                    name: "Chief_Person",
-                    title: "Chief Person"
+                    data: "Chief_Name",
+                    name: "Chief_Name",
+                    title: "Chief <i class='fas fa-user'></i>"
                 },
                 {
                     data: "AsstManager",
@@ -115,9 +125,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "AsstManager_Person",
-                    name: "AsstManager_Person",
-                    title: "Asst. Mgr Person"
+                    data: "AsstManager_Name",
+                    name: "AsstManager_Name",
+                    title: "Asst. Mgr <i class='fas fa-user'></i>"
                 },
                 // --- Kolom Jabatan Lainnya ---
                 {
@@ -130,9 +140,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "Manager_Person",
-                    name: "Manager_Person",
-                    title: "Manager Person"
+                    data: "Manager_Name",
+                    name: "Manager_Name",
+                    title: "Manager <i class='fas fa-user'></i>"
                 },
                 {
                     data: "SeniorManager",
@@ -144,9 +154,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "SeniorManager_Person",
-                    name: "SeniorManager_Person",
-                    title: "Sr. Mgr Person"
+                    data: "SeniorManager_Name",
+                    name: "SeniorManager_Name",
+                    title: "Sr. Mgr <i class='fas fa-user'></i>"
                 },
                 {
                     data: "GeneralManager",
@@ -158,9 +168,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "GeneralManager_Person",
-                    name: "GeneralManager_Person",
-                    title: "GM Person"
+                    data: "GeneralManager_Name",
+                    name: "GeneralManager_Name",
+                    title: "GM <i class='fas fa-user'></i>"
                 },
                 {
                     data: "Additional",
@@ -172,9 +182,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "Additional_Person",
-                    name: "Additional_Person",
-                    title: "Additional Person"
+                    data: "Additional_Name",
+                    name: "Additional_Name",
+                    title: "Additional <i class='fas fa-user'></i>"
                 },
                 {
                     data: "Director",
@@ -186,9 +196,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "Director_Person",
-                    name: "Director_Person",
-                    title: "Director Person"
+                    data: "Director_Name",
+                    name: "Director_Name",
+                    title: "Director <i class='fas fa-user'></i>"
                 },
                 {
                     data: "PresidentDirector",
@@ -200,9 +210,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "PresidentDirector_Person",
-                    name: "PresidentDirector_Person",
-                    title: "Pres. Dir Person"
+                    data: "PresidentDirector_Name",
+                    name: "PresidentDirector_Name",
+                    title: "Pres. Dir <i class='fas fa-user'></i>"
                 },
                 {
                     data: "FinanceDirector",
@@ -214,9 +224,9 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "FinanceDirector_Person",
-                    name: "FinanceDirector_Person",
-                    title: "Fin. Dir Person"
+                    data: "FinanceDirector_Name",
+                    name: "FinanceDirector_Name",
+                    title: "Fin. Dir <i class='fas fa-user'></i>"
                 },
                 // --- Kolom Status Akhir ---
                 {
@@ -519,4 +529,71 @@ $(document).ready(function () {
         window.location.href = `${$('meta[name="base_url"]').attr('content')}Set_StepApprovalCbr/edit/${SysId}`
     }
 
+    $(document).on('click', '.status_btn', function () {
+        let $button = $(this);
+        let $row = $button.closest('tr');
+        let table = $('#TableData').DataTable();
+        let rowData = table.row($row).data();
+        let sysId = rowData.SysId;
+        let currentStatus = rowData.Is_Active; // Asumsikan ada kolom Is_Active di data tabel
+        let newStatus = currentStatus == 1 ? 0 : 1; // Toggle status (1 -> 0 atau 0 -> 1)
+
+        Swal.fire({
+            title: 'System Message !',
+            text: `Are you sure to update this record status ?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: $('meta[name="base_url"]').attr('content') + "Set_StepApprovalCbr/UpdateStatus",
+                    data: { SysId: sysId, newStatus: newStatus },
+                    beforeSend: function () {
+                        $button.prop("disabled", true);
+                        Swal.fire({
+                            title: 'Loading....',
+                            html: '<div class="spinner-border text-primary"></div>',
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        })
+                    },
+                    success: function (response) {
+                        Swal.close()
+                        if (response.code == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: response.msg,
+                                showConfirmButton: true
+                            }).then(() => {
+                                window.location.href = window.location.href;
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.msg
+                            });
+                        }
+                        $button.prop("disabled", false);
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.close()
+                        $button.prop("disabled", false);
+                        var statusCode = xhr.status;
+                        var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "there is an error : " + error;
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error!",
+                            html: `Kode HTTP: ${statusCode}<br\>Pesan: ${errorMessage}`,
+                        });
+                    }
+                });
+            }
+        })
+    });
 })

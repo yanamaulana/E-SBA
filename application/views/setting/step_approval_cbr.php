@@ -15,27 +15,6 @@
                         <table id="TableData" class="display compact nowrap table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
                             <thead style="background-color: #3B6D8C;">
                                 <tr class="text-start text-white fw-bolder text-uppercase">
-                                    <th class="text-center text-white">#</th>
-                                    <th class="text-center text-white"><i class="fas fa-cogs"></i></th>
-                                    <th class="text-center text-white">Approval Name</th>
-                                    <th class="text-center text-white">Chief</th>
-                                    <th class="text-center text-white">Chief <i class="fas fa-user"></th>
-                                    <th class="text-center text-white">Asst.Manager</th>
-                                    <th class="text-center text-white">Asst.Manager <i class="fas fa-user"></th>
-                                    <th class="text-center text-white">Manager</th>
-                                    <th class="text-center text-white">Manager <i class="fas fa-user"></th>
-                                    <th class="text-center text-white">SR.Manager</th>
-                                    <th class="text-center text-white">SR.Manager <i class="fas fa-user"></th>
-                                    <th class="text-center text-white">GM</th>
-                                    <th class="text-center text-white">GM <i class="fas fa-user"></i></th>
-                                    <th class="text-center text-white">Additional</th>
-                                    <th class="text-center text-white">Additional <i class="fas fa-user"></i></th>
-                                    <th class="text-center text-white">Director</th>
-                                    <th class="text-center text-white">Director <i class="fas fa-user"></i></th>
-                                    <th class="text-center text-white">PresDir</th>
-                                    <th class="text-center text-white">PresDir <i class="fas fa-user"></i></th>
-                                    <th class="text-center text-white">FinDir</th>
-                                    <th class="text-center text-white">FinDir <i class="fas fa-user"></i></th>
                                 </tr>
                             </thead>
                             <tbody class="text-gray-600 fw-bold">
@@ -46,7 +25,7 @@
                 <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
-                            <label class="form-label pr-5">Template Approval Name :</label>
+                            <label class="form-label pr-5">Step Approval Name :</label>
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" name="Setting_Approval_Code" id="Setting_Approval_Code" placeholder="Input Template Approval Name" aria-label="Recipient's username" required>
                             </div>
@@ -57,13 +36,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Chief :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Chief" id="Chief_Yes" value="1">
-                                    <label class="form-check-label" for="Chief_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Chief_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Chief" id="Chief_No" value="0" checked>
-                                    <label class="form-check-label" for="Chief_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Chief_No">NO</label>
                                 </div>
 
                             </div>
@@ -86,13 +65,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Asst. Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_Yes" value="1">
-                                    <label class="form-check-label" for="AsstManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="AsstManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_No" value="0" checked>
-                                    <label class="form-check-label" for="AsstManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="AsstManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -115,13 +94,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Manager" id="Manager_Yes" value="1">
-                                    <label class="form-check-label" for="Manager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Manager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Manager" id="Manager_No" value="0" checked>
-                                    <label class="form-check-label" for="Manager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Manager_No">NO</label>
                                 </div>
 
                             </div>
@@ -144,13 +123,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Senior Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_Yes" value="1">
-                                    <label class="form-check-label" for="SeniorManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="SeniorManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_No" value="0" checked>
-                                    <label class="form-check-label" for="SeniorManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="SeniorManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -173,13 +152,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL General Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="GeneralManager" id="GeneralManager_Yes" value="1">
-                                    <label class="form-check-label" for="GeneralManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="GeneralManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="GeneralManager" id="GeneralManager_No" value="0" checked>
-                                    <label class="form-check-label" for="GeneralManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="GeneralManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -202,13 +181,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">Additional APPROVAL :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Additional" id="Additional_Yes" value="1">
-                                    <label class="form-check-label" for="Additional_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Additional_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Additional" id="Additional_No" value="0" checked>
-                                    <label class="form-check-label" for="Additional_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Additional_No">NO</label>
                                 </div>
 
                             </div>
@@ -231,13 +210,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Director" id="Director_Yes" value="1">
-                                    <label class="form-check-label" for="Director_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Director_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Director" id="Director_No" value="0" checked>
-                                    <label class="form-check-label" for="Director_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Director_No">NO</label>
                                 </div>
 
                             </div>
@@ -271,13 +250,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL President Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_Yes" value="1">
-                                    <label class="form-check-label" for="PresidentDirector_Yes">YES</label>
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
+                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_Yes" value="1" checked>
+                                    <label class="form-check-label" style="font-weight: bold;" for="PresidentDirector_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_No" value="0" checked>
-                                    <label class="form-check-label" for="PresidentDirector_No">NO</label>
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
+                                    <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_No" value="0">
+                                    <label class="form-check-label" style="font-weight: bold;" for="PresidentDirector_No">NO</label>
                                 </div>
 
                             </div>
@@ -301,13 +280,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Finance Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_Yes" value="1">
-                                    <label class="form-check-label" for="FinanceDirector_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="FinanceDirector_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_No" value="0" checked>
-                                    <label class="form-check-label" for="FinanceDirector_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="FinanceDirector_No">NO</label>
                                 </div>
 
                             </div>

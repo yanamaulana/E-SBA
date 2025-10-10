@@ -14,9 +14,9 @@
                     <input type="hidden" name="SysId" id="SysId" value="<?= $setting->SysId ?>">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
-                            <label class="form-label pr-5">Template Approval Name :</label>
+                            <label class="form-label pr-5">Step Approval Name :</label>
                             <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" name="Setting_Approval_Code" id="Setting_Approval_Code" placeholder="Input Template Approval Name" aria-label="Recipient's username" required value="<?= $setting->Setting_Approval_Code ?>">
+                                <input type="text" class="form-control" name="Setting_Approval_Code" id="Setting_Approval_Code" readonly placeholder="Input Template Approval Name" aria-label="Recipient's username" required value="<?= $setting->Setting_Approval_Code ?>">
                             </div>
                         </div>
                     </div>
@@ -25,13 +25,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Chief :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Chief" id="Chief_Yes" value="1" <?= ($setting->Chief == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Chief_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Chief_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Chief" id="Chief_No" value="0" <?= ($setting->Chief == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Chief_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Chief_No">NO</label>
                                 </div>
 
                             </div>
@@ -54,13 +54,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Asst. Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_Yes" value="1" <?= ($setting->AsstManager == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="AsstManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="AsstManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="AsstManager" id="AsstManager_No" value="0" checked <?= ($setting->AsstManager == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="AsstManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="AsstManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -83,13 +83,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Manager" id="Manager_Yes" value="1" <?= ($setting->Manager == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Manager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Manager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Manager" id="Manager_No" value="0" <?= ($setting->Manager == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Manager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Manager_No">NO</label>
                                 </div>
 
                             </div>
@@ -112,13 +112,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Senior Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_Yes" value="1" <?= ($setting->SeniorManager == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="SeniorManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="SeniorManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="SeniorManager" id="SeniorManager_No" value="0" <?= ($setting->SeniorManager == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="SeniorManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="SeniorManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -141,13 +141,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL General Manager :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="GeneralManager" id="GeneralManager_Yes" value="1" <?= ($setting->GeneralManager == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="GeneralManager_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="GeneralManager_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="GeneralManager" id="GeneralManager_No" value="0" <?= ($setting->GeneralManager == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="GeneralManager_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="GeneralManager_No">NO</label>
                                 </div>
 
                             </div>
@@ -170,13 +170,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">Additional APPROVAL :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Additional" id="Additional_Yes" value="1" <?= ($setting->Additional == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Additional_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Additional_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Additional" id="Additional_No" value="0" <?= ($setting->Additional == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Additional_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Additional_No">NO</label>
                                 </div>
 
                             </div>
@@ -199,13 +199,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Director" id="Director_Yes" value="1" <?= ($setting->Director == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Director_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Director_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="Director" id="Director_No" value="0" <?= ($setting->Director == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="Director_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="Director_No">NO</label>
                                 </div>
 
                             </div>
@@ -221,7 +221,7 @@
                             ?>
                             <div class="input-group input-group-sm">
                                 <div class="input-group-append">
-                                    <button class="btn btn-light-info" type="button" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" data-bs-delay-hide="3000" data-bs-placement="top"
+                                    <button class="btn btn-light-info" type="button" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" data-bs-delay-hide="2000" data-bs-placement="top"
                                         title="<?= $tooltip_content ?>"><i class="fas fa-list-alt"></i>List Director</button>
                                 </div>
                                 <input type="text" class="form-control nik" name="Director_person" id="Director_person" placeholder="NIK/Username ERP Sunfish" aria-label="Recipient's username" aria-describedby="button-addon2" data-fin="0" data-dir="1" data-pos="Board Of Directors" value="<?= $setting->Director_Person ?>">
@@ -239,13 +239,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL President Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_Yes" value="1" <?= ($setting->PresidentDirector == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="PresidentDirector_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="PresidentDirector_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="PresidentDirector" id="PresidentDirector_No" value="0" <?= ($setting->PresidentDirector == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="PresidentDirector_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="PresidentDirector_No">NO</label>
                                 </div>
 
                             </div>
@@ -268,13 +268,13 @@
                         <div class="col-lg-3 col-md-6">
                             <label class="form-label pr-5">APPROVAL Finance Director :</label>
                             <div class="fv-row pt-5">
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-success px-5 py-2">
                                     <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_Yes" value="1" <?= ($setting->FinanceDirector == 1) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="FinanceDirector_Yes">YES</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="FinanceDirector_Yes">YES</label>
                                 </div>
-                                <div class="form-check form-check-inline">
+                                <div class="form-check form-check-inline bg-danger px-5 py-2">
                                     <input class="form-check-input" type="radio" name="FinanceDirector" id="FinanceDirector_No" value="0" <?= ($setting->FinanceDirector == 0) ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="FinanceDirector_No">NO</label>
+                                    <label class="form-check-label" style="font-weight: bold;" for="FinanceDirector_No">NO</label>
                                 </div>
 
                             </div>

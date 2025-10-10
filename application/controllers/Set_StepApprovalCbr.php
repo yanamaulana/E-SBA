@@ -9,6 +9,7 @@ class Set_StepApprovalCbr extends CI_Controller
     private $TmstTrxSettingSteppApprovalCbr = 'TmstTrxSettingSteppApprovalCbr';
     private $HRQview_Employee_Detail = 'HRQviewEmployeeDetail';
     private $Tmst_User_NonHR = 'Tmst_User_NonHR';
+    private $QviewSettingStepApproval = 'QviewSettingStepApproval';
     private $ERPQview_User_Employee = 'ERPQview_User_Employee';
 
     public function __construct()
@@ -159,6 +160,7 @@ class Set_StepApprovalCbr extends CI_Controller
         $FinanceDirector = $this->input->post('FinanceDirector');
         $FinanceDirector_Person = $this->input->post('FinanceDirector_person');
         $FinanceDirector_Valid = $this->input->post('PresidentDirector_valid');
+        $Nik_FinanceDirector_Person = ($FinanceDirector == 0) ? '' : $FinanceDirector_Person;
 
 
         $errors = [];
@@ -272,7 +274,7 @@ class Set_StepApprovalCbr extends CI_Controller
 
             // Kolom FinanceDirector
             'FinanceDirector' => $FinanceDirector,
-            'FinanceDirector_Person' => $FinanceDirector_Person,
+            'FinanceDirector_Person' => $Nik_FinanceDirector_Person,
 
             // Kolom yang nilainya dihitung berdasarkan logika Anda
             'Doc_Legitimate_Pos_On' => $Doc_Legitimate_Pos_On,
@@ -295,6 +297,151 @@ class Set_StepApprovalCbr extends CI_Controller
             return $this->help->Fn_resulting_response([
                 'code' => 200,
                 'msg' => "The approval step has been successfully saved!",
+            ]);
+        }
+    }
+
+    public function update()
+    {
+        $SysId = $this->input->post('SysId');
+        $Setting_Approval_Code = $this->input->post('Setting_Approval_Code');
+
+        $Chief = $this->input->post('Chief');
+        $Chief_Person = $this->input->post('Chief_person');
+        $Chief_Valid = $this->input->post('Chief_valid');
+        // =============================================
+        $AsstManager = $this->input->post('AsstManager');
+        $AsstManager_Person = $this->input->post('AsstManager_person');
+        $AsstManager_Valid = $this->input->post('AsstManager_valid');
+        // =============================================
+        $Manager = $this->input->post('Manager');
+        $Manager_Person = $this->input->post('Manager_person');
+        $Manager_Valid = $this->input->post('Manager_valid');
+        // =============================================
+        $SeniorManager = $this->input->post('SeniorManager');
+        $SeniorManager_Person = $this->input->post('SeniorManager_person');
+        $SeniorManager_Valid = $this->input->post('SeniorManager_valid');
+        // =============================================
+        $GeneralManager = $this->input->post('GeneralManager');
+        $GeneralManager_Person = $this->input->post('GeneralManager_person');
+        $GeneralManager_Valid = $this->input->post('GeneralManager_valid');
+        // =============================================
+        $Additional = $this->input->post('Additional');
+        $Additional_Person = $this->input->post('Additional_person');
+        $Additional_Valid = $this->input->post('Additional_valid');
+        // =============================================
+        $Director = $this->input->post('Director');
+        $Director_Person = $this->input->post('Director_person');
+        $Director_Valid = $this->input->post('Director_valid');
+        // =============================================
+        $PresidentDirector = $this->input->post('PresidentDirector');
+        $PresidentDirector_Person = $this->input->post('PresidentDirector_person');
+        $PresidentDirector_Valid = $this->input->post('PresidentDirector_valid');
+        // =============================================
+        $FinanceDirector = $this->input->post('FinanceDirector');
+        $FinanceDirector_Person = $this->input->post('FinanceDirector_person');
+        $FinanceDirector_Valid = $this->input->post('PresidentDirector_valid');
+        $Nik_FinanceDirector_Person = ($FinanceDirector == 0) ? '' : $FinanceDirector_Person;
+
+
+        $errors = [];
+        $this->validate_approval_to_insert($Chief, $Chief_Valid, "Chief", $errors);
+        $this->validate_approval_to_insert($AsstManager, $AsstManager_Valid, "Asst Manager", $errors);
+        $this->validate_approval_to_insert($Manager, $Manager_Valid, "Manager", $errors);
+        $this->validate_approval_to_insert($SeniorManager, $SeniorManager_Valid, "Senior Manager", $errors);
+        $this->validate_approval_to_insert($GeneralManager, $GeneralManager_Valid, "General Manager", $errors);
+        $this->validate_approval_to_insert($Director, $Director_Valid, "Director", $errors);
+        $this->validate_approval_to_insert($PresidentDirector, $PresidentDirector_Valid, "President Director", $errors);
+        $this->validate_approval_to_insert($FinanceDirector, $FinanceDirector_Valid, "Finance Director", $errors);
+
+        if (!empty($errors)) {
+            $response = [
+                "code" => 400,
+                "msg" => "Validasi data gagal. Silakan periksa detailnya.",
+                "details" => $errors
+            ];
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode($response));
+        }
+
+        $Doc_Legitimate_Pos_On = null;
+        $error_message = null;
+        if ($FinanceDirector == 0 && $PresidentDirector == 1) {
+            $Doc_Legitimate_Pos_On = 'PresidentDirector';
+        } elseif ($FinanceDirector == 1 && $PresidentDirector == 0) {
+            $Doc_Legitimate_Pos_On = 'FinanceDirector';
+        } elseif ($FinanceDirector == 1 && $PresidentDirector == 1) {
+            $Doc_Legitimate_Pos_On = 'FinanceDirector';
+        } elseif ($FinanceDirector == 0 && $PresidentDirector == 0) {
+            $error_message = "Persetujuan Akhir (President Director atau Finance Director) harus dipilih salah satu atau keduanya.";
+        } else {
+            $error_message = "Nilai Director tidak dipilih.";
+        }
+
+        if ($error_message !== null) {
+            $response = [
+                "code" => 400, // Bad Request
+                "msg" => "Validasi Gagal.",
+                "details" => [$error_message]
+            ];
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode($response));
+        }
+        $data_insert = array(
+            'LastUpdated_at' => date('Y-m-d H:i:s'),
+            'LastUpdated_by' => $this->session->userdata('sys_sba_username'),
+
+            'Chief' => $Chief,
+            'Chief_Person' => $Chief_Person,
+
+            'AsstManager' => $AsstManager,
+            'AsstManager_Person' => $AsstManager_Person,
+
+            'Manager' => $Manager,
+            'Manager_Person' => $Manager_Person,
+
+            'SeniorManager' => $SeniorManager,
+            'SeniorManager_Person' => $SeniorManager_Person,
+
+            'GeneralManager' => $GeneralManager,
+            'GeneralManager_Person' => $GeneralManager_Person,
+
+            'Additional' => $Additional,
+            'Additional_Person' => $Additional_Person,
+
+            'Director' => $Director,
+            'Director_Person' => $Director_Person,
+
+            'PresidentDirector' => $PresidentDirector,
+            'PresidentDirector_Person' => $PresidentDirector_Person,
+
+            'FinanceDirector' => $FinanceDirector,
+            'FinanceDirector_Person' => $Nik_FinanceDirector_Person,
+
+            'Doc_Legitimate_Pos_On' => $Doc_Legitimate_Pos_On,
+        );
+
+        $this->db->trans_start();
+
+        $this->db->where('SysId', $SysId)->update($this->TmstTrxSettingSteppApprovalCbr, $data_insert);
+
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => "The approval step has been successfully updated!",
             ]);
         }
     }
@@ -322,12 +469,47 @@ class Set_StepApprovalCbr extends CI_Controller
         $this->load->view($this->layout, $this->data);
     }
 
+    public function UpdateStatus()
+    {
+        $SysId = $this->input->post('SysId');
+        $Status = $this->input->post('newStatus');
+
+        // validasi jika SysId masih ada di dalam Ttrx_Assignment_Approval_User.SysId_Approval
+        $checkUsage = $this->db->get_where('Ttrx_Assignment_Approval_User', ['SysId_Approval' => $SysId]);
+        if ($checkUsage->num_rows() > 0) {
+            return $this->help->Fn_resulting_response([
+                'code' => 400,
+                'msg'  => "The approval step cannot be deactivated because it is still in use in the Approval Assignment menu!",
+            ]);
+        }
+
+        $this->db->trans_start();
+        $this->db->where('SysId', $SysId)->update($this->TmstTrxSettingSteppApprovalCbr, [
+            'Is_Active' => $Status,
+        ]);
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => "The approval step status has been successfully updated!",
+            ]);
+        }
+    }
+
 
     // ============================================== DATATABLE SECTION
 
     public function DT_List_Template()
     {
-        $query  = "SELECT * from TmstTrxSettingSteppApprovalCbr";
+        $query  = "SELECT * from $this->QviewSettingStepApproval";
         $search = array(
             'Setting_Approval_Code',
             'Staff',
@@ -351,7 +533,17 @@ class Set_StepApprovalCbr extends CI_Controller
             'FinanceDirector',
             'FinanceDirector_Person',
             'LastUpdated_at',
-            'Doc_Legitimate_Pos_On'
+            'Doc_Legitimate_Pos_On',
+            'Chief_Name',
+            'AsstManager_Name',
+            'Manager_Name',
+            'SeniorManager_Name',
+            'GeneralManager_Name',
+            'Additional_Name',
+            'Director_Name',
+            'PresidentDirector_Name',
+            'FinanceDirector_Name',
+            'FinanceManager_Name'
         );
         $where  = null;
         $isWhere = null;
