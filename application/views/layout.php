@@ -324,7 +324,7 @@
                                 </div>
                             </div>
                             <div data-kt-menu-trigger="click" class="menu-item menu-accordion <?= ($Menu == 'Set_StepApprovalCbr' || $Menu == 'Approval_Assignment') ? 'hover show' : null; ?>">
-                                <span class="menu-link" data-bs-toggle="tooltip" title="Cash Book Requisition Entry Approval">
+                                <span class="menu-link" data-bs-toggle="tooltip" title="Cash Book Requisition Approval Settings">
                                     <span class="menu-icon">
                                         <!--begin::Svg Icon | path: assets/media/icons/duotune/graphs/gra010.svg-->
                                         <span class="svg-icon svg-icon-muted svg-icon-2qx">
@@ -336,7 +336,7 @@
                                     <span class="menu-arrow"></span>
                                 </span>
                                 <div class="menu-sub menu-sub-accordion kt-hidden-height=117">
-                                    <div class="menu-item" data-bs-toggle="tooltip" title="Step Approval : Cash Book Requisition">
+                                    <div class="menu-item" data-bs-toggle="tooltip" title="Manage Settings Step Approval : CBR">
                                         <a class="menu-link <?= ($Menu == 'Set_StepApprovalCbr') ? 'active' : null ?>" href="<?= base_url('Set_StepApprovalCbr') ?>">
                                             <span class="menu-icon">
                                                 <span class="svg-icon svg-icon-2">
@@ -351,7 +351,7 @@
                                             <span class="menu-title">Step Approval CBR</span>
                                         </a>
                                     </div>
-                                    <div class="menu-item" data-bs-toggle="tooltip" title="User Step Approval Assignment">
+                                    <div class="menu-item" data-bs-toggle="tooltip" title="User Setting Step Approval Assignment">
                                         <a class="menu-link <?= ($Menu == 'Approval_Assignment') ? 'active' : null ?>" href="<?= base_url('Approval_Assignment') ?>">
                                             <span class="menu-icon">
                                                 <span class="svg-icon svg-icon-2">
@@ -365,7 +365,7 @@
                                                     <!--end::Svg Icon-->
                                                 </span>
                                             </span>
-                                            <span class="menu-title">Approval Assignment</span>
+                                            <span class="menu-title">Step Approval Assignment</span>
                                         </a>
                                     </div>
                                 </div>

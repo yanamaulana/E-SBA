@@ -7,7 +7,7 @@ class Approval_Assignment extends CI_Controller
     private $DateTime;
     private $layout = 'layout';
     private $TmstTrxSettingSteppApprovalCbr = 'TmstTrxSettingSteppApprovalCbr';
-    private $HRQview_Employee_Detail = 'HRQviewEmployeeDetail';
+    private $Ttrx_Assignment_Approval_User = 'Ttrx_Assignment_Approval_User';
     private $Tmst_User_NonHR = 'Tmst_User_NonHR';
     private $QviewSettingStepApproval = 'QviewSettingStepApproval';
     private $ERPQview_User_Employee = 'ERPQview_User_Employee';
@@ -27,38 +27,98 @@ class Approval_Assignment extends CI_Controller
     {
         $this->data['page_title'] = "User Step Approval Assignment";
         $this->data['page_content'] = "setting/approval_assignment";
-        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/setting/approval_assignment.js"></script>';
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/setting/approval_assignment.js?v=' . time() . '""></script>';
 
         $this->data['Approvals'] = $this->db->get($this->QviewSettingStepApproval)->result();
 
         $this->load->view($this->layout, $this->data);
     }
 
-    // pembuatan funcction untuk select2 employee dengan ajax, table ERPQview_User_Employee : First_Name, User_Name
-    // $('#Employee').select2({
-    //     theme: 'bootstrap-4',
-    //     placeholder: 'Select User',
-    //     ajax: {
-    //         url: $('meta[name="base_url"]').attr('content') + "Approval_Assignment/Select2_User_Employee", // Ganti dengan URL endpoint Anda   
-    //         dataType: 'json',
-    //         delay: 800, // Delay untuk menunggu user berhenti mengetik
-    //         data: function (params) {
-    //             return {
-    //                 search: params.term // Term yang diketik user
-    //             };
-    //         },
-    //         processResults: function (data) {
-    //             return {
-    //                 results: data.map(function (item) {
-    //                     return {
-    //                         id: item.UserName_Employee, // Gunakan UserName_Employee sebagai id
-    //                         text: item.First_Name + ' (' + item.UserName_Employee + ')' // Tampilkan First_Name dan UserName_Employee
-    //                     };
-    //                 })
-    //             };
-    //         }
-    //     }
-    // });
+    public function store()
+    {
+        $Approval = $this->input->post('Approval');
+        $Array_Nik_Employee = $this->input->post('Employee');
+
+        // Cek apakah data sudah ada di database dengan looping array user nik employee
+        $msg = '';
+        $i = 0;
+        foreach ($Array_Nik_Employee as $Employee) {
+            $this->db->where('UserName_Employee', $Employee);
+            $query = $this->db->get($this->QviewTrx_Assignment_Approval_User);
+            if ($query->num_rows() > 0) {
+                $i++;
+                $Current_Assigment = $query->row();
+                if ($i == 1) {
+                    $msg .= 'The following employee(s) already assigned to approval step: ';
+                    $msg .= $Current_Assigment->First_Name . ' => ' . $Current_Assigment->Setting_Approval_Code . ', ';
+                } else {
+                    $msg .= $Current_Assigment->First_Name . ' => ' . $Current_Assigment->Setting_Approval_Code . ', ';
+                }
+            }
+        }
+        if ($msg != '') {
+            $response = [
+                'code' => 422,
+                'msg'  => $msg . ' . you need to remove them first before reassigning.',
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            return; // Hentikan eksekusi jika ada data yang sudah ada
+        }
+
+
+        $this->db->trans_start();
+        // column tabel Ttrx_Assignment_Approval_User SysId, UserName_Employee, SysId_Approval, Created_at, Created_by;
+        foreach ($Array_Nik_Employee as $Employee) {
+            $this->db->insert($this->Ttrx_Assignment_Approval_User, [
+                'UserName_Employee' => $Employee,
+                'SysId_Approval' => $Approval,
+                'Created_at' => $this->DateTime,
+                'Created_by' => $this->session->userdata('sys_sba_username'),
+            ]);
+        }
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => "The approval step status has been successfully updated!",
+            ]);
+        }
+    }
+
+    public function delete()
+    {
+        $Employee = $this->input->post('Employee');
+
+        $this->db->trans_start();
+
+        $this->db->where('UserName_Employee', $Employee)->delete($this->Ttrx_Assignment_Approval_User);
+
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => "The employee has been successfully removed from this approval step!",
+            ]);
+        }
+    }
+
     public function Select2_User_Employee()
     {
         $search = $this->input->get('search');
@@ -99,6 +159,17 @@ class Approval_Assignment extends CI_Controller
         $query  = "SELECT * from $this->QviewTrx_Assignment_Approval_User";
         $search = ['UserName_Employee', 'First_Name'];
         $where  = ['SysId_Approval' => $this->input->post('Approval')];
+        $isWhere = null;
+
+        header('Content-Type: application/json');
+        echo $this->M_Datatables->get_tables_query($query, $search, $where, $isWhere);
+    }
+
+    public function DT_Preview_Step_Approval()
+    {
+        $query  = "SELECT * from $this->QviewSettingStepApproval";
+        $search = array('SysId', 'Setting_Approval_Code');
+        $where  = ['SysId' => $this->input->post('Approval')];
         $isWhere = null;
 
         header('Content-Type: application/json');

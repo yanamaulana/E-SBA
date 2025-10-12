@@ -15,9 +15,9 @@
                         <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Step Approval Name :</label>
                         <div class="col-sm-5">
                             <div class="input-group">
-                                <button class="input-group-text"><i class="fas fa-edit fs-4 text-dark"></i></button>
+                                <button class="input-group-text" data-bs-toggle="tooltip" title="Preview Step Approval" id="preview"><i class="fas fa-search text-dark"></i> &nbsp;&nbsp;Preview</button>
                                 <div class="flex-grow-1">
-                                    <select class="form-select rounded-0" data-control="select2" data-placeholder="Select an option" name="Approval" id="Approval">
+                                    <select class="form-select rounded-0" data-control="select2" data-placeholder="Select an option" name="Approval" id="Approval" required data-allow-clear="true">
                                         <option selected disabled>-Choose Step Approval-</option>
                                         <?php foreach ($Approvals as $li) : ?>
                                             <?= '<option value="' . $li->SysId . '">' . $li->Setting_Approval_Code . '</option>' ?>
@@ -33,11 +33,13 @@
                         <div class="col-md-6" style="border-right: solid #b1afafff 1px">
                             <!-- input select2 bisa multiple select value, data employee, yang akan di panggil dengan ajax -->
                             <div class="row">
-                                <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Select Employee :</label>
-                                <div class="col-sm-12">
-                                    <select class="form-select rounded-0" data-control="select2" data-placeholder="Select Employee" name="Employee[]" id="Employee" data-allow-clear="true" multiple="multiple">
-                                        <!-- Options will be populated via AJAX -->
-                                    </select>
+                                <div class="input-group">
+                                    <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Select Employee :</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-select rounded-0" data-control="select2" data-placeholder="Select Employee" name="Employee[]" id="Employee" data-allow-clear="true" multiple="multiple" required>
+                                            <!-- Options will be populated via AJAX -->
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -77,6 +79,38 @@
             </div>
             <div class="card-footer">
                 <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-danger float-end"><i class="far fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="modal fade" tabindex="-1" id="modal_preview">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal_title"></h5>
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="svg-icon svg-icon-2x"></span>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="TableData_Preview" class="display compact nowrap table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
+                                <thead style="background-color: #3B6D8C;">
+                                    <tr class="text-start text-white fw-bolder text-uppercase">
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 fw-bold">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
