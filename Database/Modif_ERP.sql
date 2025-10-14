@@ -60,7 +60,18 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (
 
 
 
-CREATE OR ALTER VIEW QviewSettingStepApproval 
+DROP VIEW ERPQview_User_Employee;
+CREATE VIEW dbo.ERPQview_User_Employee AS
+SELECT tuser.User_ID, First_Name, User_Name, User_Password, User_Hints, User_Answer, Site_ID, Language_ID, User_Type, Forget_Password,
+security_password, WH_ID, is_Passive, User_Status, flag_eula, eula_date, LoginFail_Ip, User_Ldap, User_Pass_Txt,
+Middle_Name, Last_Name, Gender, Date_of_Birth, Email_Address, Address1, Address2, City, State, Country_ID, Postal_Code, 
+Fax, Phone, HandPhone, Web_Site, GMT_ID, Signature, POP3_Address, Mail_Acc_User_ID, Mail_Acc_User_Password, Leave_Mail_on_Server, Upload_Extra_Size,
+Upload_Extra_Type, Port_Number, Category_id, Server_Time_Out, User_Title, User_NickName, Anniversary
+FROM dbsai_erp_uat.dbo.tuser
+inner join TUserPersonal on tuser.User_ID = TUserPersonal.User_ID;
+
+DROP VIEW QviewSettingStepApproval;
+CREATE VIEW QviewSettingStepApproval 
 AS
 SELECT
     T1.SysId, 
@@ -102,17 +113,3 @@ LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS PD ON T1.PresidentDirector
 LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS FD ON T1.FinanceDirector_Person = FD.User_Name
 LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS FM ON T1.FinanceManager_Person = FM.User_Name;
 
-
-
--- dbo.ERPQview_User_Employee source
-
--- dbo.ERPQview_User_Employee source
-
-CREATE OR ALTER VIEW dbo.ERPQview_User_Employee AS
-SELECT tuser.User_ID, First_Name, User_Name, User_Password, User_Hints, User_Answer, Site_ID, Language_ID, User_Type, Forget_Password,
-security_password, WH_ID, is_Passive, User_Status, flag_eula, eula_date, LoginFail_Ip, User_Ldap, User_Pass_Txt,
-Middle_Name, Last_Name, Gender, Date_of_Birth, Email_Address, Address1, Address2, City, State, Country_ID, Postal_Code, 
-Fax, Phone, HandPhone, Web_Site, GMT_ID, Signature, POP3_Address, Mail_Acc_User_ID, Mail_Acc_User_Password, Leave_Mail_on_Server, Upload_Extra_Size,
-Upload_Extra_Type, Port_Number, Category_id, Server_Time_Out, User_Title, User_NickName, Anniversary
-FROM dbsai_erp_uat.dbo.tuser
-inner join TUserPersonal on tuser.User_ID = TUserPersonal.User_ID;

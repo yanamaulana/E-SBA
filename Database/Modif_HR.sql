@@ -5,8 +5,8 @@
 -- dbo.HRQviewEmployeeDetail source
 
 -- dbo.HRQviewEmployeeDetail source
-
-CREATE OR ALTER   VIEW dbo.HRQviewEmployeeDetail AS
+DROP VIEW dbo.HRQviewEmployeeDetail;
+CREATE VIEW dbo.HRQviewEmployeeDetail AS
 SELECT  distinct
 				THRMEmpPersonalData.User_id,
 				THRMEmpPersonalData.Emp_ID, 

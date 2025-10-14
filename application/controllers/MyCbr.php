@@ -539,8 +539,8 @@ class MyCbr extends CI_Controller
             $this->data['qheader'] = $this->db->query("SELECT a.*, b.account_id,  b.account_name,  b.account_address1, b.account_city_id1,  b.account_state_id1, 
                                                             b.account_zipcode1, b.account_phone1, b.account_fax1, b.taxfilenumber,  b.accounttitle_code, c.country_name, 0 AS kawasanberikat
                                                             FROM TAccVI_Header a
-                                                            INNER JOIN TAccount b ON a.account_id = b.account_id
-                                                            INNER JOIN TCountry c on b.account_country_id1 = c.country_id
+                                                            left JOIN TAccount b ON a.account_id = b.account_id
+                                                            left JOIN TCountry c on b.account_country_id1 = c.country_id
                                                             WHERE a.invoice_number = '$vin'")->row();
         } else {
             if ($qcategory->ItemCategoryType == 'AST-M') {
@@ -574,22 +574,22 @@ class MyCbr extends CI_Controller
                                                                     accounttitle_code,
                                                                     0 as kawasanberikat
                                                             from	taccpo_detail
-                                                                    inner join taccpo_header on taccpo_header.po_number = taccpo_detail.po_number
-                                                                    inner join taccrr_header on taccrr_header.ref_number = taccpo_detail.po_number
-                                                                    inner join taccrr_item on taccrr_item.rr_number = taccrr_header.rr_number 
+                                                                    left join taccpo_header on taccpo_header.po_number = taccpo_detail.po_number
+                                                                    left join taccrr_header on taccrr_header.ref_number = taccpo_detail.po_number
+                                                                    left join taccrr_item on taccrr_item.rr_number = taccrr_header.rr_number 
                                                                         and taccpo_detail.item_code = taccrr_item.item_code 
                                                                         and isnull(taccpo_detail.parent_path,0) = isnull(taccrr_item.parent_path,0) 
                                                                         and taccpo_detail.dimension_id = taccrr_item.dimension_id 
-                                                                    inner join taccvi_header on taccvi_header.invoice_number = '$vin' 
+                                                                    left join taccvi_header on taccvi_header.invoice_number = '$vin' 
                                                                         and taccvi_header.po_number = '$row_ref_document->po_number'
                                                                         and	taccpo_header.po_number in ($arr_po_number)
                                                                     left join taccvi_detail on taccvi_detail.invoice_number = taccvi_header.invoice_number
                                                                         and taccvi_detail.item_code = taccpo_detail.item_code
                                                                         and taccvi_detail.dimension_id = taccpo_detail.dimension_id
                                                                         and taccvi_detail.ref_number = taccrr_item.rr_number
-                                                                    inner join titemdimension itd on itd.dimension_id = taccpo_detail.dimension_id
-                                                                    inner join taccount on taccount.account_id 	= taccvi_header.account_id
-                                                                    inner join tcountry on taccount.account_country_id1 = tcountry.country_id
+                                                                    left join titemdimension itd on itd.dimension_id = taccpo_detail.dimension_id
+                                                                    left join taccount on taccount.account_id 	= taccvi_header.account_id
+                                                                    left join tcountry on taccount.account_country_id1 = tcountry.country_id
                                                                     left join tuserpersonal on taccpo_header.user_id = tuserpersonal.user_id
                                                             where	1 = 1 
                                                                 and TAccRR_Item.RR_Number in ($arr_rr_number)

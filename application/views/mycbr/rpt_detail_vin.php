@@ -178,32 +178,67 @@
                     <tr>
                         <td class="text-left">Paid to</td>
                         <td class="text-left">:</td>
-                        <td class="text-left font-weight-bold"><?= $qheader->accounttitle_code ?>. <?= $qheader->account_name ?></td>
+                        <!-- {{-- Menggunakan operator ternary untuk mengecek $qheader --}} -->
+                        <td class="text-left font-weight-bold">
+                            <?= ($qheader ?? null) ? $qheader->accounttitle_code . '. ' . $qheader->account_name : '-' ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left">Vendor Invoice Number</td>
                         <td class="text-left">:</td>
-                        <td class="text-left"><?= $qheader->VenInvoice_Number ?></td>
+                        <!-- {{-- Menggunakan Null Coalescing Operator (??) pada properti --}} -->
+                        <td class="text-left">
+                            <?= $qheader->VenInvoice_Number ?? '-' ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left">Purchase Order Number</td>
                         <td class="text-left">:</td>
-                        <td class="text-left font-weight-bold"><?php foreach ($list_po as $li) : ?> <?= $li . '<br>' ?> <?php endforeach; ?></td>
+                        <td class="text-left font-weight-bold">
+                            <?php
+                            // Cek apakah $list_po ada dan berupa array/object
+                            if (!empty($list_po) && is_array($list_po) || is_object($list_po)) :
+                                foreach ($list_po as $li) : ?>
+                                    <?= $li . '<br>' ?>
+                            <?php endforeach;
+                            else :
+                                echo '-';
+                            endif;
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left">Date of Goods Received</td>
                         <td class="text-left">:</td>
-                        <td class="text-left "><?php foreach ($list_rr as $li) : ?> <?= '<b>' . $li->rr_number . '</b> | ' . date('d M Y', strtotime($li->RR_date)) . '<br>' ?> <?php endforeach; ?></td>
+                        <td class="text-left ">
+                            <?php
+                            // Cek apakah $list_rr ada dan berupa array/object
+                            if (!empty($list_rr) && is_array($list_rr) || is_object($list_rr)) :
+                                foreach ($list_rr as $li) :
+                                    $rr_date = $li->RR_date ?? date('d M Y'); // Handle jika RR_date null
+                                    $formatted_date = date('d M Y', strtotime($rr_date)); ?>
+                                    <?= '<b>' . ($li->rr_number ?? '-') . '</b> | ' . $formatted_date . '<br>' ?>
+                            <?php endforeach;
+                            else :
+                                echo '-';
+                            endif;
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left">Amount</td>
                         <td class="text-left">:</td>
-                        <td class="text-left"><b><?= $qheader->Currency_ID ?></b> <?= number_format($qheader->Invoice_Amount, 4, '.', ',') ?></td>
+                        <td class="text-left">
+                            <b><?= $qheader->Currency_ID ?? '-' ?></b>
+                            <?= number_format($qheader->Invoice_Amount ?? 0, 4, '.', ',') ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left">Descriptions</td>
                         <td class="text-left">:</td>
-                        <td class="text-left"><?= $qheader->Invoice_Notes ?></td>
+                        <td class="text-left">
+                            <?= $qheader->Invoice_Notes ?? '-' ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -212,23 +247,31 @@
             <table class="tablee">
                 <tbody>
                     <tr>
-                        <td class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of Invoice Received</td>
-                        <td class="text-left">:</td>
-                        <td class="text-left"><?= date('d M Y', strtotime($qheader->Invoice_Date)) ?></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Due Date</td>
-                        <td class="text-left">:</td>
-                        <td class="text-left"><?= date('d M Y', strtotime($qheader->Due_date)) ?></td>
-                    </tr>
-                    <tr>
-                        <td class="text-left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vendor SO Number</td>
+                        <td class="text-left">Date of Invoice Received</td>
                         <td class="text-left">:</td>
                         <td class="text-left">
-                            <?php if ($qheader->isDirect != 1) : ?>
-                                <ul style="margin-top:0; margin-left:-20px;">
+                            <!-- {{-- Cek $qheader->Invoice_Date. Jika NULL, gunakan '-' --}} -->
+                            <?= ($qheader->Invoice_Date ?? null) ? date('d M Y', strtotime($qheader->Invoice_Date)) : '-' ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Due Date</td>
+                        <td class="text-left">:</td>
+                        <td class="text-left">
+                            <!-- {{-- Cek $qheader->Due_date. Jika NULL, gunakan '-' --}} -->
+                            <?= ($qheader->Due_date ?? null) ? date('d M Y', strtotime($qheader->Due_date)) : '-' ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Vendor SO Number</td>
+                        <td class="text-left">:</td>
+                        <td class="text-left">
+                            <!-- {{-- Cek apakah $qheader ada dan isDirect != 1 --}} -->
+                            <?php if (($qheader->isDirect ?? 1) != 1 && !empty($qget_so_numb)) : ?>
+                                <!-- {{-- Hapus margin-left negatif di ul atau gunakan tag div jika margin bermasalah --}} -->
+                                <ul style="margin-top:0; padding-left:20px;">
                                     <?php foreach ($qget_so_numb as $li) : ?>
-                                        <li style="font-weight: bold;"><?= $li->rr_number ?></li>
+                                        <li style="font-weight: bold;"><?= $li->rr_number ?? '-' ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             <?php else : ?>
@@ -244,7 +287,7 @@
         <?php $i = 1; ?>
         <?php foreach ($list_rr as $rr) : ?>
             <?php $grandtotal = 0; ?>
-            <?php if ($qheader->itemcategorytype == 'AST') : ?>
+            <?php if ($qheader != NULL && $qheader->itemcategorytype == 'AST') : ?>
                 <?php $qget_rrdetails = $this->db->query("SELECT taccrr_item.item_code, 
 							TAccAssetInventory.Asset_Desc as item_name,							
 							taccrr_item.item_codealias, 
@@ -267,7 +310,7 @@
                             where taccrr_item.rr_number = '$rr->rr_number'
                             and taccrr_item.qty > 0
                             order by TAccRR_Header.Ref_Number, taccrr_item.RR_Number"); ?>
-            <?php else : ?>
+            <?php elseif ($qheader == NULL || $qheader->itemcategorytype != 'AST'): ?>
                 <?php $qget_rrdetails = $this->db->query("select	taccrr_item.item_code, 
 							titem.item_name, 
 							taccrr_item.item_codealias, 
@@ -361,10 +404,24 @@
                                         $disc_percentage = $row['disc_percentage'];
                                         $disc_value = $row['disc_value'];
                                         echo $currency_id_rr . ' ' . number_format($unit_price, 2, '.', ',');
-                                        if ($qheader->SecondaryUoMPricing == 1) {
-                                            $totalamount = ((floatval($unit_price) - floatval($disc_value)) - (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))) * floatval($tmpQty);
+                                        // Inisialisasi totalamount untuk memastikan variabel selalu terdefinisi
+                                        $totalamount = 0;
+
+                                        // Ambil status flag SecondaryUoMPricing, default ke 0 jika $qheader NULL
+                                        $isSecondaryPricing = $qheader->SecondaryUoMPricing ?? 0;
+
+                                        if ($isSecondaryPricing == 1) {
+                                            // Logika jika SecondaryUoMPricing == 1
+                                            $totalamount = (
+                                                (floatval($unit_price) - floatval($disc_value)) -
+                                                (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))
+                                            ) * floatval($tmpQty);
                                         } else {
-                                            $totalamount = ((floatval($unit_price) - floatval($disc_value)) - (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))) * floatval($rr_dtl->$qty);
+                                            // Logika jika SecondaryUoMPricing == 0 atau $qheader NULL
+                                            $totalamount = (
+                                                (floatval($unit_price) - floatval($disc_value)) -
+                                                (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))
+                                            ) * floatval($rr_dtl->$qty);
                                         }
 
                                         $grandtotal += $totalamount;
@@ -372,7 +429,8 @@
                                 } elseif ($rr_dtl->rr_type == "RR_PUR") {
                                     $qgetprice = $this->db->query("SELECT taccvi_header.currency_id, 
                                               COALESCE(taccvi_detail.unitprice, 0) as unit_price,
-                                              COALESCE(taccvi_detail.disc_percentage, 0) as disc_percentage
+                                              COALESCE(taccvi_detail.disc_percentage, 0) as disc_percentage,
+                                              0 as disc_value
                                               FROM taccvi_detail
                                               INNER JOIN taccvi_header ON taccvi_detail.invoice_number=taccvi_header.invoice_number
                                               INNER JOIN taccrr_item ON taccrr_item.rr_number=taccvi_detail.ref_number
@@ -385,11 +443,23 @@
                                         $currency_id_rr = $row['currency_id'];
                                         $unit_price = $row['unit_price'];
                                         $disc_percentage = $row['disc_percentage'];
+                                        $disc_value = $row['disc_value'];
                                         echo $currency_id_rr . ' ' . number_format($unit_price, 2, '.', ',');
-                                        if ($qheader->SecondaryUoMPricing == 1) {
-                                            $totalamount = (($unit_price - ($disc_percentage / 100 * $unit_price)) * floatval(number_format($rr_dtl->secondary_qty, 6, '.', '')));
+                                        // Inisialisasi totalamount untuk memastikan variabel selalu terdefinisi
+                                        $totalamount = 0;
+
+                                        // Ambil status flag SecondaryUoMPricing, default ke 0 jika $qheader NULL
+                                        $isSecondaryPricing = $qheader->SecondaryUoMPricing ?? 0;
+
+                                        if ($isSecondaryPricing == 1) {
+                                            // Logika jika SecondaryUoMPricing == 1
+                                            $totalamount = (
+                                                (floatval($unit_price) - floatval($disc_value)) -
+                                                (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))
+                                            ) * floatval($tmpQty);
                                         } else {
-                                            $totalamount = (($unit_price - ($disc_percentage / 100 * $unit_price)) * floatval($rr_dtl->qty));
+                                            // Logika jika SecondaryUoMPricing == 0 atau $qheader NULL
+                                            $totalamount = ((floatval($unit_price) - floatval($disc_value)) - (floatval($disc_percentage) / 100 * (floatval($unit_price) - floatval($disc_value)))) * floatval($rr_dtl->qty);
                                         }
 
                                         $grandtotal += $totalamount;
@@ -452,7 +522,7 @@
                     <td align="center">Account</td>
                     <td align="center">D/C</td>
                     <td align="center" width="25%">Descriptions</td>
-                    <?php if ($qheader->isDirect == 1) : ?>
+                    <?php if ($qheader != NULL && $qheader->isDirect == 1) : ?>
                         <td align="center">Notes</td>
                         <td align="center">Cost Center</td>
                     <?php endif; ?>
@@ -469,7 +539,7 @@
                                     <?php if (floatval($journal->JournalD_Debet) == 0 && floatval($journal->JournalD_Debet_tax) == 0) : ?>K<?php else : ?>D<?php endif; ?>
                                 </td>
                                 <td align="center"><?= $journal->acc_Name; ?></td>
-                                <?php if ($qheader->isDirect == 1) : ?>
+                                <?php if ($qheader != NULL && $qheader->isDirect == 1) : ?>
                                     <td align="center"><?= $journal->Notes; ?></td>
                                     <td align="center">
                                         <?php if (!empty($journal->CostCenter_Code)) : ?>[<?= $journal->CostCenter_Code ?>] <?= $journal->CostCenter_Name ?><?php else : ?>&nbsp;<?php endif; ?>
