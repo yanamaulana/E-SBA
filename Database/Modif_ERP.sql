@@ -32,8 +32,41 @@ CREATE TABLE dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr (
 	CONSTRAINT UQ_Setting_Approval_Code UNIQUE (Setting_Approval_Code)
 );
 
+DROP TABLE dbsai_erp_uat.dbo.Ttrx_Dtl_Attachment_Cbr;
+CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Dtl_Attachment_Cbr (
+	SysId bigint IDENTITY(1,1) NOT NULL,
+	CbrNo varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Attachment_FileName varchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Note varchar(999) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	AttachmentType varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+	Created_by varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Created_at datetime NOT NULL,
+);
 
--- dbsai_erp_uat.dbo.Tmst_User_NonHR definition
+DROP TABLE dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR;
+CREATE TABLE dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (
+    SysId INT IDENTITY(1,1) NOT NULL,
+    Att_Code VARCHAR(50) NOT NULL,
+    Att_Name VARCHAR(100) NOT NULL,
+	Is_Active bit DEFAULT 1 NOT NULL;
+    Created_At DATETIME NOT NULL,
+    Created_By VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_Tmst_Type_Document_Attachment_CBR PRIMARY KEY CLUSTERED (SysId),
+    CONSTRAINT UQ_Att_Code UNIQUE NONCLUSTERED (Att_Code)
+);
+
+
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'INVOICE', N'Faktur Pembelian/Invoice', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'SJ', N'Surat Jalan', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'BL', N'Bill of Lading', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'PL', N'Packing List', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'FP', N'Faktur Pajak', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'PO_PROPOSAL', N'PO Samick/Proposal/LC', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'PEB', N'Pemberitahuan Ekspor Barang', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'NPE', N'Nota Pelayanan Ekspor', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'PIB', N'Pemberitahuan Impor Barang', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'BC', N'Dokumen Bea Cukai ', '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Created_At, Created_By) VALUES(N'OTHER', N'Dokument Lain-lain/pendukung', '2025-10-15 12:00:00.000', N'29431');
 
 -- Drop table
 

@@ -13,6 +13,7 @@ $(document).ready(function () {
 
     $('.date-picker').flatpickr();
 
+
     function Fn_Initialized_DataTable() {
         $("#TableDataHistory").DataTable({
             destroy: true,
@@ -638,7 +639,7 @@ $(document).ready(function () {
                                                     <thead>
                                                         <tr>
                                                             <th class="text-dark" colspan="2">Cash Book Requisition Number : ${d.CBReq_No}</th>
-                                                            <th class="text-dark text-center"><button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-danger btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button> <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-info btn-attachment"><i class="fas fa-paperclip"></i> Upload Attachment</button></th>
+                                                            <th class="text-dark text-center"><button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button> <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-primary btn-attachment"><i class="fas fa-paperclip"></i> Upload Attachment</button></th>
 
                                                         </tr>
                                                         <tr class="bg-dark">
@@ -729,7 +730,7 @@ $(document).ready(function () {
                                                                             Purchase Invoice  : ${d.Document_Number}
                                                                         </th>
                                                                         <th style="text-align: center;" colspan="3">
-                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-light-danger rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
+                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-info rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
                                                                         </th>
                                                                     </tr>
                                                                     <tr class="bg-dark">

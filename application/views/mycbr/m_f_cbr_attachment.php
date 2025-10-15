@@ -1,14 +1,25 @@
 <div class="modal fade" id="ModalAttachment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalAttachmentLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ModalAttachmentLabel">Upload Attachment : <?= $CbrNo; ?></h1>
+                <h1 class="modal-title fs-5" id="ModalAttachmentLabel">Upload Attachment For : <?= $CbrNo; ?></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form-attachment" enctype="multipart/form-data" method="post">
                     <input type="hidden" name="CbrNo" id="CbrNo" value="<?= $CbrNo; ?>">
 
+                    <div class="row mb-3">
+                        <label for="attachment" class="col-sm-3 col-form-label"><b>Attachment Type :</b></label>
+                        <div class="col-sm-5 fv-row">
+                            <select class="form-select form-select-sm rounded-5" data-control="select2" data-placeholder="Select an option" name="Type" id="Type" required data-allow-clear="true">
+                                <option selected disabled>-Choose Attachment Type-</option>
+                                <?php foreach ($Types->result() as $type) : ?>
+                                    <?= '<option value="' . $type->Att_Code . '">' . $type->Att_Name . ' (' . $type->Att_Code . ')</option>' ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <label for="attachment" class="col-sm-3 col-form-label"><b>Choose Attachment :</b></label>
                         <div class="col-sm-9 fv-row">
@@ -87,6 +98,7 @@
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
+        $('#Type').select2();
 
         const main_form = $('#form-attachment')
         main_form.validate({
@@ -106,6 +118,7 @@
             debug: true,
             success: 'valid'
         });
+
 
         $('#submit--data').click(function(e) {
             e.preventDefault();

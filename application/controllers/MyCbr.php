@@ -10,6 +10,7 @@ class MyCbr extends CI_Controller
     private $TmstTrxSettingSteppApprovalCbr = 'TmstTrxSettingSteppApprovalCbr';
     private $Ttrx_Dtl_Attachment_Cbr = 'Ttrx_Dtl_Attachment_Cbr';
     private $Ttrx_DtlHst_Attachment_Cbr = 'Ttrx_DtlHst_Attachment_Cbr';
+    private $Tmst_Attachment_Type_CBR = 'Tmst_Attachment_Type_CBR';
 
     public function __construct()
     {
@@ -647,6 +648,7 @@ class MyCbr extends CI_Controller
         $CbrNo = $this->input->get('CbrNo');
         $this->data['CbrNo'] = $CbrNo;
         $this->data['Attachments'] = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $CbrNo]);
+        $this->data['Types'] = $this->db->get($this->Tmst_Attachment_Type_CBR);
 
         $this->load->view('mycbr/m_f_cbr_attachment', $this->data);
     }
