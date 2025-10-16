@@ -38,7 +38,7 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Dtl_Attachment_Cbr (
 	CbrNo varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	Attachment_FileName varchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	Note varchar(999) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	AttachmentType varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+	AttachmentType varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	Created_by varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	Created_at datetime NOT NULL,
 );
@@ -81,6 +81,7 @@ CREATE TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR (
 	is_active bit DEFAULT 1 NOT NULL
 );
 
+drop table dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User;
 CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (
 	SysId bigint IDENTITY(1,1) NOT NULL,
 	UserName_Employee varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
@@ -89,6 +90,80 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (
 	Created_by varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	CONSTRAINT PK_Assignment_Approval_User PRIMARY KEY (SysId),
 	CONSTRAINT UQ_Assignment_User_Approval UNIQUE (UserName_Employee,SysId_Approval)
+);
+
+
+drop table dbsai_erp_uat.dbo.Ttrx_Cbr_Approval;
+CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval (
+	SysID bigint IDENTITY(1,1) NOT NULL,
+	CBReq_No varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	IsAppvStaff bit DEFAULT 0 NOT NULL,
+	Status_AppvStaff bit NULL,
+	AppvStaff_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvStaff_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvStaff_At datetime NULL,
+	IsAppvChief bit DEFAULT 0 NULL,
+	Status_AppvChief bit NULL,
+	AppvChief_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvChief_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvChief_At datetime NULL,
+	IsAppvAsstManager bit DEFAULT 0 NOT NULL,
+	Status_AppvAsstManager bit NULL,
+	AppvAsstManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvAsstManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvAsstManager_At datetime NULL,
+	IsAppvManager bit DEFAULT 0 NOT NULL,
+	Status_AppvManager bit NULL,
+	AppvManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvManager_At datetime NULL,
+	IsAppvSeniorManager bit DEFAULT 0 NOT NULL,
+	Status_AppvSeniorManager bit NULL,
+	AppvSeniorManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvSeniorManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvSeniorManager_At datetime NULL,
+	
+	IsAppvGeneralManager bit DEFAULT 0 NOT NULL,
+	Status_AppvGeneralManager bit NULL,
+	AppvGeneralManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvGeneralManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvGeneralManager_At datetime NULL,
+	
+	IsAppvAdditional bit DEFAULT 0 NOT NULL,
+	Status_AppvAdditional bit NULL,
+	AppvAdditional_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvAdditional_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvAdditional_At datetime NULL,
+	
+	IsAppvDirector bit DEFAULT 0 NOT NULL,
+	Status_AppvDirector bit NULL,
+	AppvDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvDirector_At datetime NULL,
+	
+	IsAppvPresidentDirector bit DEFAULT 1 NOT NULL,
+	Status_AppvPresidentDirector bit NULL,
+	AppvPresidentDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvPresidentDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvPresidentDirector_At datetime NULL,
+	
+	IsAppvFinanceDirector bit DEFAULT 1 NOT NULL,
+	Status_AppvFinanceDirector bit NULL,
+	AppvFinanceDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvFinanceDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvFinanceDirector_At datetime NULL,
+	
+	UserName_User varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	UserDivision varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Rec_Created_At datetime NOT NULL,
+	
+	IsAppvFinancePerson bit DEFAULT 1 NOT NULL,
+	Status_AppvFinancePerson bit NULL,
+	AppvFinancePerson_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvFinancePerson_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AppvFinancePerson_At datetime NULL,
+	
+	CONSTRAINT Ttrx_Cbr_Approval_PK PRIMARY KEY (CBReq_No)
 );
 
 

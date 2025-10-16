@@ -37,331 +37,154 @@ $(document).ready(function () {
             },
             columns: [
                 {
-                    data: "CBReq_No",
-                    name: "CBReq_No",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
+                    data: "CBReq_No", name: "CBReq_No", orderable: false, render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
+                { data: "CBReq_No", name: "CBReq_No", },
+                { data: "Type", name: "Type", visible: false },
                 {
-                    data: "CBReq_No",
-                    name: "CBReq_No",
-                },
-                {
-                    data: "Type",
-                    name: "Type",
-                    visible: false
-                },
-                {
-                    data: "Document_Date",
-                    name: "Document_Date",
-                    render: function (data) {
-                        return data.substring(0, data.indexOf(' '));
+                    data: "Document_Date", name: "Document_Date", render: function (data) {
+                        return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
                     }
                 },
+                { data: "Currency_Id", name: "Currency_Id" },
                 {
-                    data: "Currency_Id",
-                    name: "Currency_Id",
-                },
-                {
-                    data: "Amount",
-                    name: "Amount",
-                    render: function (data) {
-                        return parseFloat(data).toLocaleString('en-US', {
-                            minimumFractionDigits: 4,
-                            maximumFractionDigits: 4
-                        });
+                    data: "Amount", name: "Amount", render: function (data) {
+                        return parseFloat(data).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
                     }
                 },
+                { data: "Document_Number", name: "Document_Number" },
+                { data: "Descript", name: "Descript" },
+                { data: "baseamount", name: "baseamount", visible: false },
+                { data: "curr_rate", name: "curr_rate", visible: false },
+                { data: "Approval_Status", name: "Approval_Status", visible: false },
                 {
-                    data: "Document_Number",
-                    name: "Document_Number",
-                },
-                {
-                    data: "Descript",
-                    name: "Descript",
-                },
-                {
-                    data: "baseamount",
-                    name: "baseamount",
-                    visible: false
-                },
-                {
-                    data: "curr_rate",
-                    name: "curr_rate",
-                    visible: false
-                },
-                {
-                    data: "Approval_Status",
-                    name: "Approval_Status",
-                    visible: false
-                },
-                {
-                    data: "CBReq_Status",
-                    name: "CBReq_Status",
-                    render: function (data) {
+                    data: "CBReq_Status", name: "CBReq_Status", render: function (data) {
                         if (data == 3) {
-                            return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`;
                         } else if (data == 2) {
-                            return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a></button>`
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a>`;
                         } else {
-                            return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a></button>`
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a>`;
                         }
                     }
                 },
                 {
-                    data: "Paid_Status",
-                    name: "Paid_Status",
-                    render: function (data) {
+                    data: "Paid_Status", name: "Paid_Status", render: function (data) {
                         if (data == 'NP') {
-                            return `<span class="text-dark badge badge-warning">Not Paid</span>`
+                            return `<span class="text-dark badge badge-warning">Not Paid</span>`;
                         } else {
-                            return `<span class="text-dark badge badge-success">Full Paid</span>`
+                            return `<span class="text-dark badge badge-success">Full Paid</span>`;
                         }
                     }
                 },
+                { data: "Creation_DateTime", name: "Creation_DateTime", visible: false },
+                { data: "Created_By", name: "Created_By", visible: false },
+                { data: "First_Name", name: "First_Name", orderable: false },
+                { data: "Last_Update", name: "Last_Update", visible: false },
+                { data: "Acc_ID", name: "Acc_ID", visible: false },
+                { data: "Approve_Date", name: "Approve_Date", visible: false },
+                { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
+                { data: "IsAppvChief", name: "IsAppvChief", visible: false },
+                { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
                 {
-                    data: "Creation_DateTime",
-                    name: "Creation_DateTime",
-                    visible: false
-                },
-                {
-                    data: "Created_By",
-                    name: "Created_By",
-                    visible: false
-                },
-                {
-                    data: "First_Name",
-                    name: "First_Name",
-                    orderable: false,
-                },
-                {
-                    data: "Last_Update",
-                    name: "Last_Update",
-                    visible: false
-                },
-                {
-                    data: "Acc_ID",
-                    name: "Acc_ID",
-                    visible: false
-                },
-                {
-                    data: "Approve_Date",
-                    name: "Approve_Date",
-                    visible: false
-                },
-                // =========================== SECTION APPROVAL
-                {
-                    data: "IsAppvStaff",
-                    name: "IsAppvStaff",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvStaff == null || row.Status_AppvStaff == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvStaff == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvStaff == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvManager);
                     }
                 },
                 {
-                    data: "IsAppvChief",
-                    name: "IsAppvChief",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvChief == null || row.Status_AppvChief == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvChief == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvChief == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvSeniorManager);
                     }
                 },
                 {
-                    data: "IsAppvAsstManager",
-                    name: "IsAppvAsstManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvAsstManager == null || row.Status_AppvAsstManager == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvAsstManager == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvAsstManager == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvGeneralManager);
                     }
                 },
                 {
-                    data: "IsAppvManager",
-                    name: "IsAppvManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvManager == null || row.Status_AppvManager == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvManager == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvManager == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvAdditional);
                     }
                 },
                 {
-                    data: "IsAppvSeniorManager",
-                    name: "IsAppvSeniorManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvSeniorManager == null || row.Status_AppvSeniorManager == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvSeniorManager == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvSeniorManager == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvDirector", name: "IsAppvDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvDirector);
                     }
                 },
                 {
-                    data: "IsAppvGeneralManager",
-                    name: "IsAppvGeneralManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvGeneralManager == null || row.Status_AppvGeneralManager == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvGeneralManager == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvGeneralManager == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
                     }
                 },
                 {
-                    data: "IsAppvDirector",
-                    name: "IsAppvDirector",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvDirector == null || row.Status_AppvDirector == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvDirector == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvDirector == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvPresidentDirector",
-                    name: "IsAppvPresidentDirector",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvPresidentDirector == null || row.Status_AppvPresidentDirector == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvPresidentDirector == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvPresidentDirector == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvFinanceStaff",
-                    name: "IsAppvFinanceStaff",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvFinanceStaff == null || row.Status_AppvFinanceStaff == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvFinanceStaff == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvFinanceStaff == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvFinanceManager",
-                    name: "IsAppvFinanceManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvFinanceManager == null || row.Status_AppvFinanceManager == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvFinanceManager == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvFinanceManager == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvFinanceDirector",
-                    name: "IsAppvFinanceDirector",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>` :
-                            (data == 1 && (row.Status_AppvFinanceDirector == null || row.Status_AppvFinanceDirector == null)) ? `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>` :
-                                (data == 1 && row.Status_AppvFinanceDirector == 0) ? `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>` :
-                                    (data == 1 && row.Status_AppvFinanceDirector == 1) ? `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>` :
-                                        `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
-
+                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
                     }
                 }
             ],
             order: [
                 [3, "DESC"]
             ],
-            columnDefs: [{
-                width: 220,
-                targets: 7
-            }, {
-                className: "text-center dt-nowrap",
-                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-            }, {
-                className: "details-control pr-4 dt-nowrap",
-                targets: [1]
-            }],
-            // orderCellsTop: true,
-            // fixedColumns: true,
+            columnDefs: [
+                { width: 220, targets: 7 },
+                {
+                    className: "text-center dt-nowrap",
+                    // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
+                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25],
+                }, {
+                    className: "details-control pr-4 dt-nowrap",
+                    targets: [1]
+                }
+            ],
             scrollCollapse: true,
             scrollX: true,
             scrollY: 410,
-            // autoWidth: true,
             responsive: false,
-            "rowCallback": function (row, data) {
-                // if (data.is_active == "0") {
-                // 	$('td', row).css('background-color', 'pink');
-                // }
-            },
             preDrawCallback: function () {
-                $("TableDataHistory tbody td").addClass("blurry");
+                $("#TableDataHistory tbody td").addClass("blurry"); // Poin 1: Tambahkan #
             },
             language: {
                 processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
                 searchPlaceholder: "Search..."
             },
             drawCallback: function () {
-                $("TableDataHistory tbody td").addClass("blurry");
-                setTimeout(function () {
-                    $("TableDataHistory tbody td").removeClass("blurry");
-                });
+                $("#TableDataHistory tbody td").removeClass("blurry"); // Poin 1: Tambahkan #
                 $('[data-bs-toggle="tooltip"]').tooltip();
                 DataTable.tables({ visible: true, api: true }).columns.adjust();
             },
-            "buttons": [{
-                text: `Export to :`,
-                className: "btn disabled text-dark bg-white",
-            }, {
-                text: `<i class="far fa-copy fs-2"></i>`,
-                extend: 'copy',
-                className: "btn btn-light-warning",
-            }, {
-                text: `<i class="far fa-file-excel fs-2"></i>`,
-                extend: 'excelHtml5',
-                title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"),
-                className: "btn btn-light-success",
-            },
-                // {
-                //     text: `<i class="far fa-file-pdf fs-2"></i>`,
-                //     extend: 'pdfHtml5',
-                //     title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"),
-                //     className: "btn btn-light-danger",
-                //     orientation: "landscape"
-                // }, {
-                //     text: `<i class="fas fa-print fs-2"></i>`,
-                //     extend: 'print',
-                //     className: "btn btn-light-dark",
-                // }
+            "buttons": [
+                { text: `Export to :`, className: "btn disabled text-dark bg-white" },
+                { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
+                { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
             ],
-        }).buttons().container().appendTo('TableDataHistory_wrapper .col-md-6:eq(0)');
+        }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
+    }
+
+    /**
+     * Fungsi Bantu untuk rendering status approval
+     * Mengurangi duplikasi kode di setiap kolom.
+     */
+    function renderApprovalStatus(data, status) {
+        if (data == 0) {
+            return `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+        }
+
+        // Perbaikan: Cek status hanya sekali
+        if (data == 1) {
+            if (status == null || status === undefined || status === '') {
+                return `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+            } else if (status == 0) {
+                return `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>`;
+            } else if (status == 1) {
+                return `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>`;
+            } else {
+                return `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
+            }
+        }
+
+        return ''; // Default
     }
 
     var TableData = $("#TableData").DataTable({
@@ -600,12 +423,6 @@ $(document).ready(function () {
         ],
     }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
 
-    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
-        el.addEventListener('shown.bs.tab', () => {
-            DataTable.tables({ visible: true, api: true }).columns.adjust();
-        });
-    });
-
     $('#do--filter').on('click', function () {
         $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
     })
@@ -627,6 +444,12 @@ $(document).ready(function () {
             tr.addClass('shown');
             getInsDetail(row.data().CBReq_No, row.data().Document_Number);
         }
+    });
+
+    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
+        el.addEventListener('shown.bs.tab', () => {
+            DataTable.tables({ visible: true, api: true }).columns.adjust();
+        });
     });
 
     function format(d) {

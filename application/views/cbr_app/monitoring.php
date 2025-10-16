@@ -23,11 +23,12 @@
                     </div>
                     <hr style="padding-top: 5px; color: black; background-color: black;" />
                     <div class="pb-5 table-responsive">
-                        <table id="TableDataHistory" class="table-sm align-middle display compact table-rounded table-striped table-bordered border dataTable no-footer dt-inline">
+                        <table id="TableDataHistory" class="table-sm align-middle display compact table-rounded table-bordered border dataTable no-footer dt-inline">
                             <thead style="background-color: #3B6D8C;">
                                 <tr class="text-white fw-bolder text-uppercase">
                                     <th class="text-center text-white">#</th>
                                     <th class="text-center text-white">Doc Numb</th>
+                                    <th class="text-center text-white">Submission</th>
                                     <th class="text-center text-white">Type</th>
                                     <th class="text-center text-white">Date</th>
                                     <th class="text-center text-white">Curr</th>

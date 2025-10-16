@@ -19,12 +19,12 @@ $(document).ready(function () {
             processing: true,
             serverSide: true,
             paging: true,
-            dom: 'lBfrtip',
+            dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
             select: true,
-            "lengthMenu": [
-                [10, 30, 90, 1000],
-                [10, 30, 90, 1000]
-            ],
+            // "lengthMenu": [
+            //     [10, 30, 90, 1000],
+            //     [10, 30, 90, 1000]
+            // ],
             ajax: {
                 url: $('meta[name="base_url"]').attr('content') + "CbrMonitoring/DT_Monitoring",
                 dataType: "json",
@@ -47,6 +47,16 @@ $(document).ready(function () {
                 {
                     data: "CBReq_No",
                     name: "CBReq_No",
+                }, {
+                    data: "Has_Submitted_Approval",
+                    name: "Has_Submitted_Approval",
+                    render: function (data) {
+                        if (data == 0) {
+                            return `❌`;
+                        } else {
+                            return `✅`;
+                        }
+                    }
                 },
                 {
                     data: "Type",
@@ -161,7 +171,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvStaff == null || row.Status_AppvStaff == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvStaff_Name}</span>` :
                                 (data == 1 && row.Status_AppvStaff == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvStaff_Name}</span>` :
                                     (data == 1 && row.Status_AppvStaff == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvStaff_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvStaff_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvStaff_Name}</span>`;
 
                     }
                 },
@@ -174,7 +184,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvChief == null || row.Status_AppvChief == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvChief_Name}</span>` :
                                 (data == 1 && row.Status_AppvChief == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvChief_Name}</span>` :
                                     (data == 1 && row.Status_AppvChief == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvChief_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvChief_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvChief_Name}</span>`;
 
                     }
                 },
@@ -187,7 +197,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvAsstManager == null || row.Status_AppvAsstManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvAsstManager_Name}</span>` :
                                 (data == 1 && row.Status_AppvAsstManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvAsstManager_Name}</span>` :
                                     (data == 1 && row.Status_AppvAsstManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvAsstManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvAsstManager_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvAsstManager_Name}</span>`;
 
                     }
                 },
@@ -200,7 +210,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvManager == null || row.Status_AppvManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvManager_Name}</span>` :
                                 (data == 1 && row.Status_AppvManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvManager_Name}</span>` :
                                     (data == 1 && row.Status_AppvManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvManager_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvManager_Name}</span>`;
 
                     }
                 },
@@ -213,7 +223,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvSeniorManager == null || row.Status_AppvSeniorManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvSeniorManager_Name}</span>` :
                                 (data == 1 && row.Status_AppvSeniorManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvSeniorManager_Name}</span>` :
                                     (data == 1 && row.Status_AppvSeniorManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvSeniorManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvSeniorManager_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvSeniorManager_Name}</span>`;
 
                     }
                 },
@@ -226,7 +236,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvGeneralManager == null || row.Status_AppvGeneralManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvGeneralManager_Name}</span>` :
                                 (data == 1 && row.Status_AppvGeneralManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvGeneralManager_Name}</span>` :
                                     (data == 1 && row.Status_AppvGeneralManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvGeneralManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvGeneralManager_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvGeneralManager_Name}</span>`;
 
                     }
                 },
@@ -239,7 +249,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvDirector == null || row.Status_AppvDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvDirector_Name}</span>` :
                                 (data == 1 && row.Status_AppvDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvDirector_Name}</span>` :
                                     (data == 1 && row.Status_AppvDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvDirector_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvDirector_Name}</span>`;
 
                     }
                 },
@@ -252,7 +262,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvPresidentDirector == null || row.Status_AppvPresidentDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvPresidentDirector_Name}</span>` :
                                 (data == 1 && row.Status_AppvPresidentDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvPresidentDirector_Name}</span>` :
                                     (data == 1 && row.Status_AppvPresidentDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvPresidentDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvPresidentDirector_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvPresidentDirector_Name}</span>`;
 
                     }
                 },
@@ -265,7 +275,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvFinanceStaff == null || row.Status_AppvFinanceStaff == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceStaff_Name}</span>` :
                                 (data == 1 && row.Status_AppvFinanceStaff == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceStaff_Name}</span>` :
                                     (data == 1 && row.Status_AppvFinanceStaff == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceStaff_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceStaff_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceStaff_Name}</span>`;
 
                     }
                 },
@@ -278,7 +288,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvFinanceManager == null || row.Status_AppvFinanceManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceManager_Name}</span>` :
                                 (data == 1 && row.Status_AppvFinanceManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceManager_Name}</span>` :
                                     (data == 1 && row.Status_AppvFinanceManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceManager_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceManager_Name}</span>`;
 
                     }
                 },
@@ -291,7 +301,7 @@ $(document).ready(function () {
                             (data == 1 && (row.Status_AppvFinanceDirector == null || row.Status_AppvFinanceDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceDirector_Name}</span>` :
                                 (data == 1 && row.Status_AppvFinanceDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceDirector_Name}</span>` :
                                     (data == 1 && row.Status_AppvFinanceDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Undefined" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceDirector_Name}</span>`;
+                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceDirector_Name}</span>`;
 
                     }
                 }
@@ -304,7 +314,7 @@ $(document).ready(function () {
                 targets: 7
             }, {
                 className: "text-center dt-nowrap",
-                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+                targets: [0, 2, 4, 5, 6, 7, 12, 13, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]
@@ -402,7 +412,9 @@ $(document).ready(function () {
                                                     <thead>
                                                         <tr>
                                                             <th class="text-dark" colspan="2">Cash Book Requisition Number : ${d.CBReq_No}</th>
-                                                            <th class="text-dark text-center" colspan="2"><button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-info btn-attachment"><i class="fas fa-paperclip"></i> List Attachment</button></th>
+                                                            <th class="text-dark text-center" colspan="2">
+                                                            <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-primary btn-attachment"><i class="fas fa-paperclip"></i> List Attachment</button> 
+                                                            <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button>
                                                         </tr>
                                                         <tr class="bg-dark">
                                                             <th class="text-center">Account</th>
@@ -492,7 +504,7 @@ $(document).ready(function () {
                                                                             Purchase Invoice  : ${d.Document_Number}
                                                                         </th>
                                                                         <th style="text-align: center;" colspan="3">
-                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-light-danger rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
+                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-danger rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
                                                                         </th>
                                                                     </tr>
                                                                     <tr class="bg-dark">
