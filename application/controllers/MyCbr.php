@@ -671,15 +671,25 @@ class MyCbr extends CI_Controller
         $attachment_file_name = '';
         $upload_attachment = $_FILES['attachment']['name'];
         $Year = date('Y');
-        $folderPath = 'assets/Files/AttachmentCbr/' . $Year;
+
+        $TypeDoc = $this->input->post('Type');
+        $MstAttachmentType = $this->db->get_where($this->Tmst_Attachment_Type_CBR, ['Att_Code' => $TypeDoc])->row();
+        if (!$MstAttachmentType) {
+            return $this->help->Fn_resulting_response([
+                "code" => 500,
+                "msg" => "Document Type is not recognized !"
+            ]);
+        }
+
+        $folderPath = 'assets/Files/AttachmentCbr/' . $Year . '/' . $MstAttachmentType->Att_Code;
         if (!is_dir($folderPath)) {
             mkdir($folderPath, 0755, true);
         }
 
-
+        $FileNametoUpload = str_replace(" ", "_", $upload_attachment);
         $ValidateUniqueFile = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, [
             'CbrNo' => $this->input->post('CbrNo'),
-            'Attachment_FileName' => $Year . "/" . $this->input->post('CbrNo') . '-' . str_replace(" ", "_", $upload_attachment)
+            'Attachment_FileName' =>  $FileNametoUpload
         ]);
 
         if ($ValidateUniqueFile->num_rows() > 0) {
@@ -691,15 +701,15 @@ class MyCbr extends CI_Controller
 
         if ($upload_attachment) {
             $config['allowed_types'] = 'pdf|png|jpg|jpeg';
-            $config['max_size']      = '4096';
+            $config['max_size']      = '20480';
             $config['upload_path'] = $folderPath;
-            $config['file_name'] = $this->input->post('CbrNo') . '-' . str_replace(" ", "_", $upload_attachment);
+            $config['file_name'] = $FileNametoUpload;
 
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload('attachment')) {
-                $attachment_file_name = $Year . "/" . $this->input->post('CbrNo') . '-' . str_replace(" ", "_", $upload_attachment);
+                $attachment_file_name = $Year . "/" . $MstAttachmentType->Att_Code .  '/' . $FileNametoUpload;
             } else {
                 $response = [
                     "code" => 500,
@@ -713,9 +723,10 @@ class MyCbr extends CI_Controller
 
         $this->db->insert($this->Ttrx_Dtl_Attachment_Cbr, [
             'CbrNo'                 => $this->input->post('CbrNo'),
-            'Attachment_FileName'   => $attachment_file_name,
+            'Attachment_FileName'   => $FileNametoUpload,
             'Note'                  => $this->input->post('note'),
             'AttachmentType'        => $this->input->post('Type'),
+            'Year_Upload'           => $Year,
             'Created_by'            => $this->session->userdata('sys_sba_username'),
             'Created_at'            => $this->DateTime
         ]);
@@ -732,8 +743,9 @@ class MyCbr extends CI_Controller
         $this->db->trans_commit();
 
         $datas = new stdClass();
-        $datas->Attachment_FileName = "<a target='_blank' href='" . base_url() . "assets/Files/AttachmentCbr/$attachment_file_name'>$attachment_file_name</a>";
+        $datas->Attachment_FileName = "<a target='_blank' href='" . base_url() . "assets/Files/AttachmentCbr/$attachment_file_name'>$FileNametoUpload</a>";
         $datas->Note = $this->input->post('note');
+        $datas->AttachmentType = $this->input->post('Type');
         $datas->Action = '<button type="button" value="' . $inserted_id . '" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Delete" class="btn btn-icon btn-danger btn-sm btn-delete-attachment">
                             <i class="fas fa-trash"></i>
                         </button>';
@@ -749,9 +761,15 @@ class MyCbr extends CI_Controller
     {
         $id = $this->input->post('id');
         $DataAtt = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['SysId' => $id])->row();
-        $file_path = 'assets/Files/AttachmentCbr/' . $DataAtt->Attachment_FileName;
+        $file_path = "assets/Files/AttachmentCbr/" . $DataAtt->Year_Upload . "/" . $DataAtt->AttachmentType . "/" . $DataAtt->Attachment_FileName;
 
         $this->db->trans_start();
+
+        $this->db->query("INSERT INTO dbsai_erp_uat.dbo.Thst_trx_Dtl_Attachment_Cbr 
+                                (SysId_trx, CbrNo, Attachment_FileName, Note, Year_Upload, AttachmentType, Created_by, Created_at)
+                            SELECT 
+                                T1.SysId, T1.CbrNo, T1.Attachment_FileName, T1.Note, T1.Year_Upload, T1.AttachmentType, T1.Created_by, T1.Created_at
+                            FROM dbsai_erp_uat.dbo.Ttrx_Dtl_Attachment_Cbr AS T1");
 
         unlink($file_path);
         $this->db->delete($this->Ttrx_Dtl_Attachment_Cbr, ['SysId' => $id]);

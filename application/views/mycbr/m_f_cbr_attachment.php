@@ -8,7 +8,19 @@
             <div class="modal-body">
                 <form id="form-attachment" enctype="multipart/form-data" method="post">
                     <input type="hidden" name="CbrNo" id="CbrNo" value="<?= $CbrNo; ?>">
+                    <style>
+                        /* Pastikan dropdown Select2 berada di atas modal */
+                        .select2-container {
+                            z-index: 99999;
+                            /* Nilai yang sangat tinggi */
+                        }
 
+                        /* Jika Anda menggunakan Bootstrap Modal, pastikan dropdown result-nya juga tinggi */
+                        .select2-dropdown {
+                            z-index: 99999;
+                            /* Nilai yang sama atau lebih tinggi */
+                        }
+                    </style>
                     <div class="row mb-3">
                         <label for="attachment" class="col-sm-3 col-form-label"><b>Attachment Type :</b></label>
                         <div class="col-sm-5 fv-row">
@@ -29,13 +41,13 @@
                     <div class="row mb-3">
                         <label for="note" class="col-sm-3 col-form-label"><b>Note Attachment :</b></label>
                         <div class="col-sm-9 fv-row">
-                            <textarea rows="2" required class="form-control form-control-sm" name="note" id="note" placeholder="Note attachment...."></textarea>
+                            <textarea rows="2" class="form-control form-control-sm" name="note" id="note" placeholder="Note attachment...."></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="note" class="col-sm-3 col-form-label">&nbsp;</label>
                         <div class="col-sm-9">
-                            <button type="button" id="submit--data" class="btn btn-sm btn-primary"><i class="fas fa-folder"></i> Upload</button>
+                            <button type="button" id="submit--data" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> Upload Attachment</button>
                         </div>
                     </div>
                     <div class="row">
@@ -47,6 +59,7 @@
                                 <tr style="background-color: #CFE2FF;">
                                     <th class="text-center">#</th>
                                     <th class="text-center">File Name</th>
+                                    <th class="text-center">Doc Type</th>
                                     <th class="text-center">Note</th>
                                     <th class="text-center"><i class="fas fa-cogs text-dark"></i></th>
                                 </tr>
@@ -60,6 +73,7 @@
                                             <td class="">
                                                 <a target='_blank' href="<?= base_url() ?>assets/Files/AttachmentCbr/<?= $li->Attachment_FileName; ?>"><?= $li->Attachment_FileName; ?></a>
                                             </td>
+                                            <td class=""><?= $li->AttachmentType; ?></td>
                                             <td class=""><?= $li->Note; ?></td>
                                             <td class="text-center">
                                                 <button type="button" value="<?= $li->SysId ?>" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Delete" class="btn btn-icon btn-danger btn-sm  btn-delete-attachment">
@@ -71,7 +85,7 @@
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan="3" class="text-center">This Cbr Doesnt Have Attachment</td>
+                                        <td colspan="5" class="text-center">This Cbr Doesnt Have Attachment</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -98,7 +112,12 @@
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        $('#Type').select2();
+        var modalId = '#ModalAttachment';
+        $('#Type').select2({
+            placeholder: "Select an option",
+            allowClear: true,
+            dropdownParent: $(modalId)
+        });
 
         const main_form = $('#form-attachment')
         main_form.validate({
@@ -195,10 +214,22 @@
             // Mengambil elemen tbody dari tabel (ganti 'TableData' dengan ID tabel Anda)
             var tbody = document.getElementById('tbody-attachment');
             var tr = tbody.getElementsByTagName('tr');
-            var td = tr[0].getElementsByTagName('td');
-            var colspanValue = td[0].getAttribute('colspan');
-            if (colspanValue === '3') {
-                $('#tbody-attachment').empty()
+            var tr = tbody.getElementsByTagName('tr');
+
+            // Lakukan pemeriksaan apakah ada baris (tr) yang ditemukan
+            if (tr.length > 0) {
+                // Jika ada baris, baru coba ambil td pertama dari baris pertama
+                var td = tr[0].getElementsByTagName('td');
+
+                // Lakukan pemeriksaan apakah ada td yang ditemukan
+                if (td.length > 0) {
+                    var colspanValue = td[0].getAttribute('colspan');
+
+                    // Cek kondisi colspan untuk menghapus placeholder
+                    if (colspanValue == '5') {
+                        $('#tbody-attachment').empty();
+                    }
+                }
             }
             var jumlahBaris = tbody.childElementCount;
             // Melakukan loop melalui data dan membuat elemen <tr> dan <td> untuk setiap item data
@@ -208,11 +239,16 @@
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+
+            cell5.className = 'text-center';
+
             // Menetapkan nilai untuk masing-masing sel
             cell1.innerHTML = 1 + jumlahBaris;
             cell2.innerHTML = data.Attachment_FileName;
-            cell3.innerHTML = data.Note;
-            cell4.innerHTML = data.Action;
+            cell3.innerHTML = data.AttachmentType;
+            cell4.innerHTML = data.Note;
+            cell5.innerHTML = data.Action;
         }
 
         $('[data-bs-toggle="tooltip"]').tooltip();
