@@ -730,7 +730,7 @@ $(document).ready(function () {
             success: function (response) {
                 Swal.close()
                 if (response.code == 200) {
-                    Swall.fire({
+                    Swal.fire({
                         icon: 'success',
                         title: response.msg
                     });
@@ -738,7 +738,7 @@ $(document).ready(function () {
                     $('#TableData').DataTable().ajax.reload(null, false);
                     $("#TableDataHistory").DataTable().ajax.reload(null, false);
                 } else {
-                    Swall.fire({
+                    Swal.fire({
                         icon: 'error',
                         title: response.msg
                     });

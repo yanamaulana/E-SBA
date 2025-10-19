@@ -8,7 +8,8 @@ class MyCbr extends CI_Controller
     private $layout = 'layout';
     private $Ttrx_Cbr_Approval = 'Ttrx_Cbr_Approval';
     private $TmstTrxSettingSteppApprovalCbr = 'TmstTrxSettingSteppApprovalCbr';
-    private $QviewTrx_Assignment_Approval_User = 'QviewTrx_Assignment_Approval_User';
+    private $QviewTrx_Assignment_Approval_User = 'QviewTrx_Assignment_Approval_User'; // hanya identitas user ke master step
+    private $Qview_Assignment_Approval_User = 'Qview_Assignment_Approval_User'; // detail dengan approval jabatan
     private $Ttrx_Dtl_Attachment_Cbr = 'Ttrx_Dtl_Attachment_Cbr';
     private $Ttrx_DtlHst_Attachment_Cbr = 'Ttrx_DtlHst_Attachment_Cbr';
     private $Tmst_Attachment_Type_CBR = 'Tmst_Attachment_Type_CBR';
@@ -36,13 +37,28 @@ class MyCbr extends CI_Controller
     {
         $Cbrs = $this->input->post('CBReq_No');
 
-        $RulesApprovals = $this->db->get_where($this->QviewTrx_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')]);
+        $RulesApprovals = $this->db->get_where($this->Qview_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')]);
         if ($RulesApprovals->num_rows() == 0) {
             return $this->help->Fn_resulting_response([
                 'code' => 505,
-                'msg'  => "Your approval request has failed, you do not have an approval step yet !",
+                'msg'  => "Your approval request has failed to submit, contact MIS/Administrator to assign your approval step settings !",
             ]);
         }
+
+        $CbrsToResponse = '';
+        foreach ($Cbrs as $CBReq_No_To_Validate) {
+            $RowToValidate = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $CBReq_No_To_Validate]);
+            if ($RowToValidate->num_rows() == 0) {
+                $CbrsToResponse .= $CBReq_No_To_Validate . ', ';
+            }
+        }
+        if ($CbrsToResponse != '') {
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => "Your approval request has failed to submit, Please attach/upload supporting documents for CBR : $CbrsToResponse"
+            ]);
+        }
+
 
         $RulesApproval = $RulesApprovals->row();
 
@@ -51,49 +67,55 @@ class MyCbr extends CI_Controller
             $this->db->insert($this->Ttrx_Cbr_Approval, [
                 "CBReq_No" => $CBReq_No,
                 "IsAppvStaff" => $RulesApproval->Staff,
-                "Status_AppvStaff" => NULL,
-                "AppvStaff_By" => NULL,
+                "Status_AppvStaff" => 0,
+                "AppvStaff_By" => $RulesApproval->Staff_Person ?? NULL,
                 "AppvStaff_At" => NULL,
+
                 "IsAppvChief" => $RulesApproval->Chief,
-                "Status_AppvChief" => NULL,
-                "AppvChief_By" => NULL,
+                "Status_AppvChief" => 0,
+                "AppvChief_By" => $RulesApproval->Chief_Person ?? NULL,
                 "AppvChief_At" => NULL,
+
                 "IsAppvAsstManager" => $RulesApproval->AsstManager,
-                "Status_AppvAsstManager" => NULL,
-                "AppvAsstManager_By" => NULL,
+                "Status_AppvAsstManager" => 0,
+                "AppvAsstManager_By" => $RulesApproval->AsstManager_Person ?? NULL,
                 "AppvAsstManager_At" => NULL,
+
                 "IsAppvManager" => $RulesApproval->Manager,
-                "Status_AppvManager" => NULL,
-                "AppvManager_By" => NULL,
+                "Status_AppvManager" => 0,
+                "AppvManager_By" => $RulesApproval->Manager_Person ?? NULL,
                 "AppvManager_At" => NULL,
+
                 "IsAppvSeniorManager" => $RulesApproval->SeniorManager,
-                "Status_AppvSeniorManager" => NULL,
-                "AppvSeniorManager_By" => NULL,
+                "Status_AppvSeniorManager" => 0,
+                "AppvSeniorManager_By" => $RulesApproval->SeniorManager_Person ?? NULL,
                 "AppvSeniorManager_At" => NULL,
+
                 "IsAppvGeneralManager" => $RulesApproval->GeneralManager,
-                "Status_AppvGeneralManager" => NULL,
-                "AppvGeneralManager_By" => NULL,
+                "Status_AppvGeneralManager" => 0,
+                "AppvGeneralManager_By" => $RulesApproval->GeneralManager_Person ?? NULL,
                 "AppvGeneralManager_At" => NULL,
+
+                'IsAppvAdditional' => $RulesApproval->Additional,
+                'Status_AppvAdditional' =>  0,
+                'AppvAdditional_By' => $RulesApproval->Additional_Person ?? NULL,
+                'AppvAdditional_At'  => NULL,
+
                 "IsAppvDirector" => $RulesApproval->Director,
-                "Status_AppvDirector" => NULL,
-                "AppvDirector_By" => NULL,
+                "Status_AppvDirector" => 0,
+                "AppvDirector_By" => $RulesApproval->Director_Person ?? NULL,
                 "AppvDirector_At" => NULL,
+
                 "IsAppvPresidentDirector" => $RulesApproval->PresidentDirector,
-                "Status_AppvPresidentDirector" => NULL,
-                "AppvPresidentDirector_By" => NULL,
+                "Status_AppvPresidentDirector" => 0,
+                "AppvPresidentDirector_By" => $RulesApproval->PresidentDirector_Person ?? NULL,
                 "AppvPresidentDirector_At" => NULL,
-                "IsAppvFinanceStaff" => $RulesApproval->FinanceStaff,
-                "Status_AppvFinanceStaff" => NULL,
-                "AppvFinanceStaff_By" => NULL,
-                "AppvFinanceStaff_At" => NULL,
-                "IsAppvFinanceManager" => $RulesApproval->FinanceManager,
-                "Status_AppvFinanceManager" => NULL,
-                "AppvFinanceManager_By" => NULL,
-                "AppvFinanceManager_At" => NULL,
+
                 "IsAppvFinanceDirector" => $RulesApproval->FinanceDirector,
-                "Status_AppvFinanceDirector" => NULL,
-                "AppvFinanceDirector_By" => NULL,
+                "Status_AppvFinanceDirector" => 0,
+                "AppvFinanceDirector_By" => $RulesApproval->FinanceDirector_Person ?? NULL,
                 "AppvFinanceDirector_At" => NULL,
+
                 "UserName_User" => $this->session->userdata('sys_sba_username'),
                 "UserDivision" => $this->session->userdata('sys_sba_department'),
                 "Rec_Created_At" => $this->DateTime,
@@ -336,14 +358,14 @@ class MyCbr extends CI_Controller
             $nestedData['Status_AppvPresidentDirector'] = $row['Status_AppvPresidentDirector'];
             $nestedData['AppvPresidentDirector_By'] = $row['AppvPresidentDirector_By'];
             $nestedData['AppvPresidentDirector_At'] = $row['AppvPresidentDirector_At'];
-            $nestedData['IsAppvFinanceStaff'] = $row['IsAppvFinanceStaff'];
-            $nestedData['Status_AppvFinanceStaff'] = $row['Status_AppvFinanceStaff'];
-            $nestedData['AppvFinanceStaff_By'] = $row['AppvFinanceStaff_By'];
-            $nestedData['AppvFinanceStaff_At'] = $row['AppvFinanceStaff_At'];
-            $nestedData['IsAppvFinanceManager'] = $row['IsAppvFinanceManager'];
-            $nestedData['Status_AppvFinanceManager'] = $row['Status_AppvFinanceManager'];
-            $nestedData['AppvFinanceManager_By'] = $row['AppvFinanceManager_By'];
-            $nestedData['AppvFinanceManager_At'] = $row['AppvFinanceManager_At'];
+            // $nestedData['IsAppvFinanceStaff'] = $row['IsAppvFinanceStaff'];
+            // $nestedData['Status_AppvFinanceStaff'] = $row['Status_AppvFinanceStaff'];
+            // $nestedData['AppvFinanceStaff_By'] = $row['AppvFinanceStaff_By'];
+            // $nestedData['AppvFinanceStaff_At'] = $row['AppvFinanceStaff_At'];
+            // $nestedData['IsAppvFinanceManager'] = $row['IsAppvFinanceManager'];
+            // $nestedData['Status_AppvFinanceManager'] = $row['Status_AppvFinanceManager'];
+            // $nestedData['AppvFinanceManager_By'] = $row['AppvFinanceManager_By'];
+            // $nestedData['AppvFinanceManager_At'] = $row['AppvFinanceManager_At'];
             $nestedData['IsAppvFinanceDirector'] = $row['IsAppvFinanceDirector'];
             $nestedData['Status_AppvFinanceDirector'] = $row['Status_AppvFinanceDirector'];
             $nestedData['AppvFinanceDirector_By'] = $row['AppvFinanceDirector_By'];

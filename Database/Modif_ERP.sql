@@ -111,78 +111,84 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (
 	CONSTRAINT UQ_Assignment_User_Approval UNIQUE (UserName_Employee,SysId_Approval)
 );
 
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29319', 2, '2025-10-12 21:53:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29431', 2, '2025-10-12 21:53:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29304', 2, '2025-10-12 21:53:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'09460', 2, '2025-10-12 21:53:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29475', 10002, '2025-10-12 22:05:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'09422', 10002, '2025-10-12 22:05:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'18305', 10002, '2025-10-12 22:05:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29552', 10002, '2025-10-12 22:05:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'19823', 10002, '2025-10-12 22:05:21.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29760', 10002, '2025-10-12 22:05:21.000', N'29431');
 
-drop table dbsai_erp_uat.dbo.Ttrx_Cbr_Approval;
+
+DROP TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval;
+
 CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval (
 	SysID bigint IDENTITY(1,1) NOT NULL,
 	CBReq_No varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	IsAppvStaff bit DEFAULT 0 NOT NULL,
-	Status_AppvStaff bit NULL,
+	Status_AppvStaff int NULL,
 	AppvStaff_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvStaff_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvStaff_At datetime NULL,
 	IsAppvChief bit DEFAULT 0 NULL,
-	Status_AppvChief bit NULL,
+	Status_AppvChief int NULL,
 	AppvChief_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvChief_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvChief_At datetime NULL,
 	IsAppvAsstManager bit DEFAULT 0 NOT NULL,
-	Status_AppvAsstManager bit NULL,
+	Status_AppvAsstManager int NULL,
 	AppvAsstManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvAsstManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvAsstManager_At datetime NULL,
 	IsAppvManager bit DEFAULT 0 NOT NULL,
-	Status_AppvManager bit NULL,
+	Status_AppvManager int NULL,
 	AppvManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvManager_At datetime NULL,
 	IsAppvSeniorManager bit DEFAULT 0 NOT NULL,
-	Status_AppvSeniorManager bit NULL,
+	Status_AppvSeniorManager int NULL,
 	AppvSeniorManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvSeniorManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvSeniorManager_At datetime NULL,
-	
 	IsAppvGeneralManager bit DEFAULT 0 NOT NULL,
-	Status_AppvGeneralManager bit NULL,
+	Status_AppvGeneralManager int NULL,
 	AppvGeneralManager_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvGeneralManager_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvGeneralManager_At datetime NULL,
-	
 	IsAppvAdditional bit DEFAULT 0 NOT NULL,
-	Status_AppvAdditional bit NULL,
+	Status_AppvAdditional int NULL,
 	AppvAdditional_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvAdditional_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvAdditional_At datetime NULL,
-	
 	IsAppvDirector bit DEFAULT 0 NOT NULL,
-	Status_AppvDirector bit NULL,
+	Status_AppvDirector int NULL,
 	AppvDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvDirector_At datetime NULL,
-	
 	IsAppvPresidentDirector bit DEFAULT 1 NOT NULL,
-	Status_AppvPresidentDirector bit NULL,
+	Status_AppvPresidentDirector int NULL,
 	AppvPresidentDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvPresidentDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvPresidentDirector_At datetime NULL,
-	
 	IsAppvFinanceDirector bit DEFAULT 1 NOT NULL,
-	Status_AppvFinanceDirector bit NULL,
+	Status_AppvFinanceDirector int NULL,
 	AppvFinanceDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinanceDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinanceDirector_At datetime NULL,
-	
 	UserName_User varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	UserDivision varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	Rec_Created_At datetime NOT NULL,
-	
 	IsAppvFinancePerson bit DEFAULT 1 NOT NULL,
-	Status_AppvFinancePerson bit NULL,
+	Status_AppvFinancePerson int NULL,
 	AppvFinancePerson_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinancePerson_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinancePerson_At datetime NULL,
-	
-	CONSTRAINT Ttrx_Cbr_Approval_PK PRIMARY KEY (CBReq_No)
+	Legitimate bit DEFAULT 0 NOT NULL,
+	CONSTRAINT Ttrx_Cbr_Approval_PK PRIMARY KEY (SysID),
+	CONSTRAINT Ttrx_Cbr_Approval_UNIQUE UNIQUE (CBReq_No)
 );
 
 
@@ -239,4 +245,47 @@ LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS D ON T1.Director_Person = 
 LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS PD ON T1.PresidentDirector_Person = PD.User_Name
 LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS FD ON T1.FinanceDirector_Person = FD.User_Name
 LEFT JOIN dbsai_erp_uat.dbo.ERPQview_User_Employee AS FM ON T1.FinanceManager_Person = FM.User_Name;
+
+DROP VIEW Qview_Assignment_Approval_User;
+CREATE VIEW Qview_Assignment_Approval_User
+AS
+SELECT
+    -- KOLOM DARI TABEL ASSIGNMENT USER (T1)
+    T1.SysId AS TtrxSysId, -- Mengganti nama alias SysId agar tidak ambigu
+    T1.UserName_Employee,
+    T1.SysId_Approval,
+    T1.Created_at,
+    T1.Created_by,
+
+    -- KOLOM DARI TABEL SETTING APPROVAL (T2)
+    T2.Setting_Approval_Code,
+    
+    -- Status Approval Flag (bit) dan Person (varchar)
+    T2.Staff, T2.Staff_Person,
+    T2.Chief, T2.Chief_Person,
+    T2.AsstManager, T2.AsstManager_Person,
+    T2.Manager, T2.Manager_Person,
+    T2.SeniorManager, T2.SeniorManager_Person,
+    T2.GeneralManager, T2.GeneralManager_Person,
+    T2.Additional, T2.Additional_Person,
+    T2.Director, T2.Director_Person,
+    
+    -- Status Final Approval
+    T2.PresidentDirector, T2.PresidentDirector_Person,
+    T2.FinanceDirector, T2.FinanceDirector_Person,
+    T2.FinanceManager, T2.FinanceManager_Person,
+    
+    -- Metadata dan Status
+    T2.Doc_Legitimate_Pos_On,
+    T2.Is_Active,
+    T2.LastUpdated_at,
+    T2.LastUpdated_by AS Setting_Updated_By -- Alias untuk menghindari konflik dengan T1.Created_by
+
+FROM
+    dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User AS T1
+
+INNER JOIN
+    dbsai_erp_uat.dbo.TmstTrxSettingSteppApprovalCbr AS T2
+    -- Kondisi JOIN
+    ON T1.SysId_Approval = T2.SysId;
 
