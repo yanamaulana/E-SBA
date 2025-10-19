@@ -214,7 +214,6 @@
             // Mengambil elemen tbody dari tabel (ganti 'TableData' dengan ID tabel Anda)
             var tbody = document.getElementById('tbody-attachment');
             var tr = tbody.getElementsByTagName('tr');
-            var tr = tbody.getElementsByTagName('tr');
 
             // Lakukan pemeriksaan apakah ada baris (tr) yang ditemukan
             if (tr.length > 0) {

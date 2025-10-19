@@ -8,7 +8,7 @@ class MyCbr extends CI_Controller
     private $layout = 'layout';
     private $Ttrx_Cbr_Approval = 'Ttrx_Cbr_Approval';
     private $TmstTrxSettingSteppApprovalCbr = 'TmstTrxSettingSteppApprovalCbr';
-    private $Qview_Assignment_Approval_User = 'Qview_Assignment_Approval_User';
+    private $QviewTrx_Assignment_Approval_User = 'QviewTrx_Assignment_Approval_User';
     private $Ttrx_Dtl_Attachment_Cbr = 'Ttrx_Dtl_Attachment_Cbr';
     private $Ttrx_DtlHst_Attachment_Cbr = 'Ttrx_DtlHst_Attachment_Cbr';
     private $Tmst_Attachment_Type_CBR = 'Tmst_Attachment_Type_CBR';
@@ -36,9 +36,7 @@ class MyCbr extends CI_Controller
     {
         $Cbrs = $this->input->post('CBReq_No');
 
-        $RulesApprovals = $this->db->get_where($this->Qview_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')]);
-        $this->db->trans_start();
-
+        $RulesApprovals = $this->db->get_where($this->QviewTrx_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')]);
         if ($RulesApprovals->num_rows() == 0) {
             return $this->help->Fn_resulting_response([
                 'code' => 505,
@@ -48,6 +46,7 @@ class MyCbr extends CI_Controller
 
         $RulesApproval = $RulesApprovals->row();
 
+        $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
             $this->db->insert($this->Ttrx_Cbr_Approval, [
                 "CBReq_No" => $CBReq_No,
