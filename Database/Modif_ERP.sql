@@ -289,3 +289,12 @@ INNER JOIN
     -- Kondisi JOIN
     ON T1.SysId_Approval = T2.SysId;
 
+
+	-- dbo.QviewTrx_Assignment_Approval_User source
+DROP VIEW QviewTrx_Assignment_Approval_User;
+CREATE VIEW QviewTrx_Assignment_Approval_User AS
+SELECT Ttrx.SysId, Ttrx.UserName_Employee, Emp.First_Name, Ttrx.SysId_Approval, Apprv.Setting_Approval_Code, Ttrx.Created_at, Ttrx.Created_by
+FROM Ttrx_Assignment_Approval_User AS Ttrx
+join ERPQview_User_Employee AS Emp on Ttrx.UserName_Employee = Emp.User_Name
+join TmstTrxSettingSteppApprovalCbr AS Apprv on Ttrx.SysId_Approval = Apprv.SysId;
+

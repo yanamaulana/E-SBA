@@ -74,6 +74,8 @@ $(document).ready(function () {
                     data: "Paid_Status", name: "Paid_Status", render: function (data) {
                         if (data == 'NP') {
                             return `<span class="text-dark badge badge-warning">Not Paid</span>`;
+                        } else if (data == 'HP') {
+                            return `<span class="text-dark badge badge-info">Half Paid</span>`;
                         } else {
                             return `<span class="text-dark badge badge-success">Full Paid</span>`;
                         }
@@ -132,7 +134,7 @@ $(document).ready(function () {
                 {
                     className: "text-center dt-nowrap",
                     // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
-                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25],
+                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
                 }, {
                     className: "details-control pr-4 dt-nowrap",
                     targets: [1]
@@ -168,19 +170,18 @@ $(document).ready(function () {
      */
     function renderApprovalStatus(data, status) {
         if (data == 0) {
-            return `<span title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+            return `<span data-bs-toggle="tooltip" title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
         }
 
         // Perbaikan: Cek status hanya sekali
         if (data == 1) {
             if (status == null || status === undefined || status === '') {
-                return `<span title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>`;
             } else if (status == 0) {
-                return `<span title="rejected" class="badge bg-danger"><i class="fas fa-times text-white"></i></span>`;
+                return `<span data-bs-toggle="tooltip" title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>`;
             } else if (status == 1) {
-                return `<span title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>`;
+                return `<span data-bs-toggle="tooltip" title="approved" class="badge bg-success"><i class="fas fa-check-double text-white"></i></span>`;
             } else {
-                return `<span title="Undefined" class="badge bg-info"><i class="fas fa-question"></i></span>`;
+                return `<span  title="reject" class="badge bg-danger"><i class="fas fa-exclamation-triangle text-dark"></i></span>`;
             }
         }
 
@@ -285,9 +286,11 @@ $(document).ready(function () {
             name: "Paid_Status",
             render: function (data) {
                 if (data == 'NP') {
-                    return `<span class="text-dark badge badge-warning">Not Paid</span>`
+                    return `<span class="text-dark badge badge-warning">Not Paid</span>`;
+                } else if (data == 'HP') {
+                    return `<span class="text-dark badge badge-primary">Half Paid</span>`;
                 } else {
-                    return `<span class="text-dark badge badge-success">Full Paid</span>`
+                    return `<span class="text-dark badge badge-success">Full Paid</span>`;
                 }
             }
         },

@@ -68,52 +68,52 @@ class MyCbr extends CI_Controller
                 "CBReq_No" => $CBReq_No,
                 "IsAppvStaff" => $RulesApproval->Staff,
                 "Status_AppvStaff" => 0,
-                "AppvStaff_By" => $RulesApproval->Staff_Person ?? NULL,
+                "AppvStaff_By" => $RulesApproval->Staff_Person ?: NULL,
                 "AppvStaff_At" => NULL,
 
                 "IsAppvChief" => $RulesApproval->Chief,
                 "Status_AppvChief" => 0,
-                "AppvChief_By" => $RulesApproval->Chief_Person ?? NULL,
+                "AppvChief_By" => $RulesApproval->Chief_Person ?: NULL,
                 "AppvChief_At" => NULL,
 
                 "IsAppvAsstManager" => $RulesApproval->AsstManager,
                 "Status_AppvAsstManager" => 0,
-                "AppvAsstManager_By" => $RulesApproval->AsstManager_Person ?? NULL,
+                "AppvAsstManager_By" => $RulesApproval->AsstManager_Person ?: NULL,
                 "AppvAsstManager_At" => NULL,
 
                 "IsAppvManager" => $RulesApproval->Manager,
                 "Status_AppvManager" => 0,
-                "AppvManager_By" => $RulesApproval->Manager_Person ?? NULL,
+                "AppvManager_By" => $RulesApproval->Manager_Person ?: NULL,
                 "AppvManager_At" => NULL,
 
                 "IsAppvSeniorManager" => $RulesApproval->SeniorManager,
                 "Status_AppvSeniorManager" => 0,
-                "AppvSeniorManager_By" => $RulesApproval->SeniorManager_Person ?? NULL,
+                "AppvSeniorManager_By" => $RulesApproval->SeniorManager_Person ?: NULL,
                 "AppvSeniorManager_At" => NULL,
 
                 "IsAppvGeneralManager" => $RulesApproval->GeneralManager,
                 "Status_AppvGeneralManager" => 0,
-                "AppvGeneralManager_By" => $RulesApproval->GeneralManager_Person ?? NULL,
+                "AppvGeneralManager_By" => $RulesApproval->GeneralManager_Person ?: NULL,
                 "AppvGeneralManager_At" => NULL,
 
                 'IsAppvAdditional' => $RulesApproval->Additional,
                 'Status_AppvAdditional' =>  0,
-                'AppvAdditional_By' => $RulesApproval->Additional_Person ?? NULL,
+                'AppvAdditional_By' => $RulesApproval->Additional_Person ?: NULL,
                 'AppvAdditional_At'  => NULL,
 
                 "IsAppvDirector" => $RulesApproval->Director,
                 "Status_AppvDirector" => 0,
-                "AppvDirector_By" => $RulesApproval->Director_Person ?? NULL,
+                "AppvDirector_By" => $RulesApproval->Director_Person ?: NULL,
                 "AppvDirector_At" => NULL,
 
                 "IsAppvPresidentDirector" => $RulesApproval->PresidentDirector,
                 "Status_AppvPresidentDirector" => 0,
-                "AppvPresidentDirector_By" => $RulesApproval->PresidentDirector_Person ?? NULL,
+                "AppvPresidentDirector_By" => $RulesApproval->PresidentDirector_Person ?: NULL,
                 "AppvPresidentDirector_At" => NULL,
 
                 "IsAppvFinanceDirector" => $RulesApproval->FinanceDirector,
                 "Status_AppvFinanceDirector" => 0,
-                "AppvFinanceDirector_By" => $RulesApproval->FinanceDirector_Person ?? NULL,
+                "AppvFinanceDirector_By" => $RulesApproval->FinanceDirector_Person ?: NULL,
                 "AppvFinanceDirector_At" => NULL,
 
                 "UserName_User" => $this->session->userdata('sys_sba_username'),
@@ -183,7 +183,7 @@ class MyCbr extends CI_Controller
         AND isNull(isSPJ,0) = 0
         AND Approval_Status  = 3
         AND CBReq_Status = 3
-        AND Paid_Status = 'NP'
+        AND (Paid_Status = 'NP' or Paid_Status = 'HP')
         AND Ttrx_Cbr_Approval.CBReq_No IS NULL
         AND Created_By = '" . $this->session->userdata('sys_sba_userid') . "' ";
         // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
@@ -350,6 +350,12 @@ class MyCbr extends CI_Controller
             $nestedData['Status_AppvGeneralManager'] = $row['Status_AppvGeneralManager'];
             $nestedData['AppvGeneralManager_By'] = $row['AppvGeneralManager_By'];
             $nestedData['AppvGeneralManager_At'] = $row['AppvGeneralManager_At'];
+
+            $nestedData['IsAppvAdditional'] = $row['IsAppvAdditional'];
+            $nestedData['Status_AppvAdditional'] = $row['Status_AppvAdditional'];
+            $nestedData['AppvAdditional_By'] = $row['AppvAdditional_By'];
+            $nestedData['AppvAdditional_At'] = $row['AppvAdditional_At'];
+
             $nestedData['IsAppvDirector'] = $row['IsAppvDirector'];
             $nestedData['Status_AppvDirector'] = $row['Status_AppvDirector'];
             $nestedData['AppvDirector_By'] = $row['AppvDirector_By'];
