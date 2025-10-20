@@ -78,9 +78,9 @@ $(document).ready(function () {
                     name: "Has_Submitted_Approval",
                     render: function (data) {
                         if (data == 0) {
-                            return `❌`;
+                            return `<h5>❌</h5>`;
                         } else {
-                            return `✅`;
+                            return `<h5>✅</h5>`;
                         }
                     }
                 },
