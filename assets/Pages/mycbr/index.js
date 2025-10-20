@@ -434,16 +434,23 @@ $(document).ready(function () {
 
 
     $(document).on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr'); // Menggunakan closest() untuk mendapatkan elemen tr terdekat
-        var row = tr.closest('table').DataTable().row(tr); // Mendapatkan instance DataTable dari tabel terdekat
+        var tr = $(this).closest('tr');
+        var row = tr.closest('table').DataTable().row(tr);
+        var tableId = tr.closest('table').attr('id');
+
+        // Perhitungan is_hst_table
+        var is_hst_table = (tableId == 'TableDataHistory') ? 1 : 0;
 
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         } else {
-            // Open this row (the format() function would return the data to be shown)
-            row.child(format(row.data())).show();
+            // 🔥 KOREKSI: Panggil format() DENGAN DUA ARGUMEN, 
+            // lalu berikan hasilnya ke row.child()
+            var detailContent = format(row.data(), is_hst_table);
+
+            row.child(detailContent).show();
             tr.addClass('shown');
             getInsDetail(row.data().CBReq_No, row.data().Document_Number);
         }
@@ -455,7 +462,11 @@ $(document).ready(function () {
         });
     });
 
-    function format(d) {
+    function format(d, is_hst_table) {
+        console.log(is_hst_table)
+        var attachmentButton = (is_hst_table == 1)
+            ? `<button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-primary btn-list-attachment"><i class="fas fa-paperclip"></i> List Attachment</button>`
+            : `<button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-primary btn-attachment"><i class="fas fa-paperclip"></i> Upload Attachment</button>`;
         let cbr_container = `<div class="row py-3" style="background-color: #CFE2FF;">
                                 <div class="container-fluid">
                                     <div class="card shadow-sm">
@@ -465,8 +476,9 @@ $(document).ready(function () {
                                                     <thead>
                                                         <tr>
                                                             <th class="text-dark" colspan="2">Cash Book Requisition Number : ${d.CBReq_No}</th>
-                                                            <th class="text-dark text-center"><button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button> <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-primary btn-attachment"><i class="fas fa-paperclip"></i> Upload Attachment</button></th>
-
+                                                            <th class="text-dark text-center">
+                                                            <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button> 
+                                                            ${attachmentButton}
                                                         </tr>
                                                         <tr class="bg-dark">
                                                             <th class="text-center">Account</th>
@@ -678,6 +690,39 @@ $(document).ready(function () {
             // dataType: "json",
             type: "GET",
             url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_f_cbr_attachment",
+            data: {
+                CbrNo: $(this).val(),
+            }, beforeSend: function () {
+                Swal.fire({
+                    title: 'Loading....',
+                    html: '<div class="spinner-border text-primary"></div>',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
+            },
+            success: function (ajaxData) {
+                Swal.close()
+                $("#location").html(ajaxData);
+                $("#ModalAttachment").modal('show');
+            }, error: function (xhr, status, error) {
+                var statusCode = xhr.status;
+                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    html: `Kode HTTP: ${statusCode}<br\>message: ${errorMessage}`,
+                });
+            }
+        });
+    })
+
+    $(document).on('click', '.btn-list-attachment', function () {
+        $('#txt-cbr').text($(this).val());
+        $.ajax({
+            // dataType: "json",
+            type: "GET",
+            url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_list_cbr_attachment",
             data: {
                 CbrNo: $(this).val(),
             }, beforeSend: function () {

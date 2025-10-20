@@ -12,7 +12,9 @@
                             <tr style="background-color: #CFE2FF;">
                                 <th class="text-center">#</th>
                                 <th class="text-center">File Name</th>
+                                <th class="text-center">Doc Type</th>
                                 <th class="text-center">Note</th>
+                                <!-- <th class="text-center"><i class="fas fa-cogs text-dark"></i></th> -->
                             </tr>
                         </thead>
                         <tbody id="tbody-attachment">
@@ -22,15 +24,16 @@
                                     <tr>
                                         <td class="text-center"><?= $i; ?></td>
                                         <td class="">
-                                            <a target='_blank' href="<?= base_url() ?>assets/Files/AttachmentCbr/<?= $li->Attachment_FileName; ?>"><?= $li->Attachment_FileName; ?></a>
+                                            <a target='_blank' href="<?= base_url() ?>assets/Files/AttachmentCbr/<?= $li->Year_Upload ?>/<?= $li->AttachmentType ?> /<?= $li->Attachment_FileName; ?>"><?= $li->Attachment_FileName; ?></a>
                                         </td>
+                                        <td class=""><?= $li->AttachmentType; ?></td>
                                         <td class=""><?= $li->Note; ?></td>
                                     </tr>
                                     <?php $i++; ?>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td colspan="3" class="text-center">This Cbr Doesnt Have Attachment</td>
+                                    <td colspan="5" class="text-center">This Cbr Doesnt Have Attachment</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

@@ -71,7 +71,7 @@
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
                                             <td class="">
-                                                <a target='_blank' href="<?= base_url() ?>assets/Files/AttachmentCbr/<?= $li->Attachment_FileName; ?>"><?= $li->Attachment_FileName; ?></a>
+                                                <a target='_blank' href="<?= base_url() ?>assets/Files/AttachmentCbr/<?= $li->Year_Upload ?>/<?= $li->AttachmentType ?> /<?= $li->Attachment_FileName; ?>"><?= $li->Attachment_FileName; ?></a>
                                             </td>
                                             <td class=""><?= $li->AttachmentType; ?></td>
                                             <td class=""><?= $li->Note; ?></td>

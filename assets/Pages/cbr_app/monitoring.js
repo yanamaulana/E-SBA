@@ -11,6 +11,32 @@ $(document).ready(function () {
         }
     })
 
+    function renderApprovalStatusWithName(Has_Submitted_Approval, flag, status) {
+        const tooltipAttr = 'data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark"';
+        const baseClass = 'badge btn-icon';
+
+        if (Has_Submitted_Approval == 0) {
+            return `<span ${tooltipAttr} title="Approval not yet submitted" class="${baseClass} bg-info"><i class="fas fa-question"></i></span>`;
+        }
+
+        if (flag == 0) {
+            return `<span ${tooltipAttr} title="No approval needed." class="${baseClass} bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+        }
+
+        if (flag == 1) {
+            if (status == 0) {
+                return `<span ${tooltipAttr} title="Approval in progress" class="${baseClass} bg-warning text-dark"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+            } else if (status == 1) {
+                // 3. Rejected
+                return `<span ${tooltipAttr} title="Approved" class="${baseClass} bg-danger"><i class="fas fa-check-double text-white"></i></span>`;
+            } else if (status == 2) {
+                // 4. In Progress (Status NULL/Belum disubmit)
+                return `<span ${tooltipAttr} title="Rejected" class="${baseClass} bg-warning"><i class="fas fa-times text-white"></i></span>`;
+            }
+        }
+
+    }
+
     $('.date-picker').flatpickr();
 
     function Fn_Initialized_DataTable() {
@@ -165,144 +191,72 @@ $(document).ready(function () {
                 {
                     data: "IsAppvStaff",
                     name: "IsAppvStaff",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvStaff_Name}</span>` :
-                            (data == 1 && (row.Status_AppvStaff == null || row.Status_AppvStaff == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvStaff_Name}</span>` :
-                                (data == 1 && row.Status_AppvStaff == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvStaff_Name}</span>` :
-                                    (data == 1 && row.Status_AppvStaff == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvStaff_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvStaff_Name}</span>`;
-
-                    }
+                    visible: false,
                 },
                 {
                     data: "IsAppvChief",
                     name: "IsAppvChief",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvChief_Name}</span>` :
-                            (data == 1 && (row.Status_AppvChief == null || row.Status_AppvChief == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvChief_Name}</span>` :
-                                (data == 1 && row.Status_AppvChief == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvChief_Name}</span>` :
-                                    (data == 1 && row.Status_AppvChief == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvChief_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvChief_Name}</span>`;
-
-                    }
+                    visible: false,
                 },
                 {
                     data: "IsAppvAsstManager",
                     name: "IsAppvAsstManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvAsstManager_Name}</span>` :
-                            (data == 1 && (row.Status_AppvAsstManager == null || row.Status_AppvAsstManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvAsstManager_Name}</span>` :
-                                (data == 1 && row.Status_AppvAsstManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvAsstManager_Name}</span>` :
-                                    (data == 1 && row.Status_AppvAsstManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvAsstManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvAsstManager_Name}</span>`;
-
-                    }
+                    visible: false,
                 },
                 {
                     data: "IsAppvManager",
                     name: "IsAppvManager",
                     orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvManager_Name}</span>` :
-                            (data == 1 && (row.Status_AppvManager == null || row.Status_AppvManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvManager_Name}</span>` :
-                                (data == 1 && row.Status_AppvManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvManager_Name}</span>` :
-                                    (data == 1 && row.Status_AppvManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvManager_Name}</span>`;
-
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_App);
                     }
                 },
                 {
                     data: "IsAppvSeniorManager",
                     name: "IsAppvSeniorManager",
                     orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvSeniorManager_Name}</span>` :
-                            (data == 1 && (row.Status_AppvSeniorManager == null || row.Status_AppvSeniorManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvSeniorManager_Name}</span>` :
-                                (data == 1 && row.Status_AppvSeniorManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvSeniorManager_Name}</span>` :
-                                    (data == 1 && row.Status_AppvSeniorManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvSeniorManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvSeniorManager_Name}</span>`;
-
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvSeniorManag);
                     }
                 },
                 {
                     data: "IsAppvGeneralManager",
                     name: "IsAppvGeneralManager",
                     orderable: false,
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvGeneralManager);
+                    }
+                },
+                {
+                    data: "IsAppvAdditional",
+                    name: "IsAppvAdditional",
+                    orderable: false,
                     render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvGeneralManager_Name}</span>` :
-                            (data == 1 && (row.Status_AppvGeneralManager == null || row.Status_AppvGeneralManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvGeneralManager_Name}</span>` :
-                                (data == 1 && row.Status_AppvGeneralManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvGeneralManager_Name}</span>` :
-                                    (data == 1 && row.Status_AppvGeneralManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvGeneralManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvGeneralManager_Name}</span>`;
-
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAdditional);
                     }
                 },
                 {
                     data: "IsAppvDirector",
                     name: "IsAppvDirector",
                     orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvDirector_Name}</span>` :
-                            (data == 1 && (row.Status_AppvDirector == null || row.Status_AppvDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvDirector_Name}</span>` :
-                                (data == 1 && row.Status_AppvDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvDirector_Name}</span>` :
-                                    (data == 1 && row.Status_AppvDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvDirector_Name}</span>`;
-
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvD);
                     }
                 },
                 {
                     data: "IsAppvPresidentDirector",
                     name: "IsAppvPresidentDirector",
                     orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvPresidentDirector_Name}</span>` :
-                            (data == 1 && (row.Status_AppvPresidentDirector == null || row.Status_AppvPresidentDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvPresidentDirector_Name}</span>` :
-                                (data == 1 && row.Status_AppvPresidentDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvPresidentDirector_Name}</span>` :
-                                    (data == 1 && row.Status_AppvPresidentDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvPresidentDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvPresidentDirector_Name}</span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvFinanceStaff",
-                    name: "IsAppvFinanceStaff",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvFinanceStaff_Name}</span>` :
-                            (data == 1 && (row.Status_AppvFinanceStaff == null || row.Status_AppvFinanceStaff == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceStaff_Name}</span>` :
-                                (data == 1 && row.Status_AppvFinanceStaff == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceStaff_Name}</span>` :
-                                    (data == 1 && row.Status_AppvFinanceStaff == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceStaff_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceStaff_Name}</span>`;
-
-                    }
-                },
-                {
-                    data: "IsAppvFinanceManager",
-                    name: "IsAppvFinanceManager",
-                    orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvFinanceManager_Name}</span>` :
-                            (data == 1 && (row.Status_AppvFinanceManager == null || row.Status_AppvFinanceManager == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceManager_Name}</span>` :
-                                (data == 1 && row.Status_AppvFinanceManager == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceManager_Name}</span>` :
-                                    (data == 1 && row.Status_AppvFinanceManager == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceManager_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceManager_Name}</span>`;
-
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvPresidentDirector,);
                     }
                 },
                 {
                     data: "IsAppvFinanceDirector",
                     name: "IsAppvFinanceDirector",
                     orderable: false,
-                    render: function (data, type, row, meta) {
-                        return (data == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="No approval needed." class="badge btn-icon bg-secondary"><i class="fas fa-ban text-dark"></i> ${row.AppvFinanceDirector_Name}</span>` :
-                            (data == 1 && (row.Status_AppvFinanceDirector == null || row.Status_AppvFinanceDirector == null)) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="Approval In Progress" class="badge btn-icon bg-warning"><i class="bi bi-hourglass-split text-dark"></i> ${row.AppvFinanceDirector_Name}</span>` :
-                                (data == 1 && row.Status_AppvFinanceDirector == 0) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="rejected" class="badge btn-icon bg-danger"><i class="fas fa-times text-white"></i> ${row.AppvFinanceDirector_Name}</span>` :
-                                    (data == 1 && row.Status_AppvFinanceDirector == 1) ? `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="approved" class="badge btn-icon bg-success text-dark"><i class="fas fa-check-double text-white"></i> ${row.AppvFinanceDirector_Name}</span>` :
-                                        `<span data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark" title="doesnt need/not submitted yet" class="badge btn-icon bg-info"><i class="fas fa-question"></i> ${row.AppvFinanceDirector_Name}</span>`;
-
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinanceDirector);
                     }
                 }
             ],
@@ -314,7 +268,7 @@ $(document).ready(function () {
                 targets: 7
             }, {
                 className: "text-center dt-nowrap",
-                targets: [0, 2, 4, 5, 6, 7, 12, 13, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+                targets: [0, 2, 4, 5, 6, 7, 12, 13, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28],
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]
