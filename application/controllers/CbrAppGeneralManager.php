@@ -65,7 +65,7 @@ class CbrAppGeneralManager extends CI_Controller
         $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
             $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
-                'Status_AppvGeneralManager' => 0,
+                'Status_AppvGeneralManager' => 2,
                 'AppvGeneralManager_Name' => $this->session->userdata('sys_sba_nama'),
                 'AppvGeneralManager_By' => $this->session->userdata('sys_sba_username'),
                 'AppvGeneralManager_At' => $this->DateTime,
@@ -121,28 +121,28 @@ class CbrAppGeneralManager extends CI_Controller
         $dir    = $requestData['order']['0']['dir'];
         $from   = $this->input->post('from');
         $until  = $this->input->post('until');
-
+        $username = $this->session->userdata('sys_sba_username');
+        // -- And TAccCashBookReq_Header.Document_Date >= {d '$from'}
+        // -- And TAccCashBookReq_Header.Document_Date <= {d '$until'}
         $sql = "Select  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date
         FROM TAccCashBookReq_Header
         INNER JOIN TUserGroupL ON TAccCashBookReq_Header.Created_By = TUserGroupL.User_ID
         INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
         LEFT OUTER JOIN Ttrx_Cbr_Approval ON TAccCashBookReq_Header.CBReq_No = Ttrx_Cbr_Approval.CBReq_No
         WHERE TAccCashBookReq_Header.Type='D'
-        -- And TAccCashBookReq_Header.Document_Date >= {d '$from'}
-        -- And TAccCashBookReq_Header.Document_Date <= {d '$until'}
         AND TAccCashBookReq_Header.Company_ID = 2 
         AND isNull(isSPJ,0) = 0
         AND Approval_Status  = 3
         AND CBReq_Status = 3
         AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
+        AND Ttrx_Cbr_Approval.AppvGeneralManager_By = '$username'
         AND IsAppvGeneralManager = 1
-        AND Status_AppvGeneralManager IS NULL
-        AND (IsAppvStaff = 0 or IsAppvStaff = 1 and Status_AppvStaff = 1)
-        AND (IsAppvChief = 0 or IsAppvChief = 1 and Status_AppvChief = 1)
-        AND (IsAppvAsstManager = 0 or IsAppvAsstManager = 1 and Status_AppvAsstManager = 1)
-        AND (IsAppvManager = 0 or IsAppvManager = 1 and Status_AppvManager = 1)
-        AND (IsAppvSeniorManager = 0 or IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1)
-        AND UserDivision IN ('" . $this->session->userdata('sys_cbr_divs') . "') ";
+        AND Status_AppvGeneralManager = 0
+        AND ((IsAppvStaff = 0) or (IsAppvStaff = 1 and Status_AppvStaff = 1))
+        AND ((IsAppvChief = 0) or (IsAppvChief = 1 and Status_AppvChief = 1))
+        AND ((IsAppvAsstManager = 0) or (IsAppvAsstManager = 1 and Status_AppvAsstManager = 1))
+        AND ((IsAppvManager = 0) or (IsAppvManager = 1 and Status_AppvManager = 1))
+        AND ((IsAppvSeniorManager) = 0 or (IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1)) ";
         // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
 
         $totalData = $this->db->query($sql)->num_rows();
