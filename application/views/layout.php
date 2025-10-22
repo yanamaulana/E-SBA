@@ -97,7 +97,7 @@
                                     <span class="menu-title ml-2">Cashbook Request Submission</span>
                                 </a>
                             </div>
-                            <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion <?= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'hover show' : null; ?>">
+                            <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion <= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'hover show' : null; ?>">
                                 <span class="menu-link" data-bs-toggle="tooltip" title="Cash Book Requisition Entry Approval">
                                     <span class="menu-icon">
                                         <span class="svg-icon svg-icon-muted svg-icon-2qx"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -109,10 +109,10 @@
                                     <span class="menu-title">Cash Book Request Approval</span>
                                     <span class="menu-arrow"></span>
                                 </span> -->
-                            <!-- <div class="menu-sub menu-sub-accordion <?= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'show"' : '" style="display: none; overflow: hidden;"'; ?> kt-hidden-height=" 117"> -->
-                            <?php if ($is_admin == true || $sess_jabatan == 'Staff') : ?>
+                            <!-- <div class="menu-sub menu-sub-accordion <= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'show"' : '" style="display: none; overflow: hidden;"'; ?> kt-hidden-height=" 117"> -->
+                            <!-- <php if ($is_admin == true || $sess_jabatan == 'Staff') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Staff Approval : Cash Book Requisition">
-                                    <a class="menu-link <?= ($Menu == 'CbrAppStaff') ? 'active' : null ?>" href="<?= base_url('CbrAppStaff') ?>">
+                                    <a class="menu-link <= ($Menu == 'CbrAppStaff') ? 'active' : null ?>" href="<= base_url('CbrAppStaff') ?>">
                                         <span class="menu-icon">
                                             <span class="svg-icon svg-icon-muted svg-icon-2qx">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -124,10 +124,10 @@
                                         <span class="menu-title ml-2">Staff Approval</span>
                                     </a>
                                 </div>
-                            <?php endif; ?>
-                            <?php if ($is_admin == true || $sess_jabatan == 'Chief') : ?>
+                            <php endif; ?>
+                            <php if ($is_admin == true || $sess_jabatan == 'Chief') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Chief Approval : Cash Book Requisition">
-                                    <a class="menu-link <?= ($Menu == 'CbrAppChief') ? 'active' : null ?>" href="<?= base_url('CbrAppChief') ?>">
+                                    <a class="menu-link <= ($Menu == 'CbrAppChief') ? 'active' : null ?>" href="<= base_url('CbrAppChief') ?>">
                                         <span class="menu-icon">
                                             <span class="svg-icon svg-icon-muted svg-icon-2qx">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -139,7 +139,7 @@
                                         <span class="menu-title ml-2">Chief Approval</span>
                                     </a>
                                 </div>
-                            <?php endif; ?>
+                            <php endif; ?> -->
                             <?php if ($is_admin == true || $sess_jabatan == 'Asst Manager') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Asst. Manager Approval : Cash Book Requisition">
                                     <a class="menu-link <?= ($Menu == 'CbrAppAsstManager') ? 'active' : null ?>" href="<?= base_url('CbrAppAsstManager') ?>">
@@ -304,7 +304,7 @@
                             </div>
 
                             <!-- <div class="menu-item" data-bs-toggle="tooltip" title="List My Cash Book Requisition">
-                                <a class="menu-link <?= ($Menu == 'MyCbr') ? 'active' : null ?>" href="<?= base_url('MyCbr') ?>">
+                                <a class="menu-link <= ($Menu == 'MyCbr') ? 'active' : null ?>" href="<= base_url('MyCbr') ?>">
                                     <span class="menu-icon">
                                         <span class="svg-icon svg-icon-muted svg-icon-2qx">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
