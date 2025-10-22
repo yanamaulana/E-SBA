@@ -13,7 +13,6 @@ $(document).ready(function () {
 
     $('.date-picker').flatpickr();
 
-
     function Fn_Initialized_DataTable() {
         $("#TableDataHistory").DataTable({
             destroy: true,
@@ -27,7 +26,7 @@ $(document).ready(function () {
                 [10, 30, 90, 1000]
             ],
             ajax: {
-                url: $('meta[name="base_url"]').attr('content') + "MyCbr/DT_List_History_Submission",
+                url: $('meta[name="base_url"]').attr('content') + "HistoryApproval/DT_List_History_Approval",
                 dataType: "json",
                 type: "POST",
                 data: {
@@ -129,278 +128,65 @@ $(document).ready(function () {
             order: [
                 [3, "DESC"]
             ],
-            columnDefs: [
-                { width: 220, targets: 7 },
-                {
-                    className: "text-center dt-nowrap",
-                    // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
-                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
-                }, {
-                    className: "details-control pr-4 dt-nowrap",
-                    targets: [1]
-                }
-            ],
+            columnDefs: [{
+                width: 220,
+                targets: 7
+            }, {
+                className: "text-center dt-nowrap",
+                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+            }, {
+                className: "details-control pr-4 dt-nowrap",
+                targets: [1]
+            }],
+            // orderCellsTop: true,
+            // fixedColumns: true,
             scrollCollapse: true,
             scrollX: true,
             scrollY: 410,
+            // autoWidth: true,
             responsive: false,
+            "rowCallback": function (row, data) {
+                // if (data.is_active == "0") {
+                // 	$('td', row).css('background-color', 'pink');
+                // }
+            },
             preDrawCallback: function () {
-                $("#TableDataHistory tbody td").addClass("blurry"); // Poin 1: Tambahkan #
+                $("TableDataHistory tbody td").addClass("blurry");
             },
             language: {
                 processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
                 searchPlaceholder: "Search..."
             },
             drawCallback: function () {
-                $("#TableDataHistory tbody td").removeClass("blurry"); // Poin 1: Tambahkan #
+                $("TableDataHistory tbody td").addClass("blurry");
+                setTimeout(function () {
+                    $("TableDataHistory tbody td").removeClass("blurry");
+                });
                 $('[data-bs-toggle="tooltip"]').tooltip();
                 DataTable.tables({ visible: true, api: true }).columns.adjust();
             },
-            "buttons": [
-                { text: `Export to :`, className: "btn disabled text-dark bg-white" },
-                { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
-                { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
+            "buttons": [{
+                text: `Export to :`,
+                className: "btn disabled text-dark bg-white",
+            }, {
+                text: `<i class="far fa-copy fs-2"></i>`,
+                extend: 'copy',
+                className: "btn btn-light-warning",
+            }, {
+                text: `<i class="far fa-file-excel fs-2"></i>`,
+                extend: 'excelHtml5',
+                title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"),
+                className: "btn btn-light-success",
+            }
             ],
-        }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
+        }).buttons().container().appendTo('TableDataHistory_wrapper .col-md-6:eq(0)');
     }
 
-    var TableData = $("#TableData").DataTable({
-        destroy: true,
-        processing: true,
-        serverSide: true,
-        paging: true,
-        dom: 'lBfrtip',
-        orderCellsTop: true,
-        select: false,
-        "lengthMenu": [
-            [15, 30, 90, 100],
-            [15, 30, 90, 100]
-        ],
-        ajax: {
-            url: $('meta[name="base_url"]').attr('content') + "MyCbr/DT_List_To_Approve",
-            dataType: "json",
-            type: "POST",
-        },
-        columns: [{
-            data: 'CBReq_No',
-            name: "CheckBox",
-            orderable: false,
-            render: function (data, type, row, meta) {
-                return `<div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="${row.CBReq_No}" id="${row.CBReq_No}" name="CBReq_No[]">
-                  </div>`
-            }
-        },
-        {
-            data: "CBReq_No",
-            name: "CBReq_No",
-        },
-        {
-            data: "Type",
-            name: "Type",
-            visible: false
-        },
-        {
-            data: "Document_Date",
-            name: "Document_Date",
-            render: function (data) {
-                return data.substring(0, data.indexOf(' '));
-            }
-        },
-        {
-            data: "Currency_Id",
-            name: "Currency_Id",
-        },
-        {
-            data: "Amount",
-            name: "Amount",
-            render: function (data) {
-                return parseFloat(data).toLocaleString('en-US', {
-                    minimumFractionDigits: 4,
-                    maximumFractionDigits: 4
-                });
-            }
-        },
-        {
-            data: "Document_Number",
-            name: "Document_Number",
-        },
-        {
-            data: "Descript",
-            name: "Descript",
-        },
-        {
-            data: "baseamount",
-            name: "baseamount",
-            visible: false
-        },
-        {
-            data: "curr_rate",
-            name: "curr_rate",
-            visible: false
-        },
-        {
-            data: "Approval_Status",
-            name: "Approval_Status",
-            visible: false
-        },
-        {
-            data: "CBReq_Status",
-            name: "CBReq_Status",
-            render: function (data) {
-                if (data == 3) {
-                    return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`
-                } else if (data == 2) {
-                    return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a></button>`
-                } else {
-                    return `<a hreff="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a></button>`
-                }
-            }
-        },
-        {
-            data: "Paid_Status",
-            name: "Paid_Status",
-            render: function (data) {
-                if (data == 'NP') {
-                    return `<span class="text-dark badge badge-warning">Not Paid</span>`;
-                } else if (data == 'HP') {
-                    return `<span class="text-dark badge badge-primary">Half Paid</span>`;
-                } else {
-                    return `<span class="text-dark badge badge-success">Full Paid</span>`;
-                }
-            }
-        },
-        {
-            data: "Creation_DateTime",
-            name: "Creation_DateTime",
-            visible: false
-        },
-        {
-            data: "Created_By",
-            name: "Created_By",
-            visible: false
-        },
-        {
-            data: "First_Name",
-            name: "First_Name",
-        },
-        {
-            data: "Last_Update",
-            name: "Last_Update",
-            visible: false
-        },
-        {
-            data: "Acc_ID",
-            name: "Acc_ID",
-            visible: false
-        },
-        {
-            data: "Approve_Date",
-            name: "Approve_Date",
-            visible: false
-        }
-        ],
-        order: [
-            [3, "DESC"]
-        ],
-        columnDefs: [{
-            className: "text-center",
-            targets: [0, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13],
-        }, {
-            className: "details-control pr-4 dt-nowrap",
-            targets: [1]
-        }, {
-            className: "dt-nowrap",
-            targets: [6]
-        }],
-        autoWidth: false,
-        responsive: false,
-        "rowCallback": function (row, data) {
-            // if (data.is_active == "0") {
-            // 	$('td', row).css('background-color', 'pink');
-            // }
-        },
-        preDrawCallback: function () {
-            $("#TableData tbody td").addClass("blurry");
-        },
-        language: {
-            processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
-            searchPlaceholder: "Search..."
-        },
-        drawCallback: function () {
-            $("#TableData tbody td").addClass("blurry");
-            setTimeout(function () {
-                $("#TableData tbody td").removeClass("blurry");
-            });
-            $('[data-bs-toggle="tooltip"]').tooltip();
-        },
-        "buttons": [{
-            text: `<i class="fas fa-external-link-alt"></i> Send Submission`,
-            className: "btn btn-success",
-            action: function (e, dt, node, config) {
-                Swal.fire({
-                    title: 'System Message !',
-                    text: `Are you sure to approve all checked submission ?`,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Fn_Send_Submission();
-                    }
-                })
-            }
-        },
-        {
-            text: `-`,
-            className: "btn btn-default btn-icon disabled",
-        },
-            // {
-            //     text: `<i class="fas fa-times text-white fs-3"></i> Reject (Not Send)`,
-            //     className: "btn btn-danger",
-            //     action: function (e, dt, node, config) {
-            //         Swal.fire({
-            //             title: 'System Message !',
-            //             text: `Are you sure to reject all checked submission ?`,
-            //             icon: 'warning',
-            //             showCancelButton: true,
-            //             confirmButtonColor: '#3085d6',
-            //             cancelButtonColor: '#d33',
-            //             confirmButtonText: 'Yes'
-            //         }).then((result) => {
-            //             if (result.isConfirmed) {
-            //                 Fn_Reject_Submission();
-            //             }
-            //         })
-            //     }
-            // },
-            // {
-            // 	text: `Export to :`,
-            // 	className: "btn disabled text-dark bg-white",
-            // }, {
-            // 	text: `<i class="far fa-copy fs-2"></i>`,
-            // 	extend: 'copy',
-            // 	className: "btn btn-light-warning",
-            // }, {
-            // 	text: `<i class="far fa-file-excel fs-2"></i>`,
-            // 	extend: 'excelHtml5',
-            // 	title: $('#table-title').text() + '~' + moment().format("YYYY-MM-DD"),
-            // 	className: "btn btn-light-success",
-            // }, {
-            // 	text: `<i class="far fa-file-pdf fs-2"></i>`,
-            // 	extend: 'pdfHtml5',
-            // 	title: $('#table-title').text() + '~' + moment().format("YYYY-MM-DD"),
-            // 	className: "btn btn-light-danger",
-            // 	orientation: "landscape"
-            // }, {
-            // 	text: `<i class="fas fa-print fs-2"></i>`,
-            // 	extend: 'print',
-            // 	className: "btn btn-light-dark",
-            // }
-        ],
-    }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
+    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
+        el.addEventListener('shown.bs.tab', () => {
+            DataTable.tables({ visible: true, api: true }).columns.adjust();
+        });
+    });
 
     $('#do--filter').on('click', function () {
         $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
@@ -410,39 +196,22 @@ $(document).ready(function () {
 
 
     $(document).on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = tr.closest('table').DataTable().row(tr);
-        var tableId = tr.closest('table').attr('id');
-
-        // Perhitungan is_hst_table
-        var is_hst_table = (tableId == 'TableDataHistory') ? 1 : 0;
+        var tr = $(this).closest('tr'); // Menggunakan closest() untuk mendapatkan elemen tr terdekat
+        var row = tr.closest('table').DataTable().row(tr); // Mendapatkan instance DataTable dari tabel terdekat
 
         if (row.child.isShown()) {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         } else {
-            // 🔥 KOREKSI: Panggil format() DENGAN DUA ARGUMEN, 
-            // lalu berikan hasilnya ke row.child()
-            var detailContent = format(row.data(), is_hst_table);
-
-            row.child(detailContent).show();
+            // Open this row (the format() function would return the data to be shown)
+            row.child(format(row.data())).show();
             tr.addClass('shown');
             getInsDetail(row.data().CBReq_No, row.data().Document_Number);
         }
     });
 
-    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
-        el.addEventListener('shown.bs.tab', () => {
-            DataTable.tables({ visible: true, api: true }).columns.adjust();
-        });
-    });
-
-    function format(d, is_hst_table) {
-        console.log(is_hst_table)
-        var attachmentButton = (is_hst_table == 1)
-            ? `<button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-primary btn-list-attachment"><i class="fas fa-paperclip"></i> List Attachment</button>`
-            : `<button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-primary btn-attachment"><i class="fas fa-paperclip"></i> Upload Attachment</button>`;
+    function format(d) {
         let cbr_container = `<div class="row py-3" style="background-color: #CFE2FF;">
                                 <div class="container-fluid">
                                     <div class="card shadow-sm">
@@ -452,9 +221,7 @@ $(document).ready(function () {
                                                     <thead>
                                                         <tr>
                                                             <th class="text-dark" colspan="2">Cash Book Requisition Number : ${d.CBReq_No}</th>
-                                                            <th class="text-dark text-center">
-                                                            <button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button> 
-                                                            ${attachmentButton}
+                                                            <th class="text-dark text-center" colspan="2"><button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-info btn-cbr"><i class="fas fa-print"></i> Cash Book Requisition</button>&nbsp;<button type="button" value="${d.CBReq_No}" class="btn btn-sm btn-light-info btn-attachment"><i class="fas fa-paperclip"></i> List Attachment</button></th>
                                                         </tr>
                                                         <tr class="bg-dark">
                                                             <th class="text-center">Account</th>
@@ -544,7 +311,7 @@ $(document).ready(function () {
                                                                             Purchase Invoice  : ${d.Document_Number}
                                                                         </th>
                                                                         <th style="text-align: center;" colspan="3">
-                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-info rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
+                                                                            <button type="button" value="${d.Document_Number}" class="btn btn-sm btn-light-danger rpt-vin"><i class="fas fa-search"></i> Purchase Invoice</button>
                                                                         </th>
                                                                     </tr>
                                                                     <tr class="bg-dark">
@@ -592,6 +359,7 @@ $(document).ready(function () {
                 tr.empty();
                 if (response.code == 200) {
                     $.each(response.data, function (index, item) {
+                        console.log(item.Account_Name);
                         tr.append(
                             `<tr>
                             <td class="text-center">${item.Account_Name}</td>
@@ -612,7 +380,7 @@ $(document).ready(function () {
                         $.each(response.dataVins, function (index, item) {
                             tr.append(
                                 `<tr>
-                                <td class="dt-nowrap">${item.PO_Number}</td>
+                                <td style="white-space: pre-line; max-width: 200px;">${item.PO_Number}</td>
                                 <td class="text-center">${item.Account_Name}</td>
                                 <td class="text-center">${item.PO_Date}</td>
                                 <td class="text-center">${item.ETD}</td>
@@ -632,7 +400,7 @@ $(document).ready(function () {
                         $.each(response.dataVins, function (index, item) {
                             tr.append(
                                 `<tr>
-                                <td class="dt-nowrap">${item.Invoice_Number}</td>
+                                <td>${item.Invoice_Number}</td>
                                 <td>${item.VenInvoice_Number}</td>
                                 <td class="text-center">${item.Invoice_Date}</td>
                                 <td class="text-center">${item.Due_Date}</td>
@@ -665,39 +433,6 @@ $(document).ready(function () {
         $.ajax({
             // dataType: "json",
             type: "GET",
-            url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_f_cbr_attachment",
-            data: {
-                CbrNo: $(this).val(),
-            }, beforeSend: function () {
-                Swal.fire({
-                    title: 'Loading....',
-                    html: '<div class="spinner-border text-primary"></div>',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                })
-            },
-            success: function (ajaxData) {
-                Swal.close()
-                $("#location").html(ajaxData);
-                $("#ModalAttachment").modal('show');
-            }, error: function (xhr, status, error) {
-                var statusCode = xhr.status;
-                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
-                Swal.fire({
-                    icon: "error",
-                    title: "Error!",
-                    html: `Kode HTTP: ${statusCode}<br\>message: ${errorMessage}`,
-                });
-            }
-        });
-    })
-
-    $(document).on('click', '.btn-list-attachment', function () {
-        $('#txt-cbr').text($(this).val());
-        $.ajax({
-            // dataType: "json",
-            type: "GET",
             url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_list_cbr_attachment",
             data: {
                 CbrNo: $(this).val(),
@@ -726,65 +461,6 @@ $(document).ready(function () {
         });
     })
 
-
-    function Fn_Send_Submission() {
-        if ($('input[name="CBReq_No[]"]:checked').length == 0) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'You need check the submission first !',
-                footer: '<a href="javascript:void(0)">Notifikasi System</a>'
-            });
-        }
-
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: $('meta[name="base_url"]').attr('content') + "MyCbr/approve_submission",
-            data: $('#form-submission').serialize(),
-            beforeSend: function () {
-                Swal.fire({
-                    title: 'Loading....',
-                    html: '<div class="spinner-border text-primary"></div>',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                })
-            },
-            success: function (response) {
-                Swal.close()
-                if (response.code == 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: response.msg
-                    });
-                    $('#CheckAll').removeAttr('checked');
-                    $('#TableData').DataTable().ajax.reload(null, false);
-                    $("#TableDataHistory").DataTable().ajax.reload(null, false);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: response.msg
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                var statusCode = xhr.status;
-                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
-                Swal.fire({
-                    icon: "error",
-                    title: "Error!",
-                    html: `Kode HTTP: ${statusCode}<br\>Pesan: ${errorMessage}`,
-                });
-            }
-        });
-    }
-
-    $(document).on('click', '.rpt-vin', function () {
-        let vin = $(this).val();
-
-        window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_detail_purchase_invoice/${vin}`, `RptVin-${vin}`, 'width=800,height=600');
-    })
 
     $(document).on('click', '.btn-cbr', function () {
         let Cbr_no = $(this).val();

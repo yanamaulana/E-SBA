@@ -7,12 +7,12 @@
                     <ul class="nav nav-tabs fs-6 border-0">
                         <li class="nav-item">
                             <a class="nav-link mr-5 active btn btn-flex btn-active-light-primary" data-bs-toggle="tab" href="#kt_tab_pane_4">
-                                <h5 class="font-weight-bold" id="table-title-main">Requires Manager Approval.</h5>
+                                <h5 class="font-weight-bold" id="table-title-main">Requires <?= $this->session->userdata('sys_sba_jabatan') ?> Approval.</h5>
                             </a>
                         </li>
                         <li class="nav-item mr-5">
                             <a class="nav-link btn btn-flex btn-active-light-primary" data-bs-toggle="tab" href="#kt_tab_pane_5">
-                                <h5 class="font-weight-bold" id="table-title-history">Monitoring & History Manager Approval.</h5>
+                                <h5 class="font-weight-bold" id="table-title-history">Monitoring & History <?= $this->session->userdata('sys_sba_jabatan') ?> Approval.</h5>
                             </a>
                         </li>
                     </ul>
@@ -113,10 +113,9 @@
                                             <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; MANAGER</th>
                                             <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; SR.MANAGER</th>
                                             <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; G.MANAGER</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; DIR G/P</th>
+                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; ADDITIONAL</th>
+                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; DIRECTOR</th>
                                             <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; PRESDIR</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; FIN. STAFF</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; FIN. MANAGER</th>
                                             <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; FIN. DIRECTOR</th>
 
                                         </tr>

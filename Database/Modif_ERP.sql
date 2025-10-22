@@ -178,6 +178,7 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval (
 	AppvFinanceDirector_By varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinanceDirector_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	AppvFinanceDirector_At datetime NULL,
+	Doc_Legitimate_Pos_On varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	UserName_User varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	UserDivision varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	Rec_Created_At datetime NOT NULL,

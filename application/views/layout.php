@@ -97,49 +97,7 @@
                                     <span class="menu-title ml-2">Cashbook Request Submission</span>
                                 </a>
                             </div>
-                            <!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion <= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'hover show' : null; ?>">
-                                <span class="menu-link" data-bs-toggle="tooltip" title="Cash Book Requisition Entry Approval">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-muted svg-icon-2qx"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M2 4.63158C2 3.1782 3.1782 2 4.63158 2H13.47C14.0155 2 14.278 2.66919 13.8778 3.04006L12.4556 4.35821C11.9009 4.87228 11.1726 5.15789 10.4163 5.15789H7.1579C6.05333 5.15789 5.15789 6.05333 5.15789 7.1579V16.8421C5.15789 17.9467 6.05333 18.8421 7.1579 18.8421H16.8421C17.9467 18.8421 18.8421 17.9467 18.8421 16.8421V13.7518C18.8421 12.927 19.1817 12.1387 19.7809 11.572L20.9878 10.4308C21.3703 10.0691 22 10.3403 22 10.8668V19.3684C22 20.8218 20.8218 22 19.3684 22H4.63158C3.1782 22 2 20.8218 2 19.3684V4.63158Z" fill="black" />
-                                                <path d="M10.9256 11.1882C10.5351 10.7977 10.5351 10.1645 10.9256 9.77397L18.0669 2.6327C18.8479 1.85165 20.1143 1.85165 20.8953 2.6327L21.3665 3.10391C22.1476 3.88496 22.1476 5.15129 21.3665 5.93234L14.2252 13.0736C13.8347 13.4641 13.2016 13.4641 12.811 13.0736L10.9256 11.1882Z" fill="black" />
-                                                <path d="M8.82343 12.0064L8.08852 14.3348C7.8655 15.0414 8.46151 15.7366 9.19388 15.6242L11.8974 15.2092C12.4642 15.1222 12.6916 14.4278 12.2861 14.0223L9.98595 11.7221C9.61452 11.3507 8.98154 11.5055 8.82343 12.0064Z" fill="black" />
-                                            </svg></span>
-                                    </span>
-                                    <span class="menu-title">Cash Book Request Approval</span>
-                                    <span class="menu-arrow"></span>
-                                </span> -->
-                            <!-- <div class="menu-sub menu-sub-accordion <= ($Menu == 'CbrAppStaff' || $Menu == 'CbrAppChief' || $Menu == 'CbrAppAsstManager' || $Menu == 'CbrAppManager' || $Menu == 'CbrAppSeniorManager' || $Menu == 'CbrAppGeneralManager' || $Menu == 'CbrAppDirector' || $Menu == 'CbrAppPresidentDirector' || $Menu == 'CbrAppFinanceStaff' || $Menu == 'CbrAppFinanceManager' || $Menu == 'CbrAppFinanceDirector') ? 'show"' : '" style="display: none; overflow: hidden;"'; ?> kt-hidden-height=" 117"> -->
-                            <!-- <php if ($is_admin == true || $sess_jabatan == 'Staff') : ?>
-                                <div class="menu-item" data-bs-toggle="tooltip" title="Staff Approval : Cash Book Requisition">
-                                    <a class="menu-link <= ($Menu == 'CbrAppStaff') ? 'active' : null ?>" href="<= base_url('CbrAppStaff') ?>">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-muted svg-icon-2qx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M22 12C22 12.9 21.9 13.8 21.7 14.6L5 4.89999C6.8 3.09999 9.3 2 12 2C17.5 2 22 6.5 22 12Z" fill="black" />
-                                                    <path opacity="0.3" d="M3.7 17.5C2.6 15.9 2 14 2 12C2 9.20003 3.1 6.70002 5 4.90002L9.3 7.40002V14.2L3.7 17.5ZM17.2 12L5 19.1C6.8 20.9 9.3 22 12 22C16.6 22 20.5 18.8 21.7 14.6L17.2 12Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title ml-2">Staff Approval</span>
-                                    </a>
-                                </div>
-                            <php endif; ?>
-                            <php if ($is_admin == true || $sess_jabatan == 'Chief') : ?>
-                                <div class="menu-item" data-bs-toggle="tooltip" title="Chief Approval : Cash Book Requisition">
-                                    <a class="menu-link <= ($Menu == 'CbrAppChief') ? 'active' : null ?>" href="<= base_url('CbrAppChief') ?>">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-muted svg-icon-2qx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M19.0963 4.92704C20.0963 5.92704 20.8963 7.12705 21.2963 8.32705L17.6963 11.927L8.39633 2.62705C11.8963 1.32705 16.1963 2.02704 19.0963 4.92704ZM2.69633 15.627C3.19633 16.827 3.89634 18.027 4.89634 19.027C7.79634 21.927 11.9963 22.627 15.5963 21.227L6.29634 11.927L2.69633 15.627Z" fill="black" />
-                                                    <path opacity="0.3" d="M8.39634 2.72705L11.9963 6.32706L2.69634 15.6271C1.29634 12.0271 1.99634 7.82705 4.89634 4.92705C5.89634 3.92705 7.09634 3.22705 8.39634 2.72705ZM11.9963 17.7271L15.5963 21.3271C16.7963 20.8271 17.9963 20.1271 18.9963 19.1271C21.8963 16.2271 22.5963 12.027 21.1963 8.42705L11.9963 17.7271Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title ml-2">Chief Approval</span>
-                                    </a>
-                                </div>
-                            <php endif; ?> -->
+
                             <?php if ($is_admin == true || $sess_jabatan == 'Asst Manager') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Asst. Manager Approval : Cash Book Requisition">
                                     <a class="menu-link <?= ($Menu == 'CbrAppAsstManager') ? 'active' : null ?>" href="<?= base_url('CbrAppAsstManager') ?>">
@@ -200,7 +158,10 @@
                                     </a>
                                 </div>
                             <?php endif; ?>
-                            <?php if ($is_admin == true || $sess_jabatan == 'Piano Production Director' || $sess_jabatan == 'Guitar Production Director') : ?>
+
+
+
+                            <?php if ($is_admin == true || $sess_jabatan == 'Director') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Director Production Approval : Cash Book Requisition">
                                     <a class="menu-link <?= ($Menu == 'CbrAppDirector') ? 'active' : null ?>" href="<?= base_url('CbrAppDirector') ?>">
                                         <span class="menu-icon">
@@ -211,10 +172,11 @@
                                                 </svg>
                                             </span>
                                         </span>
-                                        <span class="menu-title ml-2">Director Production Approval</span>
+                                        <span class="menu-title ml-2">Director Approval</span>
                                     </a>
                                 </div>
                             <?php endif; ?>
+
                             <?php if ($is_admin == true || $sess_jabatan == 'President Director') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="President Director Approval : Cash Book Requisition">
                                     <a class="menu-link <?= ($Menu == 'CbrAppPresidentDirector') ? 'active' : null ?>" href="<?= base_url('CbrAppPresidentDirector') ?>">
@@ -230,36 +192,7 @@
                                     </a>
                                 </div>
                             <?php endif; ?>
-                            <?php if ($is_admin == true || $sess_jabatan == 'Staff' && $sess_dept == $AccDept || $sess_jabatan == 'Chief' && $sess_dept == $AccDept ||  $sess_jabatan == 'Asst Manager' && $sess_dept == $AccDept) : ?>
-                                <div class="menu-item" data-bs-toggle="tooltip" title="Finance Staff Approval : Cash Book Requisition">
-                                    <a class="menu-link <?= ($Menu == 'CbrAppFinanceStaff') ? 'active' : null ?>" href="<?= base_url('CbrAppFinanceStaff') ?>">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-muted svg-icon-2qx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path opacity="0.3" d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z" fill="black" />
-                                                    <path d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title ml-2">Finance Staff Approval</span>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
-                            <?php if ($is_admin == true || $sess_jabatan == 'Manager' && $sess_dept == $AccDept ||  $sess_jabatan == 'Senior Manager' && $sess_dept == $AccDept) : ?>
-                                <div class="menu-item" data-bs-toggle="tooltip" title="Finance Manager Approval : Cash Book Requisition">
-                                    <a class="menu-link <?= ($Menu == 'CbrAppFinanceManager') ? 'active' : null ?>" href="<?= base_url('CbrAppFinanceManager') ?>">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-muted svg-icon-2qx">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M15.6 5.59998L20.9 10.9C21.3 11.3 21.3 11.9 20.9 12.3L17.6 15.6L11.6 9.59998L15.6 5.59998ZM2.3 12.3L7.59999 17.6L11.6 13.6L5.59999 7.59998L2.3 10.9C1.9 11.3 1.9 11.9 2.3 12.3Z" fill="black" />
-                                                    <path opacity="0.3" d="M17.6 15.6L12.3 20.9C11.9 21.3 11.3 21.3 10.9 20.9L7.59998 17.6L13.6 11.6L17.6 15.6ZM10.9 2.3L5.59998 7.6L9.59998 11.6L15.6 5.6L12.3 2.3C11.9 1.9 11.3 1.9 10.9 2.3Z" fill="black" />
-                                                </svg>
-                                            </span>
-                                        </span>
-                                        <span class="menu-title ml-2">Finance Manager Approval</span>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
+
                             <?php if ($is_admin == true || $sess_jabatan == 'Finance Director') : ?>
                                 <div class="menu-item" data-bs-toggle="tooltip" title="Finance Director Approval : Cash Book Requisition">
                                     <a class="menu-link <?= ($Menu == 'CbrAppFinanceDirector') ? 'active' : null ?>" href="<?= base_url('CbrAppFinanceDirector') ?>">
@@ -275,8 +208,7 @@
                                     </a>
                                 </div>
                             <?php endif; ?>
-                            <!-- </div> -->
-                            <!-- </div> -->
+
                             <div class="menu-item" data-bs-toggle="tooltip" title="Monitoring Cbr">
                                 <a class="menu-link <?= ($Menu == 'CbrMonitoring') ? 'active' : null ?>" href="<?= base_url('CbrMonitoring') ?>">
                                     <span class="menu-icon">
@@ -303,19 +235,6 @@
                                 </a>
                             </div>
 
-                            <!-- <div class="menu-item" data-bs-toggle="tooltip" title="List My Cash Book Requisition">
-                                <a class="menu-link <= ($Menu == 'MyCbr') ? 'active' : null ?>" href="<= base_url('MyCbr') ?>">
-                                    <span class="menu-icon">
-                                        <span class="svg-icon svg-icon-muted svg-icon-2qx">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path opacity="0.3" d="M18.4 5.59998C18.7766 5.9772 18.9881 6.48846 18.9881 7.02148C18.9881 7.55451 18.7766 8.06577 18.4 8.44299L14.843 12C14.466 12.377 13.9547 12.5887 13.4215 12.5887C12.8883 12.5887 12.377 12.377 12 12C11.623 11.623 11.4112 11.1117 11.4112 10.5785C11.4112 10.0453 11.623 9.53399 12 9.15698L15.553 5.604C15.9302 5.22741 16.4415 5.01587 16.9745 5.01587C17.5075 5.01587 18.0188 5.22741 18.396 5.604L18.4 5.59998ZM20.528 3.47205C20.0614 3.00535 19.5074 2.63503 18.8977 2.38245C18.288 2.12987 17.6344 1.99988 16.9745 1.99988C16.3145 1.99988 15.661 2.12987 15.0513 2.38245C14.4416 2.63503 13.8876 3.00535 13.421 3.47205L9.86801 7.02502C9.40136 7.49168 9.03118 8.04568 8.77863 8.6554C8.52608 9.26511 8.39609 9.91855 8.39609 10.5785C8.39609 11.2384 8.52608 11.8919 8.77863 12.5016C9.03118 13.1113 9.40136 13.6653 9.86801 14.132C10.3347 14.5986 10.8886 14.9688 11.4984 15.2213C12.1081 15.4739 12.7616 15.6039 13.4215 15.6039C14.0815 15.6039 14.7349 15.4739 15.3446 15.2213C15.9543 14.9688 16.5084 14.5986 16.975 14.132L20.528 10.579C20.9947 10.1124 21.3649 9.55844 21.6175 8.94873C21.8701 8.33902 22.0001 7.68547 22.0001 7.02551C22.0001 6.36555 21.8701 5.71201 21.6175 5.10229C21.3649 4.49258 20.9947 3.93867 20.528 3.47205Z" fill="black" />
-                                                <path d="M14.132 9.86804C13.6421 9.37931 13.0561 8.99749 12.411 8.74695L12 9.15698C11.6234 9.53421 11.4119 10.0455 11.4119 10.5785C11.4119 11.1115 11.6234 11.6228 12 12C12.3766 12.3772 12.5881 12.8885 12.5881 13.4215C12.5881 13.9545 12.3766 14.4658 12 14.843L8.44699 18.396C8.06999 18.773 7.55868 18.9849 7.02551 18.9849C6.49235 18.9849 5.98101 18.773 5.604 18.396C5.227 18.019 5.0152 17.5077 5.0152 16.9745C5.0152 16.4413 5.227 15.93 5.604 15.553L8.74701 12.411C8.28705 11.233 8.28705 9.92498 8.74701 8.74695C8.10159 8.99737 7.5152 9.37919 7.02499 9.86804L3.47198 13.421C2.52954 14.3635 2.00009 15.6417 2.00009 16.9745C2.00009 18.3073 2.52957 19.5855 3.47202 20.528C4.41446 21.4704 5.69269 21.9999 7.02551 21.9999C8.35833 21.9999 9.63656 21.4704 10.579 20.528L14.132 16.975C14.5987 16.5084 14.9689 15.9544 15.2215 15.3447C15.4741 14.735 15.6041 14.0815 15.6041 13.4215C15.6041 12.7615 15.4741 12.108 15.2215 11.4983C14.9689 10.8886 14.5987 10.3347 14.132 9.86804Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                    </span>
-                                    <span class="menu-title ml-2">My&nbsp;Cash&nbsp;Book&nbsp;Requisition</span>
-                                </a>
-                            </div> -->
                             <div class="menu-item">
                                 <div class="menu-content pt-4 pb-2">
                                     <span class="menu-section text-muted text-uppercase fs-8 ls-1 fw-bold">SETTINGS</span>
@@ -604,6 +523,52 @@
     <script src="<?= base_url() ?>assets/global-assets/jquery-validation/jquery.validate.js"></script>
     <script src="<?= base_url() ?>assets/global-assets/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <?= $script_page ?>
+    <script>
+        window.renderApprovalStatus = function(data, status) {
+            if (data == 0) {
+                return `<span data-bs-toggle="tooltip" title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+            }
+
+            // Perbaikan: Cek status hanya sekali
+            if (data == 1) {
+                if (status == null || status === undefined || status === '') {} else if (status == 0) {
+                    return `<span data-bs-toggle="tooltip" title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+                } else if (status == 1) {
+                    return `<span data-bs-toggle="tooltip" title="approved" class="badge bg-success"><i class="fas fa-check text-white"></i></span>`;
+                } else {
+                    return `<span  title="reject" class="badge bg-danger"><i class="fas fa-exclamation-triangle text-dark"></i></span>`;
+                }
+            }
+
+            return ''; // Default
+        };
+
+        window.renderApprovalStatusWithName = function(Has_Submitted_Approval, flag, status) {
+            const tooltipAttr = 'data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark"';
+            const baseClass = 'badge btn-icon';
+
+            if (Has_Submitted_Approval == 0) {
+                return `<span ${tooltipAttr} title="Approval not yet submitted" class="${baseClass} bg-info"><i class="fas fa-question"></i></span>`;
+            }
+
+            if (flag == 0) {
+                return `<span ${tooltipAttr} title="No approval needed." class="${baseClass} bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+            }
+
+            if (flag == 1) {
+                if (status == 0) {
+                    return `<span ${tooltipAttr} title="Approval in progress" class="${baseClass} bg-warning text-dark"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+                } else if (status == 1) {
+                    // 3. Rejected
+                    return `<span ${tooltipAttr} title="Approved" class="${baseClass} bg-success"><i class="fas fa-check text-white"></i></span>`;
+                } else if (status == 2) {
+                    // 4. In Progress (Status NULL/Belum disubmit)
+                    return `<span ${tooltipAttr} title="Rejected" class="${baseClass} bg-danger"><i class="fas fa-times text-white"></i></span>`;
+                }
+            }
+
+        }
+    </script>
 </body>
 
 </html>

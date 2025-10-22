@@ -11,32 +11,6 @@ $(document).ready(function () {
         }
     })
 
-    function renderApprovalStatusWithName(Has_Submitted_Approval, flag, status) {
-        const tooltipAttr = 'data-bs-toggle="tooltip" data-bs-custom-class="tooltip-dark"';
-        const baseClass = 'badge btn-icon';
-
-        if (Has_Submitted_Approval == 0) {
-            return `<span ${tooltipAttr} title="Approval not yet submitted" class="${baseClass} bg-info"><i class="fas fa-question"></i></span>`;
-        }
-
-        if (flag == 0) {
-            return `<span ${tooltipAttr} title="No approval needed." class="${baseClass} bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
-        }
-
-        if (flag == 1) {
-            if (status == 0) {
-                return `<span ${tooltipAttr} title="Approval in progress" class="${baseClass} bg-warning text-dark"><i class="bi bi-hourglass-split text-dark"></i></span>`;
-            } else if (status == 1) {
-                // 3. Rejected
-                return `<span ${tooltipAttr} title="Approved" class="${baseClass} bg-danger"><i class="fas fa-check-double text-white"></i></span>`;
-            } else if (status == 2) {
-                // 4. In Progress (Status NULL/Belum disubmit)
-                return `<span ${tooltipAttr} title="Rejected" class="${baseClass} bg-warning"><i class="fas fa-times text-white"></i></span>`;
-            }
-        }
-
-    }
-
     $('.date-picker').flatpickr();
 
     function Fn_Initialized_DataTable() {

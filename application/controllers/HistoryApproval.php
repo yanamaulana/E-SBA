@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class CbrAppManager extends CI_Controller
+class HistoryApproval extends CI_Controller
 {
     private $Date;
     private $DateTime;
@@ -18,81 +18,9 @@ class CbrAppManager extends CI_Controller
         $this->load->model('m_DataTable', 'M_Datatables');
     }
 
-    public function index()
-    {
-        $this->data['page_title'] = "Manager Approval-Cash Book Requisition";
-        $this->data['page_content'] = "cbr_app/approval";
-        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/manager.js?v=' . time() . '"></script>
-                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval.js?v=' . time() . '"></script>';
+    public function index() {}
 
-        $this->load->view($this->layout, $this->data);
-    }
-
-    public function approve_submission()
-    {
-        $Cbrs = $this->input->post('CBReq_No');
-
-        $this->db->trans_start();
-        foreach ($Cbrs as $CBReq_No) {
-            $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
-                'Status_AppvManager' => 1,
-                'AppvManager_Name' => $this->session->userdata('sys_sba_nama'),
-                'AppvManager_By' => $this->session->userdata('sys_sba_username'),
-                'AppvManager_At' => $this->DateTime,
-            ]);
-        }
-
-        $error_msg = $this->db->error()["message"];
-        $this->db->trans_complete();
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            return $this->help->Fn_resulting_response([
-                'code' => 505,
-                'msg'  => $error_msg,
-            ]);
-        } else {
-            $this->db->trans_commit();
-            return $this->help->Fn_resulting_response([
-                'code' => 200,
-                'msg' => 'Cash Book Requisition successfully approved !',
-            ]);
-        }
-    }
-
-    public function reject_submission()
-    {
-        $Cbrs = $this->input->post('CBReq_No');
-
-        $this->db->trans_start();
-        foreach ($Cbrs as $CBReq_No) {
-            $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
-                'Status_AppvManager' => 2,
-                'AppvManager_Name' => $this->session->userdata('sys_sba_nama'),
-                'AppvManager_By' => $this->session->userdata('sys_sba_username'),
-                'AppvManager_At' => $this->DateTime,
-            ]);
-        }
-
-        $error_msg = $this->db->error()["message"];
-        $this->db->trans_complete();
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            return $this->help->Fn_resulting_response([
-                'code' => 505,
-                'msg'  => $error_msg,
-            ]);
-        } else {
-            $this->db->trans_commit();
-            return $this->help->Fn_resulting_response([
-                'code' => 200,
-                'msg' => 'Cash Book Requisition successfully Rejected !',
-            ]);
-        }
-    }
-
-    // ========================================== DATATABLE 
-
-    public function DT_List_To_Approve()
+    public function DT_List_History_Approval()
     {
         $requestData = $_REQUEST;
         $columns = array(
@@ -124,24 +52,7 @@ class CbrAppManager extends CI_Controller
         $until  = $this->input->post('until');
         $username = $this->session->userdata('sys_sba_username');
 
-        $sql = "Select  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date
-        FROM TAccCashBookReq_Header
-        INNER JOIN TUserGroupL ON TAccCashBookReq_Header.Created_By = TUserGroupL.User_ID
-        INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
-        LEFT OUTER JOIN Ttrx_Cbr_Approval ON TAccCashBookReq_Header.CBReq_No = Ttrx_Cbr_Approval.CBReq_No
-        WHERE TAccCashBookReq_Header.Type='D'
-        AND TAccCashBookReq_Header.Company_ID = 2 
-        AND isNull(isSPJ,0) = 0
-        AND Approval_Status  = 3
-        AND CBReq_Status = 3
-        AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
-        AND Ttrx_Cbr_Approval.AppvManager_By = '$username'
-        AND IsAppvManager = 1
-        AND Status_AppvManager = 0
-        AND ((IsAppvStaff = 0) or (IsAppvStaff = 1 and Status_AppvStaff = 1))
-        AND ((IsAppvChief = 0) or (IsAppvChief = 1 and Status_AppvChief = 1))
-        AND ((IsAppvAsstManager = 0) or (IsAppvAsstManager = 1 and Status_AppvAsstManager = 1)) ";
-        // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
+        $sql = $this->help->generate_sql_spesific_history_approval($username, $from, $until);
 
         $totalData = $this->db->query($sql)->num_rows();
         if (!empty($requestData['search']['value'])) {
@@ -180,6 +91,59 @@ class CbrAppManager extends CI_Controller
             $nestedData['Update_By'] = $row['Update_By'];
             $nestedData['Currency_Id'] = $row['Currency_Id'];
             $nestedData['Approve_Date'] = $row['Approve_Date'];
+            $nestedData['IsAppvStaff'] = $row['IsAppvStaff'];
+            $nestedData['Status_AppvStaff'] = $row['Status_AppvStaff'];
+            $nestedData['AppvStaff_By'] = $row['AppvStaff_By'];
+            $nestedData['AppvStaff_At'] = $row['AppvStaff_At'];
+            $nestedData['IsAppvChief'] = $row['IsAppvChief'];
+            $nestedData['Status_AppvChief'] = $row['Status_AppvChief'];
+            $nestedData['AppvChief_By'] = $row['AppvChief_By'];
+            $nestedData['AppvChief_At'] = $row['AppvChief_At'];
+            $nestedData['IsAppvAsstManager'] = $row['IsAppvAsstManager'];
+            $nestedData['Status_AppvAsstManager'] = $row['Status_AppvAsstManager'];
+            $nestedData['AppvAsstManager_By'] = $row['AppvAsstManager_By'];
+            $nestedData['AppvAsstManager_At'] = $row['AppvAsstManager_At'];
+            $nestedData['IsAppvManager'] = $row['IsAppvManager'];
+            $nestedData['Status_AppvManager'] = $row['Status_AppvManager'];
+            $nestedData['AppvManager_By'] = $row['AppvManager_By'];
+            $nestedData['AppvManager_At'] = $row['AppvManager_At'];
+            $nestedData['IsAppvSeniorManager'] = $row['IsAppvSeniorManager'];
+            $nestedData['Status_AppvSeniorManager'] = $row['Status_AppvSeniorManager'];
+            $nestedData['AppvSeniorManager_By'] = $row['AppvSeniorManager_By'];
+            $nestedData['AppvSeniorManager_At'] = $row['AppvSeniorManager_At'];
+            $nestedData['IsAppvGeneralManager'] = $row['IsAppvGeneralManager'];
+            $nestedData['Status_AppvGeneralManager'] = $row['Status_AppvGeneralManager'];
+            $nestedData['AppvGeneralManager_By'] = $row['AppvGeneralManager_By'];
+            $nestedData['AppvGeneralManager_At'] = $row['AppvGeneralManager_At'];
+
+            $nestedData['IsAppvAdditional'] = $row['IsAppvAdditional'];
+            $nestedData['Status_AppvAdditional'] = $row['Status_AppvAdditional'];
+            $nestedData['AppvAdditional_By'] = $row['AppvAdditional_By'];
+            $nestedData['AppvAdditional_At'] = $row['AppvAdditional_At'];
+
+            $nestedData['IsAppvDirector'] = $row['IsAppvDirector'];
+            $nestedData['Status_AppvDirector'] = $row['Status_AppvDirector'];
+            $nestedData['AppvDirector_By'] = $row['AppvDirector_By'];
+            $nestedData['AppvDirector_At'] = $row['AppvDirector_At'];
+            $nestedData['IsAppvPresidentDirector'] = $row['IsAppvPresidentDirector'];
+            $nestedData['Status_AppvPresidentDirector'] = $row['Status_AppvPresidentDirector'];
+            $nestedData['AppvPresidentDirector_By'] = $row['AppvPresidentDirector_By'];
+            $nestedData['AppvPresidentDirector_At'] = $row['AppvPresidentDirector_At'];
+            // $nestedData['IsAppvFinanceStaff'] = $row['IsAppvFinanceStaff'];
+            // $nestedData['Status_AppvFinanceStaff'] = $row['Status_AppvFinanceStaff'];
+            // $nestedData['AppvFinanceStaff_By'] = $row['AppvFinanceStaff_By'];
+            // $nestedData['AppvFinanceStaff_At'] = $row['AppvFinanceStaff_At'];
+            // $nestedData['IsAppvFinanceManager'] = $row['IsAppvFinanceManager'];
+            // $nestedData['Status_AppvFinanceManager'] = $row['Status_AppvFinanceManager'];
+            // $nestedData['AppvFinanceManager_By'] = $row['AppvFinanceManager_By'];
+            // $nestedData['AppvFinanceManager_At'] = $row['AppvFinanceManager_At'];
+            $nestedData['IsAppvFinanceDirector'] = $row['IsAppvFinanceDirector'];
+            $nestedData['Status_AppvFinanceDirector'] = $row['Status_AppvFinanceDirector'];
+            $nestedData['AppvFinanceDirector_By'] = $row['AppvFinanceDirector_By'];
+            $nestedData['AppvFinanceDirector_At'] = $row['AppvFinanceDirector_At'];
+            $nestedData['UserName_User'] = $row['UserName_User'];
+            $nestedData['Rec_Created_At'] = $row['Rec_Created_At'];
+            $nestedData['UserDivision'] = $row['UserDivision'];
 
             $data[] = $nestedData;
         }
