@@ -89,17 +89,6 @@ CREATE TABLE dbsai_erp_uat.dbo.Thst_trx_Dtl_Attachment_Cbr (
 
 -- Drop table
 
-DROP TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR;
-CREATE TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR (
-	Dir_ID bigint IDENTITY(1,1) NOT NULL,
-	Emp_No varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	UserID int NOT NULL,
-	Pos_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	Division_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	First_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	is_active bit DEFAULT 1 NOT NULL
-);
-
 drop table dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User;
 CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (
 	SysId bigint IDENTITY(1,1) NOT NULL,
@@ -121,6 +110,24 @@ INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, 
 INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29552', 10002, '2025-10-12 22:05:21.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'19823', 10002, '2025-10-12 22:05:21.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Ttrx_Assignment_Approval_User (UserName_Employee, SysId_Approval, Created_at, Created_by) VALUES(N'29760', 10002, '2025-10-12 22:05:21.000', N'29431');
+
+
+DROP TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR;
+CREATE TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR (
+	Dir_ID bigint IDENTITY(1,1) NOT NULL,
+	Emp_No varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	UserID int NOT NULL,
+	Pos_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Division_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	First_Name varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	is_active bit DEFAULT 1 NOT NULL
+);
+
+INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90108', 203, N'President Director', N'Board Of Directors', N'Eric Kim', 1);
+INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90115', 227, N'Director', N'Board Of Directors', N'Kim Sung Phil', 1);
+INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90112', 181, N'Finance Director', N'Board Of Directors', N'Ha Dong Hyun', 1);
+INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'Mr.Lee Weon Kuk', 77, N'Director', N'Board Of Directors', N'Lee Weon Kuk', 1);
+INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90117', 210, N'Director', N'Board Of Directors', N'Kim Ji Hoon', 1);
 
 
 DROP TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval;
