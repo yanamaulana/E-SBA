@@ -72,6 +72,7 @@ class CbrAppDirector extends CI_Controller
                 'AppvDirector_By' => $this->session->userdata('sys_sba_username'),
                 'AppvDirector_At' => $this->DateTime,
             ]);
+            $this->help->record_history_approval($CBReq_No);
         }
 
         $error_msg = $this->db->error()["message"];

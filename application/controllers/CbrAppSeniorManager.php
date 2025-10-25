@@ -71,6 +71,8 @@ class CbrAppSeniorManager extends CI_Controller
                 'AppvSeniorManager_By' => $this->session->userdata('sys_sba_username'),
                 'AppvSeniorManager_At' => $this->DateTime,
             ]);
+
+            $this->help->record_history_approval($CBReq_No);
         }
 
         $error_msg = $this->db->error()["message"];

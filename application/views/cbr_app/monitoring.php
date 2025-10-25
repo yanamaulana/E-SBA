@@ -6,6 +6,14 @@
                     <div class="row">
                         <form action="#" method="post" id="filter-data">
                             <div class="row">
+                                <div class="col-xl-2 py-2 col-md-2">
+                                    <div class="input-group">
+                                        <select name="column_range" id="column_range" class="form-control form-control-sm text-center readonly">
+                                            <option value="TaccCashBookReq_Header.Document_Date">Document Date</option>
+                                            <option value="Ttrx_Cbr_Approval.Rec_Created_At">Submission Date</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-xl-4 py-2 col-md-6">
                                     <div class="input-group">
                                         <input type="text" name="from" id="from" class="form-control form-control-sm  date-picker text-center readonly" value="<?= date('Y-m-01') ?>">
@@ -31,6 +39,7 @@
                                     <th class="text-center text-white">Submission</th>
                                     <th class="text-center text-white">Type</th>
                                     <th class="text-center text-white">Date</th>
+                                    <th class="text-center text-white">Submit <i class="far fa-calendar-alt text-white"></i></th>
                                     <th class="text-center text-white">Curr</th>
                                     <th class="text-center text-white">Amount</th>
                                     <th class="text-center text-white">Ref No</th>

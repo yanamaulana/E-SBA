@@ -526,17 +526,17 @@
     <script>
         window.renderApprovalStatus = function(data, status) {
             if (data == 0) {
-                return `<span data-bs-toggle="tooltip" title="No approval needed." class="badge bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+                return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="No approval needed." class="badge bg-secondary text-dark">🛇</span>`;
             }
 
             // Perbaikan: Cek status hanya sekali
             if (data == 1) {
                 if (status == null || status === undefined || status === '') {} else if (status == 0) {
-                    return `<span data-bs-toggle="tooltip" title="Approval In Progress" class="badge bg-warning"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Approval In Progress" class="badge bg-light">⌛</span>`;
                 } else if (status == 1) {
-                    return `<span data-bs-toggle="tooltip" title="approved" class="badge bg-success"><i class="fas fa-check text-white"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Aproved" class="badge bg-light">✅</span>`;
                 } else {
-                    return `<span  title="reject" class="badge bg-danger"><i class="fas fa-exclamation-triangle text-dark"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Rejected" class="badge bg-light">❌</span>`;
                 }
             }
 
@@ -548,22 +548,20 @@
             const baseClass = 'badge btn-icon';
 
             if (Has_Submitted_Approval == 0) {
-                return `<span ${tooltipAttr} title="Approval not yet submitted" class="${baseClass} bg-info"><i class="fas fa-question"></i></span>`;
+                return `<span style="font-size:12pt;" ${tooltipAttr} title="Approval not yet submitted" class="${baseClass} bg-dark">❔</span>`;
             }
 
             if (flag == 0) {
-                return `<span ${tooltipAttr} title="No approval needed." class="${baseClass} bg-secondary"><i class="fas fa-ban text-dark"></i></span>`;
+                return `<span style="font-size:12pt;" ${tooltipAttr} title="No approval needed." class="${baseClass} bg-secondary text-dark">🛇</span>`;
             }
 
             if (flag == 1) {
                 if (status == 0) {
-                    return `<span ${tooltipAttr} title="Approval in progress" class="${baseClass} bg-warning text-dark"><i class="bi bi-hourglass-split text-dark"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Approval In Progress" class="badge bg-light">⌛</span>`;
                 } else if (status == 1) {
-                    // 3. Rejected
-                    return `<span ${tooltipAttr} title="Approved" class="${baseClass} bg-success"><i class="fas fa-check text-white"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Aproved" class="badge bg-light">✅</span>`;
                 } else if (status == 2) {
-                    // 4. In Progress (Status NULL/Belum disubmit)
-                    return `<span ${tooltipAttr} title="Rejected" class="${baseClass} bg-danger"><i class="fas fa-times text-white"></i></span>`;
+                    return `<span style="font-size:12pt;" data-bs-toggle="tooltip" title="Rejected" class="badge bg-light">❌</span>`;
                 }
             }
 

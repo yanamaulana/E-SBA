@@ -266,4 +266,61 @@ class m_helper extends CI_Model
             ) ";
         // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
     }
+
+    function record_history_approval($CBReq_No)
+    {
+        // 1. Hitung SubmissionCount dari tabel History (Logika ini sudah benar)
+        $count = $this->db
+            ->where('CBReq_No', $CBReq_No)
+            ->from('Thst_Trx_Cbr_Approval')
+            ->count_all_results();
+
+        $CountTry = $count + 1;
+
+        // 2. Query INSERT INTO ... SELECT dengan Query Binding
+        $sql = "INSERT INTO Thst_Trx_Cbr_Approval (
+        SubmissionCount, SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, 
+        IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At, IsAppvAsstManager, 
+        Status_AppvAsstManager, AppvAsstManager_By, AppvAsstManager_Name, AppvAsstManager_At, IsAppvManager, 
+        Status_AppvManager, AppvManager_By, AppvManager_Name, AppvManager_At, IsAppvSeniorManager, 
+        Status_AppvSeniorManager, AppvSeniorManager_By, AppvSeniorManager_Name, AppvSeniorManager_At, 
+        IsAppvGeneralManager, Status_AppvGeneralManager, AppvGeneralManager_By, AppvGeneralManager_Name, 
+        AppvGeneralManager_At, IsAppvAdditional, Status_AppvAdditional, AppvAdditional_By, AppvAdditional_Name, 
+        AppvAdditional_At, IsAppvDirector, Status_AppvDirector, AppvDirector_By, AppvDirector_Name, AppvDirector_At, 
+        IsAppvPresidentDirector, Status_AppvPresidentDirector, AppvPresidentDirector_By, AppvPresidentDirector_Name, 
+        AppvPresidentDirector_At, IsAppvFinanceDirector, Status_AppvFinanceDirector, AppvFinanceDirector_By, 
+        AppvFinanceDirector_Name, AppvFinanceDirector_At, UserName_User, UserDivision, Rec_Created_At, 
+        IsAppvFinancePerson, Status_AppvFinancePerson, AppvFinancePerson_By, AppvFinancePerson_Name, 
+        AppvFinancePerson_At, Legitimate, Doc_Legitimate_Pos_On
+    )
+    SELECT
+        ? AS SubmissionCount, T1.SysID, T1.CBReq_No, T1.SysId_Step, T1.IsAppvStaff, T1.Status_AppvStaff, T1.AppvStaff_By, T1.AppvStaff_Name, T1.AppvStaff_At, 
+        T1.IsAppvChief, T1.Status_AppvChief, T1.AppvChief_By, T1.AppvChief_Name, T1.AppvChief_At, T1.IsAppvAsstManager, 
+        T1.Status_AppvAsstManager, T1.AppvAsstManager_By, T1.AppvAsstManager_Name, T1.AppvAsstManager_At, T1.IsAppvManager, 
+        T1.Status_AppvManager, T1.AppvManager_By, T1.AppvManager_Name, T1.AppvManager_At, T1.IsAppvSeniorManager, 
+        T1.Status_AppvSeniorManager, T1.AppvSeniorManager_By, T1.AppvSeniorManager_Name, T1.AppvSeniorManager_At, 
+        T1.IsAppvGeneralManager, T1.Status_AppvGeneralManager, T1.AppvGeneralManager_By, T1.AppvGeneralManager_Name, 
+        T1.AppvGeneralManager_At, T1.IsAppvAdditional, T1.Status_AppvAdditional, T1.AppvAdditional_By, T1.AppvAdditional_Name, 
+        T1.AppvAdditional_At, T1.IsAppvDirector, T1.Status_AppvDirector, T1.AppvDirector_By, T1.AppvDirector_Name, T1.AppvDirector_At, 
+        T1.IsAppvPresidentDirector, T1.Status_AppvPresidentDirector, T1.AppvPresidentDirector_By, T1.AppvPresidentDirector_Name, 
+        T1.AppvPresidentDirector_At, T1.IsAppvFinanceDirector, T1.Status_AppvFinanceDirector, T1.AppvFinanceDirector_By, 
+        T1.AppvFinanceDirector_Name, T1.AppvFinanceDirector_At, T1.UserName_User, T1.UserDivision, T1.Rec_Created_At, 
+        T1.IsAppvFinancePerson, T1.Status_AppvFinancePerson, T1.AppvFinancePerson_By, T1.AppvFinancePerson_Name, 
+        T1.AppvFinancePerson_At, T1.Legitimate, T1.Doc_Legitimate_Pos_On
+    FROM 
+        dbo.Ttrx_Cbr_Approval AS T1
+    WHERE T1.CBReq_No = ?
+    ";
+
+        // var_dump($sql);
+        // die;
+
+        // ✅ Buat array binding
+        $bindings = [(int)$CountTry, $CBReq_No];
+
+        // ✅ Eksekusi query dengan binding
+        $result = $this->db->query($sql, $bindings);
+
+        return $result;
+    }
 }

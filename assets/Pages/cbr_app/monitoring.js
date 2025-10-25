@@ -31,7 +31,8 @@ $(document).ready(function () {
                 type: "POST",
                 data: {
                     from: $('#from').val(),
-                    until: $('#until').val()
+                    until: $('#until').val(),
+                    column_range: $('#column_range').val(),
                 }
             },
             columns: [
@@ -68,6 +69,17 @@ $(document).ready(function () {
                     name: "Document_Date",
                     render: function (data) {
                         return data.substring(0, data.indexOf(' '));
+                    }
+                },
+                {
+                    data: "Rec_Created_At",
+                    name: "Rec_Created_At",
+                    render: function (data) {
+                        if (data == null || data == '') {
+                            return '-'
+                        } else {
+                            return data.substring(0, data.indexOf(' '));
+                        }
                     }
                 },
                 {

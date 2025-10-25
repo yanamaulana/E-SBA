@@ -13,163 +13,13 @@ $(document).ready(function () {
 
     $('.date-picker').flatpickr();
 
-
-    function Fn_Initialized_DataTable() {
-        $("#TableDataHistory").DataTable({
-            destroy: true,
-            processing: true,
-            serverSide: true,
-            paging: true,
-            dom: 'lBfrtip',
-            select: true,
-            "lengthMenu": [
-                [10, 30, 90, 1000],
-                [10, 30, 90, 1000]
-            ],
-            ajax: {
-                url: $('meta[name="base_url"]').attr('content') + "MyCbr/DT_List_History_Submission",
-                dataType: "json",
-                type: "POST",
-                data: {
-                    from: $('#from').val(),
-                    until: $('#until').val()
-                }
-            },
-            columns: [
-                {
-                    data: "CBReq_No", name: "CBReq_No", orderable: false, render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                },
-                { data: "CBReq_No", name: "CBReq_No", },
-                { data: "Type", name: "Type", visible: false },
-                {
-                    data: "Document_Date", name: "Document_Date", render: function (data) {
-                        return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
-                    }
-                },
-                { data: "Currency_Id", name: "Currency_Id" },
-                {
-                    data: "Amount", name: "Amount", render: function (data) {
-                        return parseFloat(data).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
-                    }
-                },
-                { data: "Document_Number", name: "Document_Number" },
-                { data: "Descript", name: "Descript" },
-                { data: "baseamount", name: "baseamount", visible: false },
-                { data: "curr_rate", name: "curr_rate", visible: false },
-                { data: "Approval_Status", name: "Approval_Status", visible: false },
-                {
-                    data: "CBReq_Status", name: "CBReq_Status", render: function (data) {
-                        if (data == 3) {
-                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`;
-                        } else if (data == 2) {
-                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a>`;
-                        } else {
-                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a>`;
-                        }
-                    }
-                },
-                {
-                    data: "Paid_Status", name: "Paid_Status", render: function (data) {
-                        if (data == 'NP') {
-                            return `<span class="text-dark badge badge-warning">Not Paid</span>`;
-                        } else if (data == 'HP') {
-                            return `<span class="text-dark badge badge-info">Half Paid</span>`;
-                        } else {
-                            return `<span class="text-dark badge badge-success">Full Paid</span>`;
-                        }
-                    }
-                },
-                { data: "Creation_DateTime", name: "Creation_DateTime", visible: false },
-                { data: "Created_By", name: "Created_By", visible: false },
-                { data: "First_Name", name: "First_Name", orderable: false },
-                { data: "Last_Update", name: "Last_Update", visible: false },
-                { data: "Acc_ID", name: "Acc_ID", visible: false },
-                { data: "Approve_Date", name: "Approve_Date", visible: false },
-                { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
-                { data: "IsAppvChief", name: "IsAppvChief", visible: false },
-                { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
-                {
-                    data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvManager);
-                    }
-                },
-                {
-                    data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvSeniorManager);
-                    }
-                },
-                {
-                    data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvGeneralManager);
-                    }
-                },
-                {
-                    data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvAdditional);
-                    }
-                },
-                {
-                    data: "IsAppvDirector", name: "IsAppvDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvDirector);
-                    }
-                },
-                {
-                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
-                    }
-                },
-                {
-                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
-                    }
-                }
-            ],
-            order: [
-                [3, "DESC"]
-            ],
-            columnDefs: [
-                { width: 220, targets: 7 },
-                {
-                    className: "text-center dt-nowrap",
-                    // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
-                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
-                }, {
-                    className: "details-control pr-4 dt-nowrap",
-                    targets: [1]
-                }
-            ],
-            scrollCollapse: true,
-            scrollX: true,
-            scrollY: 410,
-            responsive: false,
-            preDrawCallback: function () {
-                $("#TableDataHistory tbody td").addClass("blurry"); // Poin 1: Tambahkan #
-            },
-            language: {
-                processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
-                searchPlaceholder: "Search..."
-            },
-            drawCallback: function () {
-                $("#TableDataHistory tbody td").removeClass("blurry"); // Poin 1: Tambahkan #
-                $('[data-bs-toggle="tooltip"]').tooltip();
-                DataTable.tables({ visible: true, api: true }).columns.adjust();
-            },
-            "buttons": [
-                { text: `Export to :`, className: "btn disabled text-dark bg-white" },
-                { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
-                { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
-            ],
-        }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
-    }
-
     var TableData = $("#TableData").DataTable({
         destroy: true,
         processing: true,
         serverSide: true,
         paging: true,
-        dom: 'lBfrtip',
+        // dom: 'lBfrtip',
+        dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
         orderCellsTop: true,
         select: false,
         "lengthMenu": [
@@ -402,11 +252,184 @@ $(document).ready(function () {
         ],
     }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
 
+
+    function Fn_Initialized_DataTable() {
+        $("#TableDataHistory").DataTable({
+            destroy: true,
+            processing: true,
+            serverSide: true,
+            paging: true,
+            dom: 'lBfrtip',
+            select: true,
+            "lengthMenu": [
+                [10, 30, 90, 1000],
+                [10, 30, 90, 1000]
+            ],
+            ajax: {
+                url: $('meta[name="base_url"]').attr('content') + "MyCbr/DT_List_History_Submission",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    from: $('#from').val(),
+                    until: $('#until').val(),
+                    column_range: $('#column_range').val(),
+                }
+            },
+            columns: [
+                {
+                    data: "CBReq_No", name: "CBReq_No", orderable: false, render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { data: "CBReq_No", name: "CBReq_No", },
+                { data: "Type", name: "Type", visible: false },
+                {
+                    data: "Document_Date", name: "Document_Date", render: function (data) {
+                        return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
+                    }
+                },
+                {
+                    data: "Rec_Created_At", name: "Rec_Created_At", render: function (data) {
+                        return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
+                    }
+                },
+                { data: "Currency_Id", name: "Currency_Id" },
+                {
+                    data: "Amount", name: "Amount", render: function (data) {
+                        return parseFloat(data).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+                    }
+                },
+                { data: "Document_Number", name: "Document_Number" },
+                { data: "Descript", name: "Descript" },
+                { data: "baseamount", name: "baseamount", visible: false },
+                { data: "curr_rate", name: "curr_rate", visible: false },
+                { data: "Approval_Status", name: "Approval_Status", visible: false },
+                {
+                    data: "CBReq_Status", name: "CBReq_Status", render: function (data) {
+                        if (data == 3) {
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`;
+                        } else if (data == 2) {
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a>`;
+                        } else {
+                            return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a>`;
+                        }
+                    }
+                },
+                {
+                    data: "Paid_Status", name: "Paid_Status", render: function (data) {
+                        if (data == 'NP') {
+                            return `<span class="text-dark badge badge-warning">Not Paid</span>`;
+                        } else if (data == 'HP') {
+                            return `<span class="text-dark badge badge-info">Half Paid</span>`;
+                        } else {
+                            return `<span class="text-dark badge badge-success">Full Paid</span>`;
+                        }
+                    }
+                },
+                { data: "Creation_DateTime", name: "Creation_DateTime", visible: false },
+                { data: "Created_By", name: "Created_By", visible: false },
+                { data: "First_Name", name: "First_Name", orderable: false },
+                { data: "Last_Update", name: "Last_Update", visible: false },
+                { data: "Acc_ID", name: "Acc_ID", visible: false },
+                { data: "Approve_Date", name: "Approve_Date", visible: false },
+                { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
+                { data: "IsAppvChief", name: "IsAppvChief", visible: false },
+                { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
+                {
+                    data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvManager);
+                    }
+                },
+                {
+                    data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvSeniorManager);
+                    }
+                },
+                {
+                    data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvGeneralManager);
+                    }
+                },
+                {
+                    data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvAdditional);
+                    }
+                },
+                {
+                    data: "IsAppvDirector", name: "IsAppvDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvDirector);
+                    }
+                },
+                {
+                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
+                    }
+                },
+                {
+                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
+                    }
+                }
+            ],
+            order: [
+                [3, "DESC"]
+            ],
+            columnDefs: [
+                { width: 220, targets: 7 },
+                {
+                    className: "text-center dt-nowrap",
+                    // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
+                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
+                }, {
+                    className: "details-control pr-4 dt-nowrap",
+                    targets: [1]
+                }
+            ],
+            scrollCollapse: true,
+            scrollX: true,
+            scrollY: 410,
+            responsive: false,
+            preDrawCallback: function () {
+                $("#TableDataHistory tbody td").addClass("blurry"); // Poin 1: Tambahkan #
+            },
+            language: {
+                processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
+                searchPlaceholder: "Search..."
+            },
+            drawCallback: function () {
+                $("#TableDataHistory tbody td").removeClass("blurry"); // Poin 1: Tambahkan #
+                $('[data-bs-toggle="tooltip"]').tooltip();
+                DataTable.tables({ visible: true, api: true }).columns.adjust();
+            },
+            "rowCallback": function (row, data) {
+                // console.log(data.Legitimate)
+                if (data.Status_AppvManager == '2' ||
+                    data.Status_AppvSeniorManager == '2' ||
+                    data.Status_AppvGeneralManager == '2' ||
+                    data.Status_AppvAdditional == '2' ||
+                    data.Status_AppvDirector == '2' ||
+                    data.Status_AppvPresidentDirector == '2' ||
+                    data.Status_AppvFinanceDirector == '2') {
+                    $('td', row).css('background-color', '#F8D7DA');
+                }
+
+                if (data.Legitimate == '1') {
+                    $('td', row).css('background-color', '#D4EDDA');
+                }
+            },
+            "buttons": [
+                { text: `Export to :`, className: "btn disabled text-dark bg-white" },
+                { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
+                { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
+            ],
+        }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
+    }
+
+
+
     $('#do--filter').on('click', function () {
         $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
     })
-
-    Fn_Initialized_DataTable()
 
 
     $(document).on('click', 'td.details-control', function () {
@@ -432,11 +455,11 @@ $(document).ready(function () {
         }
     });
 
-    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
-        el.addEventListener('shown.bs.tab', () => {
-            DataTable.tables({ visible: true, api: true }).columns.adjust();
-        });
-    });
+    // document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
+    //     el.addEventListener('shown.bs.tab', () => {
+    //         DataTable.tables({ visible: true, api: true }).columns.adjust();
+    //     });
+    // });
 
     function format(d, is_hst_table) {
         console.log(is_hst_table)
@@ -760,7 +783,7 @@ $(document).ready(function () {
                     });
                     $('#CheckAll').removeAttr('checked');
                     $('#TableData').DataTable().ajax.reload(null, false);
-                    $("#TableDataHistory").DataTable().ajax.reload(null, false);
+                    $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -792,7 +815,163 @@ $(document).ready(function () {
         window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_rpt_cbr/${Cbr_no}`, `RptCbr-${Cbr_no}`, 'width=854,height=480');
     })
 
+    var TableDataResubmission = $("#TableDataResubmission").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
+        select: true,
+        "lengthMenu": [
+            [10, 30, 90, 1000],
+            [10, 30, 90, 1000]
+        ],
+        ajax: {
+            url: $('meta[name="base_url"]').attr('content') + "MyCbr/DT_List_Resubmission",
+            dataType: "json",
+            type: "POST"
+        },
+        columns: [
+            {
+                data: "CBReq_No", name: "CBReq_No", orderable: false, render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: "CBReq_No", name: "CBReq_No", },
+            { data: "Type", name: "Type", visible: false },
+            {
+                data: "Document_Date", name: "Document_Date", render: function (data) {
+                    return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
+                }
+            },
+            {
+                data: "Rec_Created_At", name: "Rec_Created_At", render: function (data) {
+                    return data ? data.substring(0, data.indexOf(' ')) : '-'; // Tambah cek NULL
+                }
+            },
+            { data: "Currency_Id", name: "Currency_Id" },
+            {
+                data: "Amount", name: "Amount", render: function (data) {
+                    return parseFloat(data).toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+                }
+            },
+            { data: "Document_Number", name: "Document_Number" },
+            { data: "Descript", name: "Descript" },
+            { data: "baseamount", name: "baseamount", visible: false },
+            { data: "curr_rate", name: "curr_rate", visible: false },
+            { data: "Approval_Status", name: "Approval_Status", visible: false },
+            {
+                data: "CBReq_Status", name: "CBReq_Status", render: function (data) {
+                    if (data == 3) {
+                        return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`;
+                    } else if (data == 2) {
+                        return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Open" class="badge badge-info btn-icon"><i class="text-white fas fa-folder-open"></i></a>`;
+                    } else {
+                        return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="New" class="badge badge-warning btn-icon"><i class="text-white fas fa-file"></i></a>`;
+                    }
+                }
+            },
+            {
+                data: "Paid_Status", name: "Paid_Status", render: function (data) {
+                    if (data == 'NP') {
+                        return `<span class="text-dark badge badge-warning">Not Paid</span>`;
+                    } else if (data == 'HP') {
+                        return `<span class="text-dark badge badge-info">Half Paid</span>`;
+                    } else {
+                        return `<span class="text-dark badge badge-success">Full Paid</span>`;
+                    }
+                }
+            },
+            { data: "Creation_DateTime", name: "Creation_DateTime", visible: false },
+            { data: "Created_By", name: "Created_By", visible: false },
+            { data: "First_Name", name: "First_Name", orderable: false },
+            { data: "Last_Update", name: "Last_Update", visible: false },
+            { data: "Acc_ID", name: "Acc_ID", visible: false },
+            { data: "Approve_Date", name: "Approve_Date", visible: false },
+            { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
+            { data: "IsAppvChief", name: "IsAppvChief", visible: false },
+            { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
+            {
+                data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvManager);
+                }
+            },
+            {
+                data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvSeniorManager);
+                }
+            },
+            {
+                data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvGeneralManager);
+                }
+            },
+            {
+                data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvAdditional);
+                }
+            },
+            {
+                data: "IsAppvDirector", name: "IsAppvDirector", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvDirector);
+                }
+            },
+            {
+                data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
+                }
+            },
+            {
+                data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
+                }
+            }
+        ],
+        order: [
+            [3, "DESC"]
+        ],
+        columnDefs: [
+            { width: 220, targets: 7 },
+            {
+                className: "text-center dt-nowrap",
+                // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
+                targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
+            }, {
+                className: "details-control pr-4 dt-nowrap",
+                targets: [1]
+            }
+        ],
+        scrollCollapse: true,
+        scrollX: true,
+        scrollY: 410,
+        responsive: false,
+        autoWidth: true,
+        preDrawCallback: function () {
+            $("#TableDataResubmission tbody td").addClass("blurry"); // Poin 1: Tambahkan #
+        },
+        language: {
+            processing: '<i style="color:#4a4a4a" class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only"></span><p><span style="color:#4a4a4a" style="text-align:center" class="loading-text"></span> ',
+            searchPlaceholder: "Search..."
+        },
+        drawCallback: function () {
+            $("#TableDataResubmission tbody td").removeClass("blurry"); // Poin 1: Tambahkan #
+            $('[data-bs-toggle="tooltip"]').tooltip();
+            DataTable.tables({ visible: true, api: true }).columns.adjust();
+        },
+        "buttons": [
+            { text: `Export to :`, className: "btn disabled text-dark bg-white" },
+            { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
+            { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
+        ],
+    }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
 
+
+    document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
+        el.addEventListener('shown.bs.tab', () => {
+            // Panggil penyesuaian kolom untuk SEMUA tabel yang terlihat
+            DataTable.tables({ visible: true, api: true }).columns.adjust();
+        });
+    });
 })
 
 function check_uncheck_checkbox(isChecked) {

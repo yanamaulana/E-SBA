@@ -105,6 +105,8 @@ class CbrAppFinanceDirector extends CI_Controller
                     'AppvDirector_At'     => $this->DateTime,
                 ]);
             }
+
+            $this->help->record_history_approval($CBReq_No);
         }
 
         $error_msg = $this->db->error()["message"];

@@ -71,6 +71,8 @@ class CbrAppAsstManager extends CI_Controller
                 'AppvAsstManager_By' => $this->session->userdata('sys_sba_username'),
                 'AppvAsstManager_At' => $this->DateTime,
             ]);
+
+            $this->help->record_history_approval($CBReq_No);
         }
 
         $error_msg = $this->db->error()["message"];

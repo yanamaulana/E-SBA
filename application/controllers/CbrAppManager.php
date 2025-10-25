@@ -71,7 +71,9 @@ class CbrAppManager extends CI_Controller
                 'AppvManager_By' => $this->session->userdata('sys_sba_username'),
                 'AppvManager_At' => $this->DateTime,
             ]);
+            $this->help->record_history_approval($CBReq_No);
         }
+
 
         $error_msg = $this->db->error()["message"];
         $this->db->trans_complete();
