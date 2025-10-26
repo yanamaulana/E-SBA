@@ -50,9 +50,10 @@ class HistoryApproval extends CI_Controller
         $dir    = $requestData['order']['0']['dir'];
         $from   = $this->input->post('from');
         $until  = $this->input->post('until');
+        $column_range  = $this->input->post('column_range');
         $username = $this->session->userdata('sys_sba_username');
 
-        $sql = $this->help->generate_sql_spesific_history_approval($username, $from, $until);
+        $sql = $this->help->generate_sql_spesific_history_approval($username, $column_range, $from, $until);
 
         $totalData = $this->db->query($sql)->num_rows();
         if (!empty($requestData['search']['value'])) {

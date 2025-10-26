@@ -70,46 +70,53 @@
                         </div>
                         <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel">
                             <div class="pb-5 table-responsive">
-                                <table id="TableDataResubmission" class="table-sm align-middle display compact table-rounded table-striped table-bordered border dataTable no-footer dt-inline">
-                                    <thead style="background-color: #3B6D8C;">
-                                        <tr class="text-white fw-bolder text-uppercase">
-                                            <th class="text-center text-white">#</th>
-                                            <th class="text-center text-white">Doc Numb</th>
-                                            <th class="text-center text-white">Type</th>
-                                            <th class="text-center text-white">Doc Date</th>
-                                            <th class="text-center text-white">Submit <i class="far fa-calendar-alt text-white"></i></th>
-                                            <th class="text-center text-white">Curr</th>
-                                            <th class="text-center text-white">Amount</th>
-                                            <th class="text-center text-white">Ref No</th>
-                                            <th class="text-white" style="min-width: 220px;">Description</th>
-                                            <th class="text-center text-white">baseamount</th>
-                                            <th class="text-center text-white">curr_rate</th>
-                                            <th class="text-center text-white">Approval_Status</th>
-                                            <th class="text-center text-white">Status</th>
-                                            <th class="text-center text-white">Paid Status</th>
-                                            <th class="text-center text-white">Creation_DateTime</th>
-                                            <th class="text-center text-white">Created_By</th>
-                                            <th class="text-center text-white">Created By</th>
-                                            <th class="text-center text-white">Last_Update</th>
-                                            <th class="text-center text-white">Acc_ID</th>
-                                            <th class="text-center text-white">Approved Date</th>
-                                            <!-- APPROVAL SECTION -->
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; STAFF</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; CHIEF</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; ASST.MANAGER</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; MANAGER</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; SR.MANAGER</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; G.MANAGER</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; ADDITIONAL</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; DIRECTOR</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; PRESDIR</th>
-                                            <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; FIN. DIRECTOR</th>
+                                <form action="#" id="form-resubmission" method="post">
+                                    <table id="TableDataResubmission" class="table-sm align-middle display compact table-rounded table-striped table-bordered border dataTable no-footer dt-inline">
+                                        <thead style="background-color: #3B6D8C;">
+                                            <tr class="text-white fw-bolder text-uppercase">
+                                                <th class="text-center text-white">
+                                                    <div class="custom-checkbox" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Select ALL">
+                                                        <input class="form-check-input" type="checkbox" id="CheckAll" value="checkall" onclick="check_uncheck_checkbox_resubmission(this.checked);">
+                                                        <label for="CheckAll" class="custom-control-label"></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center text-white">Doc Numb</th>
+                                                <th class="text-center text-white">Type</th>
+                                                <th class="text-center text-white">Doc Date</th>
+                                                <th class="text-center text-white">Submit <i class="far fa-calendar-alt text-white"></i></th>
+                                                <th class="text-center text-white">Curr</th>
+                                                <th class="text-center text-white">Amount</th>
+                                                <th class="text-center text-white">Ref No</th>
+                                                <th class="text-white" style="min-width: 220px;">Description</th>
+                                                <th class="text-center text-white">baseamount</th>
+                                                <th class="text-center text-white">curr_rate</th>
+                                                <th class="text-center text-white">Approval_Status</th>
+                                                <th class="text-center text-white">Status</th>
+                                                <th class="text-center text-white">Paid Status</th>
+                                                <th class="text-center text-white">Creation_DateTime</th>
+                                                <th class="text-center text-white">Created_By</th>
+                                                <th class="text-center text-white">Created By</th>
+                                                <th class="text-center text-white">Last_Update</th>
+                                                <th class="text-center text-white">Acc_ID</th>
+                                                <th class="text-center text-white">Approved Date</th>
+                                                <!-- APPROVAL SECTION -->
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; STAFF</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; CHIEF</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; ASST.MANAGER</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; MANAGER</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; SR.MANAGER</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; G.MANAGER</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; ADDITIONAL</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; DIRECTOR</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; PRESDIR</th>
+                                                <th class="text-center text-white"><i class="fas fa-edit fs-5 text-white"></i>&nbsp; FIN. DIRECTOR</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-gray-600 fw-bold">
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-gray-600 fw-bold">
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel">

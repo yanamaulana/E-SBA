@@ -66,7 +66,7 @@ class MyCbr extends CI_Controller
         foreach ($Cbrs as $CBReq_No) {
             $this->db->insert($this->Ttrx_Cbr_Approval, [
                 "CBReq_No" => $CBReq_No,
-                'SysId_Step' => $RulesApproval->SysId_Step,
+                'SysId_Step' => $RulesApproval->SysId_Approval,
                 "IsAppvStaff" => $RulesApproval->Staff,
                 "Status_AppvStaff" => 0,
                 "AppvStaff_By" => $RulesApproval->Staff_Person ?: NULL,
@@ -875,7 +875,12 @@ class MyCbr extends CI_Controller
             mkdir($folderPath, 0755, true);
         }
 
-        $FileNametoUpload = str_replace(" ", "_", $upload_attachment);
+        $file_info = pathinfo($upload_attachment);
+        $baseName = $file_info['filename'];
+        $extension = $file_info['extension'];
+        $cleanName = preg_replace('/[.:\s]+/', '_', $baseName);
+        $FileNametoUpload = $cleanName . '.' . $extension;
+
         $ValidateUniqueFile = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, [
             'CbrNo' => $this->input->post('CbrNo'),
             'Attachment_FileName' =>  $FileNametoUpload
@@ -898,7 +903,15 @@ class MyCbr extends CI_Controller
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload('attachment')) {
-                $attachment_file_name = $Year . "/" . $MstAttachmentType->Att_Code .  '/' . $FileNametoUpload;
+                // 🔥 KOREKSI 2: Ambil nama file yang sudah di-sanitize oleh library upload
+                $upload_data = $this->upload->data();
+                $sanitizedFileName = $upload_data['file_name'];
+
+                // Simpan nama file yang sudah pasti ada di folder ke database
+                $attachment_file_name = $Year . "/" . $MstAttachmentType->Att_Code .  '/' . $sanitizedFileName;
+
+                // 🔥 KOREKSI 3: Update $FileNametoUpload agar sinkron dengan yang disimpan di DB
+                $FileNametoUpload = $sanitizedFileName;
             } else {
                 $response = [
                     "code" => 500,
@@ -962,7 +975,7 @@ class MyCbr extends CI_Controller
                             WHERE T1.SysId = $id
                             ");
 
-        unlink($file_path);
+        // unlink($file_path);
         $this->db->delete($this->Ttrx_Dtl_Attachment_Cbr, ['SysId' => $id]);
 
         $this->db->trans_complete();
@@ -1001,5 +1014,192 @@ class MyCbr extends CI_Controller
 
 
         $this->load->view('mycbr/rpt_detail_cbr', $this->data);
+    }
+
+
+    public function approve_resubmission()
+    {
+        $Cbrs = $this->input->post('CBReq_No_Resubmission');
+        $CbrsMissingAttachment = '';
+        $CbrsUnchangedAttachment = '';
+
+        // 1. Validasi Aturan Approval (Rule Check)
+        $RulesApprovals = $this->db->get_where($this->Qview_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')]);
+        if ($RulesApprovals->num_rows() == 0) {
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'     => "Your approval request has failed to submit, contact MIS/Administrator to assign your approval step settings!",
+            ]);
+        }
+        $RulesApproval = $RulesApprovals->row();
+
+        // 2. Loop Validasi Attachment
+        foreach ($Cbrs as $CBReq_No_Validate) {
+            // a. Cek Lampiran Kosong (Harus ada attachment untuk resubmission)
+            $CurrentAttachmentQuery = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $CBReq_No_Validate]);
+            if ($CurrentAttachmentQuery->num_rows() == 0) {
+                $CbrsMissingAttachment .= $CBReq_No_Validate . ', ';
+                continue; // Lanjutkan ke CBR berikutnya jika gagal validasi ini
+            }
+
+            // b. Cek Perubahan Attachment (Harus diubah dari reject terakhir)
+
+            // Cek apakah CBR ini punya riwayat ditolak sebelumnya
+            $max_sub_query = $this->db->select_max('SubmissionCount')
+                ->where('CbrNo', $CBReq_No_Validate)
+                ->get_compiled_select('Thst_trx_Dtl_Attachment_Cbr_Rejected', FALSE);
+
+            $this->db->reset_query();
+
+            // Hanya cek jika ada riwayat rejected (max_sub_query akan menghasilkan nilai)
+            if ($this->db->where('CbrNo', $CBReq_No_Validate)->from('Thst_trx_Dtl_Attachment_Cbr_Rejected')->count_all_results() > 0) {
+                $this->db->reset_query();
+
+                // Ambil data history attachment terakhir yang ditolak
+                $HistoryAttachment = $this->db->select('Attachment_FileName, AttachmentType')
+                    ->where('CbrNo', $CBReq_No_Validate)
+                    ->where("SubmissionCount = ($max_sub_query)", NULL, FALSE)
+                    ->get('Thst_trx_Dtl_Attachment_Cbr_Rejected')
+                    ->result_array();
+
+                $CurrentAttachment = $CurrentAttachmentQuery->result_array(); // Gunakan data yang sudah diambil di awal loop
+
+                // Panggil fungsi perbandingan:
+                $is_unchanged = $this->compare_attachments($HistoryAttachment, $CurrentAttachment);
+
+                if ($is_unchanged) {
+                    $CbrsUnchangedAttachment .= $CBReq_No_Validate . ', ';
+                }
+            }
+        }
+        $this->db->reset_query();
+
+        // 3. Tangani Hasil Validasi
+        if ($CbrsMissingAttachment != '') {
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'     => "Your approval request has failed to submit, Please attach/upload supporting documents for CBR : " . trim($CbrsMissingAttachment, ', ')
+            ]);
+        }
+
+        if ($CbrsUnchangedAttachment != '') {
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'     => "Your approval request has failed to submit, Please MODIFY the attachment(s) for CBR: " . trim($CbrsUnchangedAttachment, ', ') . " (Same as previous rejection)"
+            ]);
+        }
+
+        $this->db->trans_start();
+        foreach ($Cbrs as $CBReq_No) {
+            // $this->db->where('SysId', $SysId)->update($this->TmstTrxSettingSteppApprovalCbr, $data_insert);
+            $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
+                // "CBReq_No" => $CBReq_No,
+                'SysId_Step' => $RulesApproval->SysId_Approval,
+                "IsAppvStaff" => $RulesApproval->Staff,
+                "Status_AppvStaff" => 0,
+                "AppvStaff_By" => $RulesApproval->Staff_Person ?: NULL,
+                "AppvStaff_At" => NULL,
+
+                "IsAppvChief" => $RulesApproval->Chief,
+                "Status_AppvChief" => 0,
+                "AppvChief_By" => $RulesApproval->Chief_Person ?: NULL,
+                "AppvChief_At" => NULL,
+
+                "IsAppvAsstManager" => $RulesApproval->AsstManager,
+                "Status_AppvAsstManager" => 0,
+                "AppvAsstManager_By" => $RulesApproval->AsstManager_Person ?: NULL,
+                "AppvAsstManager_At" => NULL,
+
+                "IsAppvManager" => $RulesApproval->Manager,
+                "Status_AppvManager" => 0,
+                "AppvManager_By" => $RulesApproval->Manager_Person ?: NULL,
+                "AppvManager_At" => NULL,
+
+                "IsAppvSeniorManager" => $RulesApproval->SeniorManager,
+                "Status_AppvSeniorManager" => 0,
+                "AppvSeniorManager_By" => $RulesApproval->SeniorManager_Person ?: NULL,
+                "AppvSeniorManager_At" => NULL,
+
+                "IsAppvGeneralManager" => $RulesApproval->GeneralManager,
+                "Status_AppvGeneralManager" => 0,
+                "AppvGeneralManager_By" => $RulesApproval->GeneralManager_Person ?: NULL,
+                "AppvGeneralManager_At" => NULL,
+
+                'IsAppvAdditional' => $RulesApproval->Additional,
+                'Status_AppvAdditional' =>  0,
+                'AppvAdditional_By' => $RulesApproval->Additional_Person ?: NULL,
+                'AppvAdditional_At'  => NULL,
+
+                "IsAppvDirector" => $RulesApproval->Director,
+                "Status_AppvDirector" => 0,
+                "AppvDirector_By" => $RulesApproval->Director_Person ?: NULL,
+                "AppvDirector_At" => NULL,
+
+                "IsAppvPresidentDirector" => $RulesApproval->PresidentDirector,
+                "Status_AppvPresidentDirector" => 0,
+                "AppvPresidentDirector_By" => $RulesApproval->PresidentDirector_Person ?: NULL,
+                "AppvPresidentDirector_At" => NULL,
+
+                "IsAppvFinanceDirector" => $RulesApproval->FinanceDirector,
+                "Status_AppvFinanceDirector" => 0,
+                "AppvFinanceDirector_By" => $RulesApproval->FinanceDirector_Person ?: NULL,
+                "AppvFinanceDirector_At" => NULL,
+
+                "Doc_Legitimate_Pos_On" =>  $RulesApproval->Doc_Legitimate_Pos_On,
+                // "UserName_User" => $this->session->userdata('sys_sba_username'),
+                // "UserDivision" => $this->session->userdata('sys_sba_department'),
+                "Last_Submit_at" => $this->DateTime,
+            ]);
+        }
+
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => 'Approval request successful. Please perform periodic monitoring on your submission !',
+            ]);
+        }
+    }
+
+    /**
+     * Membandingkan set attachment saat ini dengan set attachment rejected terakhir.
+     * @param array $historyData Hasil result_array() dari Thst_trx_Dtl_Attachment_Cbr_Rejected
+     * @param array $currentData Hasil result_array() dari Ttrx_Dtl_Attachment_Cbr
+     * @return bool TRUE jika attachment SAMA (TIDAK DIUBAH), FALSE jika BERBEDA (DIUBAH).
+     */
+    public function compare_attachments($historyData, $currentData)
+    {
+        // 1. Cek Jumlah Baris (Sudah dilakukan di controller, tapi ini double check)
+        if (count($historyData) !== count($currentData)) {
+            return FALSE; // Berbeda, berarti diubah
+        }
+
+        // 2. Normalisasi dan Sortir untuk Deep Comparison
+        $history_json = [];
+        foreach ($historyData as $row) {
+            $history_json[] = json_encode(['file' => $row['Attachment_FileName'], 'type' => $row['AttachmentType']]);
+        }
+        sort($history_json);
+
+        $current_json = [];
+        foreach ($currentData as $row) {
+            $current_json[] = json_encode(['file' => $row['Attachment_FileName'], 'type' => $row['AttachmentType']]);
+        }
+        sort($current_json);
+
+        // 3. Bandingkan array yang sudah diurutkan
+        if ($history_json === $current_json) {
+            return TRUE; // Sama persis, berarti TIDAK DIUBAH
+        }
+
+        return FALSE; // Berbeda
     }
 }

@@ -225,9 +225,9 @@ class m_helper extends CI_Model
         return $months[$englishMonth];
     }
 
-    function generate_sql_spesific_history_approval($username, $from, $until)
+    function generate_sql_spesific_history_approval($username, $column_range, $from, $until)
     {
-        return "Select distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate,
+        return "SELECT distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate,
         Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id,
         TAccCashBookReq_Header.Approve_Date, Ttrx_Cbr_Approval.IsAppvStaff, Ttrx_Cbr_Approval.Status_AppvStaff, Ttrx_Cbr_Approval.AppvStaff_By, Ttrx_Cbr_Approval.AppvStaff_Name,
         Ttrx_Cbr_Approval.AppvStaff_At, Ttrx_Cbr_Approval.IsAppvChief, Ttrx_Cbr_Approval.Status_AppvChief, Ttrx_Cbr_Approval.AppvChief_By, Ttrx_Cbr_Approval.AppvChief_Name,
@@ -247,8 +247,8 @@ class m_helper extends CI_Model
         INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
         LEFT OUTER JOIN Ttrx_Cbr_Approval ON TAccCashBookReq_Header.CBReq_No = Ttrx_Cbr_Approval.CBReq_No
         WHERE TAccCashBookReq_Header.Type='D'
-        And TAccCashBookReq_Header.Document_Date >= {d '$from'}
-        And TAccCashBookReq_Header.Document_Date <= {d '$until'}
+        And $column_range >= {d '$from'}
+        And $column_range <= {d '$until'}
         AND TAccCashBookReq_Header.Company_ID = 2 
         AND isNull(isSPJ,0) = 0
         AND Approval_Status  = 3
@@ -277,40 +277,71 @@ class m_helper extends CI_Model
 
         $CountTry = $count + 1;
 
+        $sql_att = "INSERT INTO Thst_trx_Dtl_Attachment_Cbr_Rejected (
+                    SubmissionCount,
+                    SysId_trx,
+                    CbrNo,
+                    Attachment_FileName,
+                    Note,
+                    AttachmentType,
+                    Created_by,
+                    Created_at,
+                    Year_Upload
+                )
+                SELECT
+                    $CountTry as SubmissionCount,
+                    T1.SysId,
+                    T1.CbrNo,
+                    T1.Attachment_FileName,
+                    T1.Note,
+                    T1.AttachmentType,
+                    T1.Created_by,
+                    T1.Created_at,
+                    T1.Year_Upload 
+                FROM
+                    Ttrx_Dtl_Attachment_Cbr AS T1
+                WHERE
+                    T1.CbrNo = '$CBReq_No'";
+        $result_att = $this->db->query($sql_att);
+        if (!$result_att) {
+            return false;
+        }
+
+
         // 2. Query INSERT INTO ... SELECT dengan Query Binding
         $sql = "INSERT INTO Thst_Trx_Cbr_Approval (
-        SubmissionCount, SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, 
-        IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At, IsAppvAsstManager, 
-        Status_AppvAsstManager, AppvAsstManager_By, AppvAsstManager_Name, AppvAsstManager_At, IsAppvManager, 
-        Status_AppvManager, AppvManager_By, AppvManager_Name, AppvManager_At, IsAppvSeniorManager, 
-        Status_AppvSeniorManager, AppvSeniorManager_By, AppvSeniorManager_Name, AppvSeniorManager_At, 
-        IsAppvGeneralManager, Status_AppvGeneralManager, AppvGeneralManager_By, AppvGeneralManager_Name, 
-        AppvGeneralManager_At, IsAppvAdditional, Status_AppvAdditional, AppvAdditional_By, AppvAdditional_Name, 
-        AppvAdditional_At, IsAppvDirector, Status_AppvDirector, AppvDirector_By, AppvDirector_Name, AppvDirector_At, 
-        IsAppvPresidentDirector, Status_AppvPresidentDirector, AppvPresidentDirector_By, AppvPresidentDirector_Name, 
-        AppvPresidentDirector_At, IsAppvFinanceDirector, Status_AppvFinanceDirector, AppvFinanceDirector_By, 
-        AppvFinanceDirector_Name, AppvFinanceDirector_At, UserName_User, UserDivision, Rec_Created_At, 
-        IsAppvFinancePerson, Status_AppvFinancePerson, AppvFinancePerson_By, AppvFinancePerson_Name, 
-        AppvFinancePerson_At, Legitimate, Doc_Legitimate_Pos_On
-    )
-    SELECT
-        ? AS SubmissionCount, T1.SysID, T1.CBReq_No, T1.SysId_Step, T1.IsAppvStaff, T1.Status_AppvStaff, T1.AppvStaff_By, T1.AppvStaff_Name, T1.AppvStaff_At, 
-        T1.IsAppvChief, T1.Status_AppvChief, T1.AppvChief_By, T1.AppvChief_Name, T1.AppvChief_At, T1.IsAppvAsstManager, 
-        T1.Status_AppvAsstManager, T1.AppvAsstManager_By, T1.AppvAsstManager_Name, T1.AppvAsstManager_At, T1.IsAppvManager, 
-        T1.Status_AppvManager, T1.AppvManager_By, T1.AppvManager_Name, T1.AppvManager_At, T1.IsAppvSeniorManager, 
-        T1.Status_AppvSeniorManager, T1.AppvSeniorManager_By, T1.AppvSeniorManager_Name, T1.AppvSeniorManager_At, 
-        T1.IsAppvGeneralManager, T1.Status_AppvGeneralManager, T1.AppvGeneralManager_By, T1.AppvGeneralManager_Name, 
-        T1.AppvGeneralManager_At, T1.IsAppvAdditional, T1.Status_AppvAdditional, T1.AppvAdditional_By, T1.AppvAdditional_Name, 
-        T1.AppvAdditional_At, T1.IsAppvDirector, T1.Status_AppvDirector, T1.AppvDirector_By, T1.AppvDirector_Name, T1.AppvDirector_At, 
-        T1.IsAppvPresidentDirector, T1.Status_AppvPresidentDirector, T1.AppvPresidentDirector_By, T1.AppvPresidentDirector_Name, 
-        T1.AppvPresidentDirector_At, T1.IsAppvFinanceDirector, T1.Status_AppvFinanceDirector, T1.AppvFinanceDirector_By, 
-        T1.AppvFinanceDirector_Name, T1.AppvFinanceDirector_At, T1.UserName_User, T1.UserDivision, T1.Rec_Created_At, 
-        T1.IsAppvFinancePerson, T1.Status_AppvFinancePerson, T1.AppvFinancePerson_By, T1.AppvFinancePerson_Name, 
-        T1.AppvFinancePerson_At, T1.Legitimate, T1.Doc_Legitimate_Pos_On
-    FROM 
-        dbo.Ttrx_Cbr_Approval AS T1
-    WHERE T1.CBReq_No = ?
-    ";
+            SubmissionCount, SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, 
+            IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At, IsAppvAsstManager, 
+            Status_AppvAsstManager, AppvAsstManager_By, AppvAsstManager_Name, AppvAsstManager_At, IsAppvManager, 
+            Status_AppvManager, AppvManager_By, AppvManager_Name, AppvManager_At, IsAppvSeniorManager, 
+            Status_AppvSeniorManager, AppvSeniorManager_By, AppvSeniorManager_Name, AppvSeniorManager_At, 
+            IsAppvGeneralManager, Status_AppvGeneralManager, AppvGeneralManager_By, AppvGeneralManager_Name, 
+            AppvGeneralManager_At, IsAppvAdditional, Status_AppvAdditional, AppvAdditional_By, AppvAdditional_Name, 
+            AppvAdditional_At, IsAppvDirector, Status_AppvDirector, AppvDirector_By, AppvDirector_Name, AppvDirector_At, 
+            IsAppvPresidentDirector, Status_AppvPresidentDirector, AppvPresidentDirector_By, AppvPresidentDirector_Name, 
+            AppvPresidentDirector_At, IsAppvFinanceDirector, Status_AppvFinanceDirector, AppvFinanceDirector_By, 
+            AppvFinanceDirector_Name, AppvFinanceDirector_At, UserName_User, UserDivision, Rec_Created_At, 
+            IsAppvFinancePerson, Status_AppvFinancePerson, AppvFinancePerson_By, AppvFinancePerson_Name, 
+            AppvFinancePerson_At, Legitimate, Doc_Legitimate_Pos_On, Last_Submit_at
+        )
+        SELECT
+            ? AS SubmissionCount, T1.SysID, T1.CBReq_No, T1.SysId_Step, T1.IsAppvStaff, T1.Status_AppvStaff, T1.AppvStaff_By, T1.AppvStaff_Name, T1.AppvStaff_At, 
+            T1.IsAppvChief, T1.Status_AppvChief, T1.AppvChief_By, T1.AppvChief_Name, T1.AppvChief_At, T1.IsAppvAsstManager, 
+            T1.Status_AppvAsstManager, T1.AppvAsstManager_By, T1.AppvAsstManager_Name, T1.AppvAsstManager_At, T1.IsAppvManager, 
+            T1.Status_AppvManager, T1.AppvManager_By, T1.AppvManager_Name, T1.AppvManager_At, T1.IsAppvSeniorManager, 
+            T1.Status_AppvSeniorManager, T1.AppvSeniorManager_By, T1.AppvSeniorManager_Name, T1.AppvSeniorManager_At, 
+            T1.IsAppvGeneralManager, T1.Status_AppvGeneralManager, T1.AppvGeneralManager_By, T1.AppvGeneralManager_Name, 
+            T1.AppvGeneralManager_At, T1.IsAppvAdditional, T1.Status_AppvAdditional, T1.AppvAdditional_By, T1.AppvAdditional_Name, 
+            T1.AppvAdditional_At, T1.IsAppvDirector, T1.Status_AppvDirector, T1.AppvDirector_By, T1.AppvDirector_Name, T1.AppvDirector_At, 
+            T1.IsAppvPresidentDirector, T1.Status_AppvPresidentDirector, T1.AppvPresidentDirector_By, T1.AppvPresidentDirector_Name, 
+            T1.AppvPresidentDirector_At, T1.IsAppvFinanceDirector, T1.Status_AppvFinanceDirector, T1.AppvFinanceDirector_By, 
+            T1.AppvFinanceDirector_Name, T1.AppvFinanceDirector_At, T1.UserName_User, T1.UserDivision, T1.Rec_Created_At, 
+            T1.IsAppvFinancePerson, T1.Status_AppvFinancePerson, T1.AppvFinancePerson_By, T1.AppvFinancePerson_Name, 
+            T1.AppvFinancePerson_At, T1.Legitimate, T1.Doc_Legitimate_Pos_On, T1.Last_Submit_at
+        FROM 
+            dbo.Ttrx_Cbr_Approval AS T1
+        WHERE T1.CBReq_No = ?
+        ";
 
         // var_dump($sql);
         // die;

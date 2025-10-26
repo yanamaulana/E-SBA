@@ -190,7 +190,7 @@ $(document).ready(function () {
             action: function (e, dt, node, config) {
                 Swal.fire({
                     title: 'System Message !',
-                    text: `Are you sure to approve all checked submission ?`,
+                    text: `Are you sure to submit all checked submission CBR ?`,
                     icon: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -259,7 +259,7 @@ $(document).ready(function () {
             processing: true,
             serverSide: true,
             paging: true,
-            dom: 'lBfrtip',
+            dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
             select: true,
             "lengthMenu": [
                 [10, 30, 90, 1000],
@@ -821,7 +821,7 @@ $(document).ready(function () {
         serverSide: true,
         paging: true,
         dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
-        select: true,
+        select: false,
         "lengthMenu": [
             [10, 30, 90, 1000],
             [10, 30, 90, 1000]
@@ -831,10 +831,13 @@ $(document).ready(function () {
             dataType: "json",
             type: "POST"
         },
+
         columns: [
             {
                 data: "CBReq_No", name: "CBReq_No", orderable: false, render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+                    return `<div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="${row.CBReq_No}" id="${row.CBReq_No}" name="CBReq_No_Resubmission[]">
+                  </div>`
                 }
             },
             { data: "CBReq_No", name: "CBReq_No", },
@@ -958,12 +961,83 @@ $(document).ready(function () {
             $('[data-bs-toggle="tooltip"]').tooltip();
             DataTable.tables({ visible: true, api: true }).columns.adjust();
         },
-        "buttons": [
-            { text: `Export to :`, className: "btn disabled text-dark bg-white" },
-            { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
-            { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
+        "buttons": [{
+            text: `<i class="fas fa-external-link-alt"></i> Send Submission`,
+            className: "btn btn-success",
+            action: function (e, dt, node, config) {
+                Swal.fire({
+                    title: 'System Message !',
+                    text: `Are you sure to Resubmission all checked CBR ?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Fn_Send_reSubmission();
+                    }
+                })
+            }
+        },
+        { text: `Export to :`, className: "btn disabled text-dark bg-white" },
+        { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
+        { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
         ],
     }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
+
+    function Fn_Send_reSubmission() {
+        if ($('input[name="CBReq_No_Resubmission[]"]:checked').length == 0) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You need check the submission first !',
+                footer: '<a href="javascript:void(0)">Notifikasi System</a>'
+            });
+        }
+
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: $('meta[name="base_url"]').attr('content') + "MyCbr/approve_resubmission",
+            data: $('#form-resubmission').serialize(),
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Loading....',
+                    html: '<div class="spinner-border text-primary"></div>',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
+            },
+            success: function (response) {
+                Swal.close()
+                if (response.code == 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.msg
+                    });
+                    $('#CheckAll').removeAttr('checked');
+                    $('#TableDataResubmission').DataTable().ajax.reload(null, false);
+                    $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: response.msg
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                var statusCode = xhr.status;
+                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    html: `Kode HTTP: ${statusCode}<br\>Pesan: ${errorMessage}`,
+                });
+            }
+        });
+    }
 
 
     document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
@@ -981,6 +1055,17 @@ function check_uncheck_checkbox(isChecked) {
         });
     } else {
         $('input[name="CBReq_No[]"]').each(function () {
+            this.checked = false;
+        });
+    }
+}
+function check_uncheck_checkbox_resubmission(isChecked) {
+    if (isChecked) {
+        $('input[name="CBReq_No_Resubmission[]"]').each(function () {
+            this.checked = true;
+        });
+    } else {
+        $('input[name="CBReq_No_Resubmission[]"]').each(function () {
             this.checked = false;
         });
     }

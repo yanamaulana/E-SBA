@@ -125,12 +125,29 @@ CREATE TABLE dbsai_erp_uat.dbo.Tmst_User_NonHR (
 	is_active bit DEFAULT 1 NOT NULL
 );
 
+
 INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90108', 203, N'President Director', N'Board Of Directors', N'Eric Kim', 1);
 INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90115', 227, N'Director', N'Board Of Directors', N'Kim Sung Phil', 1);
 INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90112', 181, N'Finance Director', N'Board Of Directors', N'Ha Dong Hyun', 1);
 INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'Mr.Lee Weon Kuk', 77, N'Director', N'Board Of Directors', N'Lee Weon Kuk', 1);
 INSERT INTO dbsai_erp_uat.dbo.Tmst_User_NonHR (Emp_No, UserID, Pos_Name, Division_Name, First_Name, is_active) VALUES(N'90117', 210, N'Director', N'Board Of Directors', N'Kim Ji Hoon', 1);
 
+
+DROP TABLE dbsai_erp_uat.dbo.Thst_trx_Dtl_Attachment_Cbr_Rejected;
+CREATE TABLE dbsai_erp_uat.dbo.Thst_trx_Dtl_Attachment_Cbr_Rejected (
+	SysId bigint IDENTITY(1,1) NOT NULL,
+	SubmissionCount bigint NOT NULL,
+	SysId_trx bigint NOT NULL,
+	CbrNo varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Attachment_FileName varchar(500) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Note varchar(999) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	AttachmentType varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Created_by varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	Created_at datetime NOT NULL,
+	Year_Upload int NOT NULL,
+	Action_do_at datetime DEFAULT getdate() NULL,
+	CONSTRAINT Thst_trx_Dtl_Attachment_Cbr_Rejected_PK PRIMARY KEY (SysId)
+);
 
 DROP TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval;
 CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval (
@@ -201,6 +218,9 @@ CREATE TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval (
 	CONSTRAINT Ttrx_Cbr_Approval_UNIQUE UNIQUE (CBReq_No)
 );
 
+ALTER TABLE dbsai_erp_uat.dbo.Ttrx_Cbr_Approval ADD Last_Submit_at datetime NULL;
+
+
 DROP TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval;
 CREATE TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval (
 	SysID_Hst bigint IDENTITY(1,1) NOT NULL,
@@ -270,6 +290,8 @@ CREATE TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval (
 	Legitimate bit DEFAULT 0 NOT NULL,
 	CONSTRAINT Thst_Trx_Cbr_Approval_PK PRIMARY KEY (SysID_Hst)
 );
+
+ALTER TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval ADD Last_Submit_at datetime NULL;
 
 
 

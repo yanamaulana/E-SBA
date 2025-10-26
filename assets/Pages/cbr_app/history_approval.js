@@ -19,7 +19,7 @@ $(document).ready(function () {
             processing: true,
             serverSide: true,
             paging: true,
-            dom: 'lBfrtip',
+            dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
             select: true,
             "lengthMenu": [
                 [10, 30, 90, 1000],
@@ -31,7 +31,8 @@ $(document).ready(function () {
                 type: "POST",
                 data: {
                     from: $('#from').val(),
-                    until: $('#until').val()
+                    until: $('#until').val(),
+                    column_range: $('#column_range').val(),
                 }
             },
             columns: [

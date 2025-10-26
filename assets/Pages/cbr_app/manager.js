@@ -18,7 +18,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         paging: true,
-        dom: 'lBfrtip',
+        dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
         orderCellsTop: true,
         select: false,
         "lengthMenu": [
