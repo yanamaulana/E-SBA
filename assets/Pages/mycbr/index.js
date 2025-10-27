@@ -962,8 +962,8 @@ $(document).ready(function () {
             DataTable.tables({ visible: true, api: true }).columns.adjust();
         },
         "buttons": [{
-            text: `<i class="fas fa-external-link-alt"></i> Send Submission`,
-            className: "btn btn-success",
+            text: `<i class="fas fa-external-link-alt"></i> Re-Submission`,
+            className: "btn btn-warning text-dark",
             action: function (e, dt, node, config) {
                 Swal.fire({
                     title: 'System Message !',
@@ -978,6 +978,12 @@ $(document).ready(function () {
                         Fn_Send_reSubmission();
                     }
                 })
+            }
+        }, {
+            text: `<i class="fab fa-searchengin"></i> Reason`,
+            className: "btn bg-primary text-dark",
+            action: function (e, dt, node, config) {
+                Fn_Preview_RejectReason();
             }
         },
         { text: `Export to :`, className: "btn disabled text-dark bg-white" },
@@ -1046,6 +1052,46 @@ $(document).ready(function () {
             DataTable.tables({ visible: true, api: true }).columns.adjust();
         });
     });
+
+    function Fn_Preview_RejectReason() {
+        if ($('input[name="CBReq_No_Resubmission[]"]:checked').length == 0) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You need check the submission first !',
+                footer: '<a href="javascript:void(0)">Notifikasi System</a>'
+            });
+        }
+
+        $.ajax({
+            type: "POST",
+            url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_preview_reject_reason",
+            data: $('#form-resubmission').serialize(),
+            beforeSend: function () {
+                Swal.fire({
+                    title: 'Loading....',
+                    html: '<div class="spinner-border text-primary"></div>',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
+            },
+            success: function (ajaxData) {
+                Swal.close()
+                $("#location").html(ajaxData);
+                $("#ModalRejectReason").modal('show');
+            },
+            error: function (xhr, status, error) {
+                var statusCode = xhr.status;
+                var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    html: `Kode HTTP: ${statusCode}<br\>Pesan: ${errorMessage}`,
+                });
+            }
+        });
+    }
 })
 
 function check_uncheck_checkbox(isChecked) {

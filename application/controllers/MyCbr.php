@@ -846,6 +846,14 @@ class MyCbr extends CI_Controller
         $this->load->view('mycbr/m_f_cbr_attachment', $this->data);
     }
 
+    public function m_preview_reject_reason()
+    {
+        $Cbrs = $this->input->post('CBReq_No_Resubmission');
+        $this->data['CBReq_No_Resubmissions'] = $Cbrs;
+
+        $this->load->view('mycbr/m_preview_reject_reason', $this->data);
+    }
+
     public function m_list_cbr_attachment()
     {
         $CbrNo = $this->input->get('CbrNo');

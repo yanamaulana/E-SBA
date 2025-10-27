@@ -292,6 +292,8 @@ CREATE TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval (
 );
 
 ALTER TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval ADD Last_Submit_at datetime NULL;
+ALTER TABLE dbsai_erp_uat.dbo.Thst_Trx_Cbr_Approval ADD Rejection_Reason char(1100) NULL;
+
 
 
 

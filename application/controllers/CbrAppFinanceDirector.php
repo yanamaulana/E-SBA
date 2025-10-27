@@ -86,6 +86,7 @@ class CbrAppFinanceDirector extends CI_Controller
     {
         $Cbrs = $this->input->post('CBReq_No');
         $username = $this->session->userdata('sys_sba_username');
+        $rejection_reason = $this->input->post('rejection_reason');
 
         $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
@@ -106,7 +107,7 @@ class CbrAppFinanceDirector extends CI_Controller
                 ]);
             }
 
-            $this->help->record_history_approval($CBReq_No);
+            $this->help->record_history_approval($CBReq_No, $rejection_reason);
         }
 
         $error_msg = $this->db->error()["message"];

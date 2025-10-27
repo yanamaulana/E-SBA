@@ -267,7 +267,7 @@ class m_helper extends CI_Model
         // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
     }
 
-    function record_history_approval($CBReq_No)
+    function record_history_approval($CBReq_No, $Rejection_Reason)
     {
         // 1. Hitung SubmissionCount dari tabel History (Logika ini sudah benar)
         $count = $this->db
@@ -322,7 +322,7 @@ class m_helper extends CI_Model
             AppvPresidentDirector_At, IsAppvFinanceDirector, Status_AppvFinanceDirector, AppvFinanceDirector_By, 
             AppvFinanceDirector_Name, AppvFinanceDirector_At, UserName_User, UserDivision, Rec_Created_At, 
             IsAppvFinancePerson, Status_AppvFinancePerson, AppvFinancePerson_By, AppvFinancePerson_Name, 
-            AppvFinancePerson_At, Legitimate, Doc_Legitimate_Pos_On, Last_Submit_at
+            AppvFinancePerson_At, Legitimate, Doc_Legitimate_Pos_On, Last_Submit_at, Rejection_Reason
         )
         SELECT
             ? AS SubmissionCount, T1.SysID, T1.CBReq_No, T1.SysId_Step, T1.IsAppvStaff, T1.Status_AppvStaff, T1.AppvStaff_By, T1.AppvStaff_Name, T1.AppvStaff_At, 
@@ -337,7 +337,7 @@ class m_helper extends CI_Model
             T1.AppvPresidentDirector_At, T1.IsAppvFinanceDirector, T1.Status_AppvFinanceDirector, T1.AppvFinanceDirector_By, 
             T1.AppvFinanceDirector_Name, T1.AppvFinanceDirector_At, T1.UserName_User, T1.UserDivision, T1.Rec_Created_At, 
             T1.IsAppvFinancePerson, T1.Status_AppvFinancePerson, T1.AppvFinancePerson_By, T1.AppvFinancePerson_Name, 
-            T1.AppvFinancePerson_At, T1.Legitimate, T1.Doc_Legitimate_Pos_On, T1.Last_Submit_at
+            T1.AppvFinancePerson_At, T1.Legitimate, T1.Doc_Legitimate_Pos_On, T1.Last_Submit_at, ?
         FROM 
             dbo.Ttrx_Cbr_Approval AS T1
         WHERE T1.CBReq_No = ?
@@ -347,7 +347,7 @@ class m_helper extends CI_Model
         // die;
 
         // ✅ Buat array binding
-        $bindings = [(int)$CountTry, $CBReq_No];
+        $bindings = [(int)$CountTry, $Rejection_Reason, $CBReq_No];
 
         // ✅ Eksekusi query dengan binding
         $result = $this->db->query($sql, $bindings);
