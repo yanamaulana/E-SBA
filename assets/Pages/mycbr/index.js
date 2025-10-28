@@ -260,7 +260,9 @@ $(document).ready(function () {
             serverSide: true,
             paging: true,
             dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
-            select: true,
+            select: {
+                style: 'single'
+            },
             "lengthMenu": [
                 [10, 30, 90, 1000],
                 [10, 30, 90, 1000]
@@ -379,7 +381,7 @@ $(document).ready(function () {
                 {
                     className: "text-center dt-nowrap",
                     // Hati-hati dengan indeks. Ini disesuaikan dengan daftar kolom di atas.
-                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28],
+                    targets: [0, 3, 4, 5, 6, 11, 12, 15, 22, 23, 24, 25, 26, 27, 28, 29],
                 }, {
                     className: "details-control pr-4 dt-nowrap",
                     targets: [1]
@@ -403,13 +405,7 @@ $(document).ready(function () {
             },
             "rowCallback": function (row, data) {
                 // console.log(data.Legitimate)
-                if (data.Status_AppvManager == '2' ||
-                    data.Status_AppvSeniorManager == '2' ||
-                    data.Status_AppvGeneralManager == '2' ||
-                    data.Status_AppvAdditional == '2' ||
-                    data.Status_AppvDirector == '2' ||
-                    data.Status_AppvPresidentDirector == '2' ||
-                    data.Status_AppvFinanceDirector == '2') {
+                if (data.Status_AppvManager == '2' || data.Status_AppvSeniorManager == '2' || data.Status_AppvGeneralManager == '2' || data.Status_AppvAdditional == '2' || data.Status_AppvDirector == '2' || data.Status_AppvPresidentDirector == '2' || data.Status_AppvFinanceDirector == '2') {
                     $('td', row).css('background-color', '#F8D7DA');
                 }
 
@@ -417,36 +413,101 @@ $(document).ready(function () {
                     $('td', row).css('background-color', '#D4EDDA');
                 }
             },
-            "buttons": [
-                { text: `Export to :`, className: "btn disabled text-dark bg-white" },
-                { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
-                { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
+            "buttons": [{
+                text: `<strong data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Print Fully Approved CBR">🖨️ Finish Approved</strong>`,
+                className: "btn btn-danger",
+                action: function (e, dt, node, config) {
+                    var RowData = dt.rows({
+                        selected: true
+                    }).data();
+
+                    if (RowData.length == 0) {
+                        return Swal.fire({
+                            icon: 'warning',
+                            title: 'Ooppss...',
+                            text: 'Please Select the Cashbook requisition to print.  ',
+                            footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
+                        });
+                    } else if (RowData[0].Legitimate == 0 || RowData[0].Legitimate == '0') {
+                        return Swal.fire({
+                            icon: 'warning',
+                            title: 'Ooppss...',
+                            text: 'The selected Cashbook requisition are not yet final approved.',
+                            footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
+                        });
+                    } else {
+                        let Cbr_no = RowData[0].CBReq_No
+                        return window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_rpt_cbr/${Cbr_no}`, `RptCbrFinishApproved-${Cbr_no}`, 'width=854,height=480');
+                    }
+                }
+            },
+            { text: `Export to :`, className: "btn disabled text-dark bg-white" },
+            { text: `<i class="far fa-copy fs-2"></i>`, extend: 'copy', className: "btn btn-light-warning" },
+            { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
             ],
         }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
     }
 
+    // Warna latar belakang yang Anda inginkan untuk baris yang dipilih (misal: Biru)
+    const selectedBgColor = '#007bff';
+    const selectedTextColor = 'white';
 
+    // Event yang dipicu saat baris dipilih
+    $("#TableDataHistory").DataTable().on('select', function (e, dt, type, indexes) {
+        console.log('a')
+        if (type === 'row') {
+            const tr = dt.row(indexes).node(); // Mendapatkan elemen TR
+
+            // 1. Simpan warna background yang ada (hijau) ke atribut data
+            // agar bisa dikembalikan saat deselect.
+            $(tr).data('original-bg', tr.style.backgroundColor);
+            $(tr).data('original-color', tr.style.color);
+
+            // 2. Terapkan warna seleksi (menimpa style yang dibuat rowCallback)
+            $(tr).css({
+                'background-color': selectedBgColor,
+                'color': selectedTextColor
+            });
+        }
+    });
+
+    // Event yang dipicu saat baris dibatalkan seleksinya
+    $("#TableDataHistory").DataTable().on('deselect', function (e, dt, type, indexes) {
+        console.log('b')
+        if (type === 'row') {
+            const tr = dt.row(indexes).node(); // Mendapatkan elemen TR
+
+            // 1. Dapatkan warna asli yang disimpan
+            const originalBg = $(tr).data('original-bg');
+            const originalColor = $(tr).data('original-color');
+
+            // 2. Kembalikan style ke warna aslinya (warna hijau rowCallback)
+            $(tr).css({
+                'background-color': originalBg,
+                'color': originalColor
+            });
+
+            // Hapus data cache
+            $(tr).removeData('original-bg');
+            $(tr).removeData('original-color');
+        }
+    });
 
     $('#do--filter').on('click', function () {
         $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();
     })
-
 
     $(document).on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = tr.closest('table').DataTable().row(tr);
         var tableId = tr.closest('table').attr('id');
 
-        // Perhitungan is_hst_table
         var is_hst_table = (tableId == 'TableDataHistory') ? 1 : 0;
 
         if (row.child.isShown()) {
-            // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         } else {
-            // 🔥 KOREKSI: Panggil format() DENGAN DUA ARGUMEN, 
-            // lalu berikan hasilnya ke row.child()
             var detailContent = format(row.data(), is_hst_table);
 
             row.child(detailContent).show();
@@ -454,12 +515,6 @@ $(document).ready(function () {
             getInsDetail(row.data().CBReq_No, row.data().Document_Number);
         }
     });
-
-    // document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
-    //     el.addEventListener('shown.bs.tab', () => {
-    //         DataTable.tables({ visible: true, api: true }).columns.adjust();
-    //     });
-    // });
 
     function format(d, is_hst_table) {
         console.log(is_hst_table)
@@ -805,15 +860,13 @@ $(document).ready(function () {
 
     $(document).on('click', '.rpt-vin', function () {
         let vin = $(this).val();
-
         window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_detail_purchase_invoice/${vin}`, `RptVin-${vin}`, 'width=800,height=600');
-    })
+    });
 
     $(document).on('click', '.btn-cbr', function () {
         let Cbr_no = $(this).val();
-
         window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_rpt_cbr/${Cbr_no}`, `RptCbr-${Cbr_no}`, 'width=854,height=480');
-    })
+    });
 
     var TableDataResubmission = $("#TableDataResubmission").DataTable({
         destroy: true,
