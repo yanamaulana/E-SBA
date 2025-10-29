@@ -446,52 +446,63 @@ $(document).ready(function () {
             { text: `<i class="far fa-file-excel fs-2"></i>`, extend: 'excelHtml5', title: $('#table-title-history').text() + '~' + moment().format("YYYY-MM-DD"), className: "btn btn-light-success" }
             ],
         }).buttons().container().appendTo('#TableDataHistory_wrapper .col-md-6:eq(0)'); // Poin 5: Tambahkan #
+
+        // Warna yang akan digunakan saat row dipilih (DataTables default biru)
+        const SELECTED_BG = '#007bff';
+        const SELECTED_TEXT_COLOR = 'white';
+        const TABLE_ID = '#TableDataHistory';
+
+        // Dapatkan instance DataTables setelah inisialisasi
+        var historyTable = $(TABLE_ID).DataTable();
+
+        // --- 1. Event Handler SELECT ---
+        historyTable.on('select', function (e, dt, type, indexes) {
+            if (type === 'row') {
+                const tr = dt.row(indexes).node(); // Mendapatkan elemen TR
+
+                // Iterasi melalui SETIAP sel (td)
+                $('td', tr).each(function () {
+                    const td = $(this);
+
+                    // 1. Simpan warna background yang ada (dibuat oleh rowCallback)
+                    td.data('original-bg', td.css('background-color'));
+                    td.data('original-color', td.css('color'));
+
+                    // 2. Terapkan warna seleksi (menimpa style inline)
+                    td.css({
+                        'background-color': SELECTED_BG,
+                        'color': SELECTED_TEXT_COLOR
+                    });
+                });
+            }
+        });
+
+        // --- 2. Event Handler DESELECT ---
+        historyTable.on('deselect', function (e, dt, type, indexes) {
+            if (type === 'row') {
+                const tr = dt.row(indexes).node();
+
+                // Iterasi melalui SETIAP sel (td) untuk mengembalikan warna
+                $('td', tr).each(function () {
+                    const td = $(this);
+
+                    // Dapatkan warna asli yang disimpan
+                    const originalBg = td.data('original-bg');
+                    const originalColor = td.data('original-color');
+
+                    // Kembalikan style ke warna aslinya (warna rowCallback)
+                    td.css({
+                        'background-color': originalBg,
+                        'color': originalColor
+                    });
+
+                    // Hapus data cache
+                    td.removeData('original-bg');
+                    td.removeData('original-color');
+                });
+            }
+        });
     }
-
-    // Warna latar belakang yang Anda inginkan untuk baris yang dipilih (misal: Biru)
-    const selectedBgColor = '#007bff';
-    const selectedTextColor = 'white';
-
-    // Event yang dipicu saat baris dipilih
-    $("#TableDataHistory").DataTable().on('select', function (e, dt, type, indexes) {
-        console.log('a')
-        if (type === 'row') {
-            const tr = dt.row(indexes).node(); // Mendapatkan elemen TR
-
-            // 1. Simpan warna background yang ada (hijau) ke atribut data
-            // agar bisa dikembalikan saat deselect.
-            $(tr).data('original-bg', tr.style.backgroundColor);
-            $(tr).data('original-color', tr.style.color);
-
-            // 2. Terapkan warna seleksi (menimpa style yang dibuat rowCallback)
-            $(tr).css({
-                'background-color': selectedBgColor,
-                'color': selectedTextColor
-            });
-        }
-    });
-
-    // Event yang dipicu saat baris dibatalkan seleksinya
-    $("#TableDataHistory").DataTable().on('deselect', function (e, dt, type, indexes) {
-        console.log('b')
-        if (type === 'row') {
-            const tr = dt.row(indexes).node(); // Mendapatkan elemen TR
-
-            // 1. Dapatkan warna asli yang disimpan
-            const originalBg = $(tr).data('original-bg');
-            const originalColor = $(tr).data('original-color');
-
-            // 2. Kembalikan style ke warna aslinya (warna hijau rowCallback)
-            $(tr).css({
-                'background-color': originalBg,
-                'color': originalColor
-            });
-
-            // Hapus data cache
-            $(tr).removeData('original-bg');
-            $(tr).removeData('original-color');
-        }
-    });
 
     $('#do--filter').on('click', function () {
         $("#TableDataHistory").DataTable().clear().destroy(), Fn_Initialized_DataTable(), DataTable.tables({ visible: true, api: true }).columns.adjust();

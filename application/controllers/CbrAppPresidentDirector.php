@@ -75,6 +75,7 @@ class CbrAppPresidentDirector extends CI_Controller
     public function reject_submission()
     {
         $Cbrs = $this->input->post('CBReq_No');
+        $rejection_reason = $this->input->post('rejection_reason');
 
         $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
@@ -84,7 +85,7 @@ class CbrAppPresidentDirector extends CI_Controller
                 'AppvPresidentDirector_By'     => $this->session->userdata('sys_sba_username'),
                 'AppvPresidentDirector_At'     => $this->DateTime,
             ]);
-            $this->help->record_history_approval($CBReq_No);
+            $this->help->record_history_approval($CBReq_No, $rejection_reason);
         }
 
         $error_msg = $this->db->error()["message"];

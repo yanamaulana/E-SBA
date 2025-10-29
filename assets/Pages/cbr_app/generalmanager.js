@@ -209,18 +209,30 @@ $(document).ready(function () {
             className: "btn btn-danger",
             action: function (e, dt, node, config) {
                 Swal.fire({
-                    title: 'System Message !',
-                    text: `Are you sure to reject all checked submission ?`,
+                    title: 'System Message',
+                    text: 'Please provide the reason for rejecting the submission(s) below:',
+                    // 🔥 Tambahkan input textarea
+                    input: 'textarea',
+                    inputLabel: 'Rejection Reason (Required)',
+                    inputPlaceholder: 'Enter your justification here...',
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes'
+                    confirmButtonColor: '#d33', // Merah untuk Reject
+                    cancelButtonColor: '#6c757d', // Abu-abu
+                    confirmButtonText: 'Yes, Reject',
+
+                    // Validasi bahwa input tidak boleh kosong
+                    inputValidator: (value) => {
+                        if (!value || value.trim() === '') {
+                            return 'You must enter a reason for rejection!';
+                        }
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Fn_Reject_Submission();
+                        // result.value berisi alasan yang dimasukkan pengguna
+                        Fn_Reject_Submission(result.value);
                     }
-                })
+                });
             }
         }],
     }).buttons().container().appendTo('#TableData_wrapper .col-md-6:eq(0)');
@@ -278,7 +290,7 @@ $(document).ready(function () {
         });
     }
 
-    function Fn_Reject_Submission() {
+    function Fn_Reject_Submission(rejectionReason) {
         if ($('input[name="CBReq_No[]"]:checked').length == 0) {
             return Swal.fire({
                 icon: 'error',
@@ -288,11 +300,14 @@ $(document).ready(function () {
             });
         }
 
+        var formData = $('#form-submission').serialize();
+        formData += '&rejection_reason=' + encodeURIComponent(rejectionReason); // Tambahkan alasan
+
         $.ajax({
             dataType: "json",
             type: "POST",
             url: $('meta[name="base_url"]').attr('content') + "CbrAppGeneralManager/reject_submission",
-            data: $('#form-submission').serialize(),
+            data: formData,
             beforeSend: function () {
                 Swal.fire({
                     title: 'Loading....',

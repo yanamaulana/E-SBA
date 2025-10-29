@@ -194,7 +194,7 @@ $(document).ready(function () {
                     name: "IsAppvManager",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_App);
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvManager);
                     }
                 },
                 {
@@ -202,7 +202,7 @@ $(document).ready(function () {
                     name: "IsAppvSeniorManager",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvSeniorManag);
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvSeniorManager);
                     }
                 },
                 {
@@ -226,7 +226,7 @@ $(document).ready(function () {
                     name: "IsAppvDirector",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvD);
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvDirector);
                     }
                 },
                 {
@@ -234,7 +234,7 @@ $(document).ready(function () {
                     name: "IsAppvPresidentDirector",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvPresidentDirector,);
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvPresidentDirector);
                     }
                 },
                 {
