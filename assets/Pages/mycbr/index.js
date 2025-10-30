@@ -537,7 +537,7 @@ $(document).ready(function () {
                                     <div class="card shadow-sm">
                                         <div class="card-body">
                                             <div class="table-responsive overflow-auto">
-                                                <table class="table-sm table-striped overflow-auto table-bordered" style="width:100%;">
+                                                <table class="table-sm table-striped overflow-auto table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th class="text-dark" colspan="2">Cash Book Requisition Number : ${d.CBReq_No}</th>
@@ -563,7 +563,7 @@ $(document).ready(function () {
                                                 <div class="card shadow-sm mt-5">
                                                     <div class="card-body">
                                                         <div class="table-responsive overflow-auto">
-                                                            <table class="table-sm table-striped overflow-auto table-bordered" style="width:100%;">
+                                                            <table class="table-sm table-striped overflow-auto table-bordered">
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="text-dark" colspan="11">Purchase Invoice  : -N/A-</th>
@@ -595,7 +595,7 @@ $(document).ready(function () {
                                                 <div class="card shadow-sm mt-5">
                                                     <div class="card-body">
                                                         <div class="table-responsive overflow-auto">
-                                                            <table class="table-sm table-striped overflow-auto table-bordered" style="width:100%;">
+                                                            <table class="table-sm table-striped overflow-auto table-bordered">
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="text-dark" colspan="11">Purchase Order  : ${d.Document_Number}</th>

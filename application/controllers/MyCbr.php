@@ -596,6 +596,21 @@ class MyCbr extends CI_Controller
             $code = 404;
         }
 
+        $Attachments = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $Req_No]);
+        $data_Attachments = array();
+        $i = 1;
+        foreach ($Attachments->result() as $li) {
+            $nestedData = array();
+
+            $nestedData['iteration'] = $i;
+            $nestedData['attachment'] = "<a target='_blank' href='" . base_url() . "assets/Files/AttachmentCbr/" . $li->Year_Upload . "/" . $li->AttachmentType . "/" . $li->Attachment_FileName . "'>" . $li->Attachment_FileName . "</a>";
+            $nestedData['AttachmentType'] = $li->AttachmentType;
+            $nestedData['Note'] = $li->Note;
+
+            $data_Attachments[] = $nestedData;
+            $i++;
+        }
+
         $dataVins = array();
         $code_having_vin = 200;
         if (empty($Ref_no)) {
@@ -682,6 +697,7 @@ class MyCbr extends CI_Controller
             'code_vin' => $code_having_vin,
             'dataVins' => $dataVins,
             'data' => $data,
+            'data_Attachments' => $data_Attachments,
         ]);
     }
 
