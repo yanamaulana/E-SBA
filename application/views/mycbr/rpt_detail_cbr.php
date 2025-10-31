@@ -40,8 +40,13 @@
     /* Global Styles */
     .text-center {
         text-align: center;
-        vertical-align: middle;
+        vertical-align: middle !important;
     }
+
+    td.sign {
+        font-weight: bold;
+    }
+
 
     .text-left {
         text-align: left;
@@ -273,48 +278,62 @@ function format_rupiah($angka)
             <tbody>
                 <tr>
                     <td rowspan="3" style="writing-mode: vertical-rl;letter-spacing: 0.4em; white-space: nowrap; text-orientation: upright; vertical-align: middle; text-align:center; width: 1.5%;"><strong>APPROVAL</strong></td>
-                    <td class="text-center" style="width: 7%;">CREATOR</td>
-                    <td class="text-center" style="width: 7%;">SUBMITTER</td>
-                    <td class="text-center" style="width: 7%;">ASST.MANAGER</td>
-                    <td class="text-center" style="width: 7%;">MANAGER</td>
-                    <td class="text-center" style="width: 7%;">SENIOR MANAGER</td>
-                    <td class="text-center" style="width: 7%;">GENERAL MANAGER</td>
-                    <td class="text-center" style="width: 7%;">ADDITIONAL</td>
+                    <td class="text-center" style="width: 14%;" colspan="2">CREATOR & SUBMITTER</td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvAsstManager == 1) ? 'ASST.MANAGER' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvManager == 1) ? 'MANAGER' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvSeniorManager == 1) ? 'SENIOR MANAGER' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvGeneralManager == 1) ? 'GENERAL MANAGER' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvAdditional == 1) ? 'ADDITIONAL' : '' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
-                    <td class="text-center" style="width: 7%;">DIRECTOR</td>
-                    <td class="text-center" style="width: 7%;">FINANCE DIRECTOR</td>
-                    <td class="text-center" style="width: 7%;">PRESIDENT DIRECTOR</td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvDirector == 1) ? 'DIRECTOR' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvFinanceDirector == 1) ? 'FINANCE DIRECTOR' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvPresidentDirector == 1) ? 'PRESIDENT DIRECTOR' : '' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
                     <td class="text-center" style="width: 7%;">STATUS APPROVAL</td>
                 </tr>
                 <tr style="height: 85px;">
-                    <td class="text-center">&nbsp;</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" rowspan="2"></td>
+                    <td class="text-center sign" colspan="2" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppvAsstManager_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvManager == 1) ? strtoupper($TrxApproval->AppvManager_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvSeniorManager == 1) ? strtoupper($TrxApproval->AppvSeniorManager_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvGeneralManager == 1) ? strtoupper($TrxApproval->AppvGeneralManager_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAdditional == 1) ? strtoupper($TrxApproval->AppvAdditional_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvDirector == 1) ? strtoupper($TrxApproval->AppvDirector_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvFinanceDirector == 1) ? strtoupper($TrxApproval->AppvFinanceDirector_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvPresidentDirector == 1) ? strtoupper($TrxApproval->AppvPresidentDirector_Name) : '-' ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2"></td>
                 </tr>
+                <?php
+                /* SELECT SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At,
+
+                IsAppvAsstManager, Status_AppvAsstManager, AppvAsstManager_By, AppvAsstManager_Name, AppvAsstManager_At,
+                IsAppvManager, Status_AppvManager, AppvManager_By, AppvManager_Name, AppvManager_At,
+                IsAppvSeniorManager, Status_AppvSeniorManager, AppvSeniorManager_By, AppvSeniorManager_Name, AppvSeniorManager_At,
+                IsAppvGeneralManager, Status_AppvGeneralManager, AppvGeneralManager_By, AppvGeneralManager_Name, AppvGeneralManager_At,
+                IsAppvAdditional, Status_AppvAdditional, AppvAdditional_By, AppvAdditional_Name, AppvAdditional_At,
+                IsAppvDirector, Status_AppvDirector, AppvDirector_By, AppvDirector_Name, AppvDirector_At,
+                IsAppvPresidentDirector, Status_AppvPresidentDirector, AppvPresidentDirector_By, AppvPresidentDirector_Name, AppvPresidentDirector_At,
+                IsAppvFinanceDirector, Status_AppvFinanceDirector, AppvFinanceDirector_By, AppvFinanceDirector_Name, AppvFinanceDirector_At,
+
+                UserName_User, UserDivision, Rec_Created_At, IsAppvFinancePerson, Status_AppvFinancePerson, AppvFinancePerson_By, AppvFinancePerson_Name,
+                AppvFinancePerson_At, Doc_Legitimate_Pos_On, Legitimate, Last_Submit_at
+                FROM dbsai_erp_uat.dbo.Ttrx_Cbr_Approval; */
+                ?>
                 <tr>
-                    <td class="text-center">&nbsp;</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" style="width: 7%;"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
+                    <td class="text-center" style="width: 7%;"><?= formatTanggalLaporan($TrxApproval->Last_Submit_at) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAsstManager_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvManager_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvSeniorManager_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvGeneralManager_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAdditional_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvDirector_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvFinanceDirector_At) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvPresidentDirector_At) ?></td>
                 </tr>
             </tbody>
         </table>
@@ -326,3 +345,44 @@ function format_rupiah($angka)
 </body>
 
 </html>
+
+<?php
+
+function formatTanggalLaporan($dateTimeString)
+{
+    // Cek apakah input valid.
+    if (empty($dateTimeString)) {
+        return '';
+    }
+
+    // 1. Buat objek DateTime dari string input.
+    // Kita gunakan str_replace untuk menghapus milidetik karena format PHP Date tidak menanganinya secara langsung
+    // dan bisa menyebabkan error pada beberapa versi PHP.
+    $dateTimeString = preg_replace('/\.[0-9]{3}$/', '', $dateTimeString);
+
+    try {
+        $date = new DateTime($dateTimeString);
+    } catch (Exception $e) {
+        // Jika parsing gagal, kembalikan string kosong atau pesan error.
+        return 'Format Tidak Valid';
+    }
+
+    // 2. Format objek DateTime ke output yang diinginkan.
+    // Y: Tahun empat digit
+    // M: Singkatan bulan (Jan-Des, bahasa Inggris)
+    // d: Hari dua digit
+    // H: Jam 24-jam dua digit
+    // i: Menit dua digit
+    $formatOutput = 'd M Y H:i';
+
+    return $date->format($formatOutput);
+}
+
+// --- Contoh Penggunaan ---
+$input = '2025-10-27 13:12:42.000';
+$output = formatTanggalLaporan($input);
+
+// Hasil: 2025 Oct 27 13:12
+// echo $output;
+
+?>

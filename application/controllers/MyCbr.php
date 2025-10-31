@@ -121,6 +121,7 @@ class MyCbr extends CI_Controller
                 "UserName_User" => $this->session->userdata('sys_sba_username'),
                 "UserDivision" => $this->session->userdata('sys_sba_department'),
                 "Rec_Created_At" => $this->DateTime,
+                "Last_Submit_at" => $this->DateTime,
             ]);
         }
 
@@ -1030,6 +1031,8 @@ class MyCbr extends CI_Controller
         INNER JOIN THRMEmpPersonalData ON THRMEmpPersonalData.User_ID = TAccCashBookReq_Header.Created_By
         LEFT JOIN TAccCostCenter ON TAccCashBookReq_Header.Comp_ID = TAccCostCenter.CostCenter_ID
         WHERE CBReq_No='$Cbr'")->row();
+
+        $this->data['TrxApproval'] = $this->db->get_where($this->Ttrx_Cbr_Approval, ['CBReq_No' => $Cbr])->row();
 
         $this->data['CbrDetail'] = $this->db->query("SELECT TAccCashBookReq_Detail.*, TAccChartAccount.Account_Number, TAccChartAccount.Account_Nameen AS Account_Name
         FROM TAccCashBookReq_Detail
