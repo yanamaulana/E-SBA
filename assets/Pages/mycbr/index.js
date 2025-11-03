@@ -414,7 +414,7 @@ $(document).ready(function () {
                 }
             },
             "buttons": [{
-                text: `<strong data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Print Fully Approved CBR">🖨️ Finish Approved</strong>`,
+                text: `<strong data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-dark" title="Print Fully Approved CBR">🖨️ Print</strong>`,
                 className: "btn btn-danger",
                 action: function (e, dt, node, config) {
                     var RowData = dt.rows({
@@ -428,17 +428,19 @@ $(document).ready(function () {
                             text: 'Please Select the Cashbook requisition to print.  ',
                             footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
                         });
-                    } else if (RowData[0].Legitimate == 0 || RowData[0].Legitimate == '0') {
-                        return Swal.fire({
-                            icon: 'warning',
-                            title: 'Ooppss...',
-                            text: 'The selected Cashbook requisition are not yet final approved.',
-                            footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
-                        });
                     } else {
                         let Cbr_no = RowData[0].CBReq_No
                         return window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_rpt_cbr/${Cbr_no}`, `RptCbrFinishApproved-${Cbr_no}`, 'width=854,height=480');
                     }
+
+                    // else if (RowData[0].Legitimate == 0 || RowData[0].Legitimate == '0') {
+                    //     return Swal.fire({
+                    //         icon: 'warning',
+                    //         title: 'Ooppss...',
+                    //         text: 'The selected Cashbook requisition are not yet final approved.',
+                    //         footer: '<a href="javascript:void(0)" class="text-danger">Notifikasi System</a>'
+                    //     });
+                    // }
                 }
             },
             { text: `Export to :`, className: "btn disabled text-dark bg-white" },

@@ -305,7 +305,21 @@ function format_rupiah($angka)
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvDirector == 1) ? strtoupper($TrxApproval->AppvDirector_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvFinanceDirector == 1) ? strtoupper($TrxApproval->AppvFinanceDirector_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvPresidentDirector == 1) ? strtoupper($TrxApproval->AppvPresidentDirector_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2"></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2">
+                        <?php
+                        if ($CbrHeader->SysId_Step == NULL || $CbrHeader->SysId_Step == '') {
+                            echo 'NOT SUBMITTED YET';
+                        } elseif (
+                            $TrxApproval->Status_AppvAsstManager == 2 or $TrxApproval->Status_AppvManager == 2 or $TrxApproval->Status_AppvSeniorManager == 2 or $TrxApproval->Status_AppvGeneralManager == 2 or $TrxApproval->Status_AppvAdditional == 2 or $TrxApproval->Status_AppvDirector == 2 or $TrxApproval->Status_AppvFinanceDirector == 2 or $TrxApproval->Status_AppvPresidentDirector == 2
+                        ) {
+                            echo 'REJECTED';
+                        } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 0) {
+                            echo 'APPROVAL IN PROGRESS';
+                        } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 1) {
+                            echo 'FINISH APPROVED';
+                        }
+                        ?>
+                    </td>
                 </tr>
                 <?php
                 /* SELECT SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At,

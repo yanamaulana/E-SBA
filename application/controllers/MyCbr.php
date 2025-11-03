@@ -1024,13 +1024,14 @@ class MyCbr extends CI_Controller
         $this->data['CbrHeader'] = $this->db->query("Select TAccCashBookReq_Header.*,
 		(SELECT Project_Code FROM TAccProject_Header WHERE Project_ID = TAccCashBookReq_Header.Project_ID) AS Project_Code,
 		(SELECT Project_Name FROM TAccProject_Header WHERE Project_ID = TAccCashBookReq_Header.Project_ID) AS Project_Name,
-		THRMEmpPersonalData.First_Name +' '+ THRMEmpPersonalData.Middle_Name +' '+ THRMEmpPersonalData.Last_Name AS Request_Name,
+		THRMEmpPersonalData.First_Name +' '+ THRMEmpPersonalData.Middle_Name +' '+ THRMEmpPersonalData.Last_Name AS Request_Name, Ttrx_Cbr_Approval.SysId_Step,
 		TAccCostCenter.CostCenter_Code,
 		TaccCostCenter.CostCenter_Name_en AS CostCenter_Name
         FROM TAccCashBookReq_Header
         INNER JOIN THRMEmpPersonalData ON THRMEmpPersonalData.User_ID = TAccCashBookReq_Header.Created_By
         LEFT JOIN TAccCostCenter ON TAccCashBookReq_Header.Comp_ID = TAccCostCenter.CostCenter_ID
-        WHERE CBReq_No='$Cbr'")->row();
+        LEFT JOIN Ttrx_Cbr_Approval ON Ttrx_Cbr_Approval.CBReq_No = TAccCashBookReq_Header.CBReq_No
+        WHERE TAccCashBookReq_Header.CBReq_No='$Cbr'")->row();
 
         $this->data['TrxApproval'] = $this->db->get_where($this->Ttrx_Cbr_Approval, ['CBReq_No' => $Cbr])->row();
 
