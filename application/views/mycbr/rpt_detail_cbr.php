@@ -204,7 +204,7 @@ function format_rupiah($angka)
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td style="border-right: solid black 5px;">&nbsp;</td>
+                        <td style="border-right: solid black 1px;">&nbsp;</td>
                         <td style="border-right: none;">
                             <?php
                             $payment_label = '';
@@ -279,17 +279,17 @@ function format_rupiah($angka)
                 <tr>
                     <td rowspan="3" style="writing-mode: vertical-rl;letter-spacing: 0.4em; white-space: nowrap; text-orientation: upright; vertical-align: middle; text-align:center; width: 1.5%;"><strong>APPROVAL</strong></td>
                     <td class="text-center" style="width: 7%;">SUBMITTER</td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvAsstManager == 1) ? 'ASST.MANAGER' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvManager == 1) ? 'MANAGER' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvSeniorManager == 1) ? 'SENIOR MANAGER' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvGeneralManager == 1) ? 'GENERAL MANAGER' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvAdditional == 1) ? 'ADDITIONAL' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'ASST.MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'SENIOR MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'GENERAL MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'ADDITIONAL' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvDirector == 1) ? 'DIRECTOR' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvFinanceDirector == 1) ? 'FINANCE DIRECTOR' : '' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvPresidentDirector == 1) ? 'PRESIDENT DIRECTOR' : '' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'DIRECTOR' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'FINANCE DIRECTOR' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'PRESIDENT DIRECTOR' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
