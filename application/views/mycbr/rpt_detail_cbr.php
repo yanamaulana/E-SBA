@@ -279,10 +279,11 @@ function format_rupiah($angka)
                 <tr>
                     <td rowspan="3" style="writing-mode: vertical-rl;letter-spacing: 0.4em; white-space: nowrap; text-orientation: upright; vertical-align: middle; text-align:center; width: 1.5%;"><strong>APPROVAL</strong></td>
                     <td class="text-center" style="width: 7%;">SUBMITTER</td>
+                    <td class="text-center" style="width: 7%;"><?= 'CHIEF' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'ASST.MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'SENIOR MANAGER' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'GENERAL MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'GENERAL MMANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'ADDITIONAL' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
@@ -297,6 +298,7 @@ function format_rupiah($angka)
                 </tr>
                 <tr style="height: 85px;">
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppChief_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppvAsstManager_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvManager == 1) ? strtoupper($TrxApproval->AppvManager_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvSeniorManager == 1) ? strtoupper($TrxApproval->AppvSeniorManager_Name) : '-' ?></td>
@@ -339,6 +341,7 @@ function format_rupiah($angka)
                 ?>
                 <tr>
                     <td class="text-center"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvChief_At) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAsstManager_At) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvManager_At) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvSeniorManager_At) ?></td>
