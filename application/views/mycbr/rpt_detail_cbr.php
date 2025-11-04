@@ -288,7 +288,7 @@ function format_rupiah($angka)
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
                     <td class="text-center" style="width: 7%;"><?= 'DIRECTOR' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'FINANCE DIRECTOR' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'DIRECTOR' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'PRESIDENT DIRECTOR' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
