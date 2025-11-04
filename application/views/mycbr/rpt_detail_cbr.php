@@ -152,7 +152,7 @@ function format_rupiah($angka)
                     <td class="text-center" style="width: 3%;">NO</td>
                     <td class="text-center" style="width: 35%;">DESCRIPTION</td>
                     <td class="text-center" style="width: 25%;">ACCOUNT</td>
-                    <td class="text-center" style="border-right: solid black 5px; width: 15%;">AMOUNT</td>
+                    <td class="text-center" style="border-right: solid black 1px; width: 15%;">AMOUNT</td>
                     <td class="text-center" colspan="2" style="width: 22%;">PAYMENT INFO</td>
                 </tr>
             </thead>
@@ -167,7 +167,7 @@ function format_rupiah($angka)
                         <td class="text-center"><?= $i ?></td>
                         <td><?= $li->Description ?></td>
                         <td><?= '[' . $li->Acc_ID . ']' . ' ' . $li->Account_Name ?></td>
-                        <td style="border-right: solid black 5px;" class="text-right">
+                        <td style="border-right: solid black 1px;" class="text-right">
                             <div class="container" style="justify-content: space-between;">
                                 <div style="text-align: left;"><?= $li->currency_id ?></div>
                                 <div style="text-align: right;"><?= format_rupiah($li->Amount_Detail) ?></div>
@@ -234,7 +234,7 @@ function format_rupiah($angka)
                 <tr style="font-weight: bold;">
                     <td colspan="2">TOTAL AMOUNT</td>
                     <td>TOTAL ==> <?= $CbrHeader->Currency_ID ?></td>
-                    <td style="border-right: solid black 5px;">
+                    <td style="border-right: solid black 1px;">
                         <?php if ($CbrHeader->Currency_ID == 'IDR') : ?>
                             <div class="container" style="justify-content: space-between;">
                                 <div style="text-align: left;"><?= $CbrHeader->Currency_ID ?></div>
