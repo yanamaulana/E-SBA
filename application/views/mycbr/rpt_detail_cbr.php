@@ -278,7 +278,7 @@ function format_rupiah($angka)
             <tbody>
                 <tr>
                     <td rowspan="3" style="writing-mode: vertical-rl;letter-spacing: 0.4em; white-space: nowrap; text-orientation: upright; vertical-align: middle; text-align:center; width: 1.5%;"><strong>APPROVAL</strong></td>
-                    <td class="text-center" style="width: 14%;" colspan="2">CREATOR & SUBMITTER</td>
+                    <td class="text-center" style="width: 7%;">SUBMITTER</td>
                     <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvAsstManager == 1) ? 'ASST.MANAGER' : '' ?></td>
                     <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvManager == 1) ? 'MANAGER' : '' ?></td>
                     <td class="text-center" style="width: 7%;"><?= ($TrxApproval->IsAppvSeniorManager == 1) ? 'SENIOR MANAGER' : '' ?></td>
@@ -296,7 +296,7 @@ function format_rupiah($angka)
                     <td class="text-center" style="width: 7%;">STATUS APPROVAL</td>
                 </tr>
                 <tr style="height: 85px;">
-                    <td class="text-center sign" colspan="2" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
+                    <td class="text-center sign" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppvAsstManager_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvManager == 1) ? strtoupper($TrxApproval->AppvManager_Name) : '-' ?></td>
                     <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvSeniorManager == 1) ? strtoupper($TrxApproval->AppvSeniorManager_Name) : '-' ?></td>
@@ -338,8 +338,7 @@ function format_rupiah($angka)
                 FROM dbsai_erp_uat.dbo.Ttrx_Cbr_Approval; */
                 ?>
                 <tr>
-                    <td class="text-center" style="width: 7%;"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
-                    <td class="text-center" style="width: 7%;"><?= formatTanggalLaporan($TrxApproval->Last_Submit_at) ?></td>
+                    <td class="text-center"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAsstManager_At) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvManager_At) ?></td>
                     <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvSeniorManager_At) ?></td>
