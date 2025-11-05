@@ -156,9 +156,6 @@ $selAccount = $CI->input->get('selAccount', true); // list of Account_ID (comma 
 $vauthAccountFilter = $CI->input->get('vauthaccountfilter', true) ?: $CI->input->get('REQUEST.vauthaccountfilter', true);
 $companyId = 2;
 
-$datefrom = '2025-01-01';
-$dateto   = '2025-10-31';
-
 $selcurrency = $CI->input->get('selcurrency', true);
 $rdlocalimp  = $CI->input->get('rdlocalimp', true); // 0/1/2 as in CF
 $rdo_invnumber = (int) $CI->input->get('rdo_invnumber');

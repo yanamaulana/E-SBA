@@ -66,7 +66,7 @@ INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_A
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'PO', N'PO Samick', 1, '2025-10-15 12:00:00.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'POV', N'PO Vendor', 1, '2025-10-15 12:00:00.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'LC', N'Letter Communication', 1, '2025-10-15 12:00:00.000', N'29431');
-INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'PROP', N'Proposal', 1, '2025-10-15 12:00:00.000', N'29431');
+INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'PROPOSAL', N'Proposal', 1, '2025-10-15 12:00:00.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'PEB', N'Pemberitahuan Ekspor Barang', 1, '2025-10-15 12:00:00.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'NPE', N'Nota Pelayanan Ekspor', 1, '2025-10-15 12:00:00.000', N'29431');
 INSERT INTO dbsai_erp_uat.dbo.Tmst_Attachment_Type_CBR (Att_Code, Att_Name, Is_Active, Created_At, Created_By) VALUES(N'PIB', N'Pemberitahuan Impor Barang', 1, '2025-10-15 12:00:00.000', N'29431');

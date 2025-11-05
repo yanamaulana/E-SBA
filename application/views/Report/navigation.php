@@ -14,6 +14,7 @@
                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu1">
                                             <li><a href="<?= base_url('Report/Sales/sales_order_report?SelCurr=IDR') ?>" class="dropdown-item">Sales Order Report</a></li>
                                             <li><a href="<?= base_url('Report/Sales/ostpo_rawmaterial') ?>" class="dropdown-item">Raw Material Outstanding PO</a></li>
+                                            <li><a href="<?= base_url('Report/Sales/index_hpp') ?>" class="dropdown-item">Sales HPP Report</a></li>
                                         </ul>
                                     </div>
                                     <div class="text-center px-4">

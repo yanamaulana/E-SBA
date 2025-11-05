@@ -287,6 +287,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="menu-item" data-bs-toggle="tooltip" title="Asst. Manager Approval : Cash Book Requisition">
+                                <a class="menu-link <?= ($Menu == 'Report') ? 'active' : null ?>" href="<?= base_url('Report/Navigation') ?>">
+                                    <span class="menu-icon">
+                                        <!--begin::Svg Icon | path: assets/media/icons/duotune/graphs/gra010.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2qx">
+                                            <i class="fas fa-wrench fs-3"></i>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-title ml-2">Tool</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

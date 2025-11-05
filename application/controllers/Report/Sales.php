@@ -242,9 +242,22 @@ class Sales extends CI_Controller
         die;
     }
 
+    public function index_hpp()
+    {
+        $this->data['page_title'] = "Index Customer Report HPP";
+        $this->data['page_content'] = "Report/Sales/index_hpp";
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Report/Sales/index_hpp.js"></script>';
+
+        $this->load->view($this->layout, $this->data);
+    }
+
     public function customer_transaction_report()
     {
         $this->data['page_title'] = "Customer Report";
+
+        $this->data['datefrom'] = $this->input->get('start');
+        $this->data['dateto']   = $this->input->get('until');
+        // $this->data['excel']    = $this->input->get('excel');
 
         $this->load->view('Report/Sales/customer_report_view', $this->data);
     }
