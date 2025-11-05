@@ -52,6 +52,7 @@
                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu3">
                                             <li><a href="<?= base_url('Report/Logistic/eta_purchase_order') ?>" class="dropdown-item">ETA Purchase Order</a></li>
                                             <li><a href="<?= base_url('Report/Logistic/index_price_comparison_last_v_this_year') ?>" class="dropdown-item">Item Price Comparison </a></li>
+                                            <li><a href="<?= base_url('ScriptTool/update_costcenter') ?>" class="dropdown-item"> Repair VIN Cost Center</a></li>
                                         </ul>
                                     </div>
                                     <div class="text-center px-4">
