@@ -157,7 +157,7 @@ $vauthAccountFilter = $CI->input->get('vauthaccountfilter', true) ?: $CI->input-
 $companyId = 2;
 
 $datefrom = '2025-01-01';
-$dateto   = '2025-09-30';
+$dateto   = '2025-10-31';
 
 $selcurrency = $CI->input->get('selcurrency', true);
 $rdlocalimp  = $CI->input->get('rdlocalimp', true); // 0/1/2 as in CF
