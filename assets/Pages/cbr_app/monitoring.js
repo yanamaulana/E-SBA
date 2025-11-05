@@ -561,6 +561,12 @@ $(document).ready(function () {
         });
     }
 
+    $(document).on('click', '.btn-cbr', function () {
+        let Cbr_no = $(this).val();
+
+        window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_rpt_cbr/${Cbr_no}`, `RptCbr-${Cbr_no}`, 'width=854,height=480');
+    })
+
     $(document).on('click', '.btn-attachment', function () {
         $('#txt-cbr').text($(this).val());
         $.ajax({
