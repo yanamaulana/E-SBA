@@ -296,33 +296,49 @@ function format_rupiah($angka)
 
                     <td class="text-center" style="width: 7%;">STATUS APPROVAL</td>
                 </tr>
-                <tr style="height: 85px;">
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppChief_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppvAsstManager_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvManager == 1) ? strtoupper($TrxApproval->AppvManager_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvSeniorManager == 1) ? strtoupper($TrxApproval->AppvSeniorManager_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvGeneralManager == 1) ? strtoupper($TrxApproval->AppvGeneralManager_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAdditional == 1) ? strtoupper($TrxApproval->AppvAdditional_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvDirector == 1) ? strtoupper($TrxApproval->AppvDirector_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvFinanceDirector == 1) ? strtoupper($TrxApproval->AppvFinanceDirector_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvPresidentDirector == 1) ? strtoupper($TrxApproval->AppvPresidentDirector_Name) : '-' ?></td>
-                    <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2">
-                        <?php
-                        if ($CbrHeader->SysId_Step == NULL || $CbrHeader->SysId_Step == '') {
-                            echo 'NOT SUBMITTED YET';
-                        } elseif (
-                            $TrxApproval->Status_AppvAsstManager == 2 or $TrxApproval->Status_AppvManager == 2 or $TrxApproval->Status_AppvSeniorManager == 2 or $TrxApproval->Status_AppvGeneralManager == 2 or $TrxApproval->Status_AppvAdditional == 2 or $TrxApproval->Status_AppvDirector == 2 or $TrxApproval->Status_AppvFinanceDirector == 2 or $TrxApproval->Status_AppvPresidentDirector == 2
-                        ) {
-                            echo 'REJECTED';
-                        } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 0) {
-                            echo 'APPROVAL IN PROGRESS';
-                        } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 1) {
-                            echo 'FINISH APPROVED';
-                        }
-                        ?>
-                    </td>
-                </tr>
+                <?php if ($TrxApproval): ?>
+                    <tr style="height: 85px;">
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= strtoupper($CbrHeader->Request_Name) ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvChief == 1) ? strtoupper($TrxApproval->AppChief_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAsstManager == 1) ? strtoupper($TrxApproval->AppvAsstManager_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvManager == 1) ? strtoupper($TrxApproval->AppvManager_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvSeniorManager == 1) ? strtoupper($TrxApproval->AppvSeniorManager_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvGeneralManager == 1) ? strtoupper($TrxApproval->AppvGeneralManager_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvAdditional == 1) ? strtoupper($TrxApproval->AppvAdditional_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvDirector == 1) ? strtoupper($TrxApproval->AppvDirector_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvFinanceDirector == 1) ? strtoupper($TrxApproval->AppvFinanceDirector_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;"><?= ($TrxApproval->Status_AppvPresidentDirector == 1) ? strtoupper($TrxApproval->AppvPresidentDirector_Name) : '-' ?></td>
+                        <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2">
+                            <?php
+                            if ($CbrHeader->SysId_Step == NULL || $CbrHeader->SysId_Step == '') {
+                                echo 'NOT SUBMITTED YET';
+                            } elseif (
+                                $TrxApproval->Status_AppvAsstManager == 2 or $TrxApproval->Status_AppvManager == 2 or $TrxApproval->Status_AppvSeniorManager == 2 or $TrxApproval->Status_AppvGeneralManager == 2 or $TrxApproval->Status_AppvAdditional == 2 or $TrxApproval->Status_AppvDirector == 2 or $TrxApproval->Status_AppvFinanceDirector == 2 or $TrxApproval->Status_AppvPresidentDirector == 2
+                            ) {
+                                echo 'REJECTED';
+                            } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 0) {
+                                echo 'APPROVAL IN PROGRESS';
+                            } elseif (($CbrHeader->SysId_Step != NULL || $CbrHeader->SysId_Step != '') && $TrxApproval->Legitimate == 1) {
+                                echo 'FINISH APPROVED';
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <tr style="height: 85px;">
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;">-</td>
+                        <td class="text-center sign" style="font-size: 12pt !important;" rowspan="2">NOT SUBMITTED YET</td>
+                    </tr>
+                <?php endif; ?>
                 <?php
                 /* SELECT SysID, CBReq_No, SysId_Step, IsAppvStaff, Status_AppvStaff, AppvStaff_By, AppvStaff_Name, AppvStaff_At, IsAppvChief, Status_AppvChief, AppvChief_By, AppvChief_Name, AppvChief_At,
 
@@ -339,18 +355,33 @@ function format_rupiah($angka)
                 AppvFinancePerson_At, Doc_Legitimate_Pos_On, Legitimate, Last_Submit_at
                 FROM dbsai_erp_uat.dbo.Ttrx_Cbr_Approval; */
                 ?>
-                <tr>
-                    <td class="text-center"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvChief_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAsstManager_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvManager_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvSeniorManager_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvGeneralManager_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAdditional_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvDirector_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvFinanceDirector_At) ?></td>
-                    <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvPresidentDirector_At) ?></td>
-                </tr>
+                <?php if ($TrxApproval): ?>
+                    <tr>
+                        <td class="text-center"><?= formatTanggalLaporan($CbrHeader->Creation_DateTime) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvChief_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAsstManager_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvManager_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvSeniorManager_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvGeneralManager_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvAdditional_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvDirector_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvFinanceDirector_At) ?></td>
+                        <td class="text-center"><?= formatTanggalLaporan($TrxApproval->AppvPresidentDirector_At) ?></td>
+                    </tr>
+                <?php else: ?>
+                    <tr>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                        <td class="text-center"><?= '....' ?></td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
