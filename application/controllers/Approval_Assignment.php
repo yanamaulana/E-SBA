@@ -34,6 +34,21 @@ class Approval_Assignment extends CI_Controller
         $this->load->view($this->layout, $this->data);
     }
 
+    public function user_approval_assignment()
+    {
+        $this->data['page_title'] = $this->session->userdata('sys_sba_nama') . ": Step Approval Assignment";
+        $this->data['page_content'] = "setting/user_approval_assignment";
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/setting/user_approval_assignment.js?v=' . time() . '""></script>';
+
+        $this->data['Approvals'] = $this->db->get($this->QviewSettingStepApproval)->result();
+
+        $this->data['mystep'] = $this->db->get_where($this->Ttrx_Assignment_Approval_User, ['UserName_Employee' => $this->session->userdata('sys_sba_username')])->row();
+
+
+        $this->load->view($this->layout, $this->data);
+    }
+
+
     public function store()
     {
         $Approval = $this->input->post('Approval');
@@ -77,6 +92,52 @@ class Approval_Assignment extends CI_Controller
                 'Created_by' => $this->session->userdata('sys_sba_username'),
             ]);
         }
+        $error_msg = $this->db->error()["message"];
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return $this->help->Fn_resulting_response([
+                'code' => 505,
+                'msg'  => $error_msg,
+            ]);
+        } else {
+            $this->db->trans_commit();
+            return $this->help->Fn_resulting_response([
+                'code' => 200,
+                'msg' => "The approval step status has been successfully updated!",
+            ]);
+        }
+    }
+
+
+    public function store_user()
+    {
+        $Approval = $this->input->post('Approval');
+        $Nik_Employee = $this->input->post('Employee');
+
+        //cek jika data sudah ada
+        $Current_Assigment = $this->db->get_where($this->Ttrx_Assignment_Approval_User, [
+            'UserName_Employee' => $Nik_Employee,
+        ])->row();
+
+        if ($Current_Assigment->SysId_Approval == $Approval) {
+            return $this->help->Fn_resulting_response([
+                'code' => 422,
+                'msg'  => 'You are already assigned to this approval step.',
+            ]);
+        }
+
+        $this->db->trans_start();
+
+        $this->db->where('UserName_Employee', $Nik_Employee)->delete($this->Ttrx_Assignment_Approval_User);
+
+        $this->db->insert($this->Ttrx_Assignment_Approval_User, [
+            'UserName_Employee' => $Nik_Employee,
+            'SysId_Approval' => $Approval,
+            'Created_at' => $this->DateTime,
+            'Created_by' => $this->session->userdata('sys_sba_username'),
+        ]);
+
         $error_msg = $this->db->error()["message"];
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE) {
@@ -153,7 +214,6 @@ class Approval_Assignment extends CI_Controller
 
 
     // ============================================== DATATABLE SECTION
-
     public function DT_List_Approval_Assignment()
     {
         $query  = "SELECT * from $this->QviewTrx_Assignment_Approval_User";
@@ -164,6 +224,21 @@ class Approval_Assignment extends CI_Controller
         header('Content-Type: application/json');
         echo $this->M_Datatables->get_tables_query($query, $search, $where, $isWhere);
     }
+
+    public function DT_List_Approval_Assignment_user()
+    {
+        $query  = "SELECT * from $this->QviewTrx_Assignment_Approval_User";
+        $search = ['UserName_Employee', 'First_Name'];
+        $where  = [
+            'SysId_Approval' => $this->input->post('Approval'),
+            'UserName_Employee' => $this->session->userdata('sys_sba_username')
+        ];
+        $isWhere = null;
+
+        header('Content-Type: application/json');
+        echo $this->M_Datatables->get_tables_query($query, $search, $where, $isWhere);
+    }
+
 
     public function DT_Preview_Step_Approval()
     {

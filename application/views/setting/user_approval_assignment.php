@@ -20,7 +20,7 @@
                                     <select class="form-select rounded-0" data-control="select2" data-placeholder="Select an option" name="Approval" id="Approval" required data-allow-clear="true">
                                         <option selected disabled>-Choose Step Approval-</option>
                                         <?php foreach ($Approvals as $li) : ?>
-                                            <?= '<option value="' . $li->SysId . '">' . $li->Setting_Approval_Code . '</option>' ?>
+                                            <option value="<?= $li->SysId ?>" <?= (($li->SysId == ($mystep->SysId_Approval ?? NULL)) ? ' selected' : '') ?>><?= $li->Setting_Approval_Code ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -36,8 +36,8 @@
                                 <div class="input-group">
                                     <label for="colFormLabelSm" class="col-sm-12 col-form-label col-form-label-sm">Select Employee :</label>
                                     <div class="col-sm-12">
-                                        <select class="form-select rounded-0" data-control="select2" data-placeholder="Select Employee" name="Employee[]" id="Employee" data-allow-clear="true" multiple="multiple" required>
-                                            <!-- Options will be populated via AJAX -->
+                                        <select class="form-select rounded-0" data-placeholder="Select Employee" name="Employee" id="Employee" required>
+                                            <option value="<?= $this->session->userdata('sys_sba_username') ?>" selected><?= $this->session->userdata('sys_sba_nama') ?></option>
                                         </select>
                                     </div>
                                 </div>
