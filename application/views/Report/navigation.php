@@ -28,12 +28,10 @@
                                 <div class="card-body p-0">
                                     <div class="dropdown text-center">
                                         <button class="btn btn-lg dropdown-toggle text-dark" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <strong>HR Report</strong>
+                                            <strong>Stock Opname</strong>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu2">
-                                            <li><button class="dropdown-item" type="button">Action</button></li>
-                                            <li><button class="dropdown-item" type="button">Another action</button></li>
-                                            <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                            <li><a class="dropdown-item" href="<?= base_url('Opname/index') ?>">Tool Generating Qty Opname</a></li>
                                         </ul>
                                     </div>
                                     <div class="text-center px-4">
