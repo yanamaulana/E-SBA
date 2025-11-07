@@ -20,7 +20,7 @@ $(document).ready(function () {
             serverSide: true,
             paging: true,
             dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
-            select: true,
+            select: false,
             // "lengthMenu": [
             //     [10, 30, 90, 1000],
             //     [10, 30, 90, 1000]
@@ -268,9 +268,20 @@ $(document).ready(function () {
             // autoWidth: true,
             responsive: false,
             "rowCallback": function (row, data) {
-                // if (data.is_active == "0") {
-                // 	$('td', row).css('background-color', 'pink');
-                // }
+                // console.log(data.Legitimate)
+                if (data.Status_AppvManager == '2' ||
+                    data.Status_AppvSeniorManager == '2' ||
+                    data.Status_AppvGeneralManager == '2' ||
+                    data.Status_AppvAdditional == '2' ||
+                    data.Status_AppvDirector == '2' ||
+                    data.Status_AppvPresidentDirector == '2' ||
+                    data.Status_AppvFinanceDirector == '2') {
+                    $('td', row).css('background-color', '#F8D7DA');
+                }
+
+                if (data.Legitimate == '1') {
+                    $('td', row).css('background-color', '#D4EDDA');
+                }
             },
             preDrawCallback: function () {
                 $("TableDataHistory tbody td").addClass("blurry");

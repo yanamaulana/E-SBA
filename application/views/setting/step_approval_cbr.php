@@ -12,7 +12,7 @@
             <div class="card-body">
                 <div class="row" id="el-table">
                     <div class="table-responsive">
-                        <table id="TableData" class="display compact nowrap table-bordered table-striped table-hover table-sm align-middle gy-5 gs-5">
+                        <table id="TableData" class="display compact nowrap table-bordered table-sm align-middle gy-5 gs-5">
                             <thead style="background-color: #3B6D8C;">
                                 <tr class="text-start text-white fw-bolder text-uppercase">
                                 </tr>

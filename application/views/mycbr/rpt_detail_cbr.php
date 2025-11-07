@@ -283,7 +283,7 @@ function format_rupiah($angka)
                     <td class="text-center" style="width: 7%;"><?= 'ASST.MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'SENIOR MANAGER' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'GENERAL MMANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'GENERAL MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'ADDITIONAL' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
