@@ -280,7 +280,7 @@ function format_rupiah($angka)
                     <td rowspan="3" style="writing-mode: vertical-rl;letter-spacing: 0.4em; white-space: nowrap; text-orientation: upright; vertical-align: middle; text-align:center; width: 1.5%;"><strong>APPROVAL</strong></td>
                     <td class="text-center" style="width: 7%;">SUBMITTER</td>
                     <td class="text-center" style="width: 7%;"><?= 'CHIEF' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'ASST.MANAGER' ?></td>
+                    <td class="text-center" style="width: 7%;"><?= 'ASST MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'SENIOR MANAGER' ?></td>
                     <td class="text-center" style="width: 7%;"><?= 'GENERAL MANAGER' ?></td>
