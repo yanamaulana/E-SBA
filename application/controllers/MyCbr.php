@@ -11,6 +11,7 @@ class MyCbr extends CI_Controller
     private $QviewTrx_Assignment_Approval_User = 'QviewTrx_Assignment_Approval_User'; // hanya identitas user ke master step
     private $Qview_Assignment_Approval_User = 'Qview_Assignment_Approval_User'; // detail dengan approval jabatan yang harus melakukan approval
     private $Ttrx_Dtl_Attachment_Cbr = 'Ttrx_Dtl_Attachment_Cbr';
+    private $Qview_trx_Dtl_Attachment_Cbr = 'Qview_trx_Dtl_Attachment_Cbr';
     private $Ttrx_DtlHst_Attachment_Cbr = 'Ttrx_DtlHst_Attachment_Cbr';
     private $Tmst_Attachment_Type_CBR = 'Tmst_Attachment_Type_CBR';
 
@@ -612,7 +613,7 @@ class MyCbr extends CI_Controller
             $code = 404;
         }
 
-        $Attachments = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $Req_No]);
+        $Attachments = $this->db->get_where($this->Qview_trx_Dtl_Attachment_Cbr, ['CbrNo' => $Req_No]);
         $data_Attachments = array();
         $i = 1;
         foreach ($Attachments->result() as $li) {
@@ -872,7 +873,7 @@ class MyCbr extends CI_Controller
     {
         $CbrNo = $this->input->get('CbrNo');
         $this->data['CbrNo'] = $CbrNo;
-        $this->data['Attachments'] = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $CbrNo]);
+        $this->data['Attachments'] = $this->db->get_where($this->Qview_trx_Dtl_Attachment_Cbr, ['CbrNo' => $CbrNo]);
         $this->data['Types'] = $this->db->get($this->Tmst_Attachment_Type_CBR);
 
         $this->load->view('mycbr/m_f_cbr_attachment', $this->data);
@@ -890,7 +891,7 @@ class MyCbr extends CI_Controller
     {
         $CbrNo = $this->input->get('CbrNo');
         $this->data['CbrNo'] = $CbrNo;
-        $this->data['Attachments'] = $this->db->get_where($this->Ttrx_Dtl_Attachment_Cbr, ['CbrNo' => $CbrNo]);
+        $this->data['Attachments'] = $this->db->get_where($this->Qview_trx_Dtl_Attachment_Cbr, ['CbrNo' => $CbrNo]);
         $this->data['Types'] = $this->db->get($this->Tmst_Attachment_Type_CBR);
         $this->data['auth_upload'] = $this->input->get('auth_upload');
 

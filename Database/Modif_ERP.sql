@@ -402,3 +402,12 @@ FROM Ttrx_Assignment_Approval_User AS Ttrx
 join ERPQview_User_Employee AS Emp on Ttrx.UserName_Employee = Emp.User_Name
 join TmstTrxSettingSteppApprovalCbr AS Apprv on Ttrx.SysId_Approval = Apprv.SysId;
 
+
+
+
+/// NEW SQL 
+create view Qview_trx_Dtl_Attachment_Cbr as
+SELECT Ttrx_Dtl_Attachment_Cbr.SysId, CbrNo, Attachment_FileName, Note, Year_Upload, AttachmentType as AttachmentType_Code, Att_Name as AttachmentType
+FROM dbsai_erp_uat.dbo.Ttrx_Dtl_Attachment_Cbr
+join Tmst_Attachment_Type_CBR on Att_Code = AttachmentType;
+
