@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class CbrAppPresidentDirector extends CI_Controller
+class CbrAppAccounting extends CI_Controller
 {
     private $Date;
     private $DateTime;
@@ -20,11 +20,11 @@ class CbrAppPresidentDirector extends CI_Controller
 
     public function index()
     {
-        $this->data['page_title'] = "President Director Approval-Cash Book Requisition";
-        $this->data['page_content'] = "cbr_app/approval";
+        $this->data['page_title'] = "Accounting Approval-Cash Book Requisition";
+        $this->data['page_content'] = "cbr_app/approval_accounting";
 
-        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/presdir.js?v=' . time() . '"></script>
-                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval_presdir.js?v=' . time() . '"></script>';
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/accounting.js?v=' . time() . '"></script>
+                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval_accounting.js?v=' . time() . '"></script>';
 
         $this->load->view($this->layout, $this->data);
     }
@@ -32,27 +32,15 @@ class CbrAppPresidentDirector extends CI_Controller
     public function approve_submission()
     {
         $Cbrs = $this->input->post('CBReq_No');
+
         $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
-            $RowApproval = $this->db->get_where($this->Ttrx_Cbr_Approval, ['CBReq_No' => $CBReq_No])->row();
-            if ($RowApproval->Doc_Legitimate_Pos_On == 'PresidentDirector') {
-                $data = [
-                    'Status_AppvPresidentDirector' => 1,
-                    'AppvPresidentDirector_Name'   => $this->session->userdata('sys_sba_nama'),
-                    'AppvPresidentDirector_By'     => $this->session->userdata('sys_sba_username'),
-                    'AppvPresidentDirector_At'     => $this->DateTime,
-                    'Legitimate' => 1,
-                ];
-            } else {
-                $data = [
-                    'Status_AppvPresidentDirector' => 1,
-                    'AppvPresidentDirector_Name'   => $this->session->userdata('sys_sba_nama'),
-                    'AppvPresidentDirector_By'     => $this->session->userdata('sys_sba_username'),
-                    'AppvPresidentDirector_At'     => $this->DateTime
-                ];
-            }
-
-            $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, $data);
+            $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
+                'Status_AppvFinancePerson' => 1,
+                'AppvFinancePerson_Name' => $this->session->userdata('sys_sba_nama'),
+                'AppvFinancePerson_By' => $this->session->userdata('sys_sba_username'),
+                'AppvFinancePerson_At' => $this->DateTime,
+            ]);
         }
 
         $error_msg = $this->db->error()["message"];
@@ -67,7 +55,7 @@ class CbrAppPresidentDirector extends CI_Controller
             $this->db->trans_commit();
             return $this->help->Fn_resulting_response([
                 'code' => 200,
-                'msg' => 'Cash Book Requisition successfully approved !',
+                'msg' => 'Cash Book Requisition successfully approved by accounting person!',
             ]);
         }
     }
@@ -80,10 +68,10 @@ class CbrAppPresidentDirector extends CI_Controller
         $this->db->trans_start();
         foreach ($Cbrs as $CBReq_No) {
             $this->db->where('CBReq_No', $CBReq_No)->update($this->Ttrx_Cbr_Approval, [
-                'Status_AppvPresidentDirector' => 2,
-                'AppvPresidentDirector_Name'   => $this->session->userdata('sys_sba_nama'),
-                'AppvPresidentDirector_By'     => $this->session->userdata('sys_sba_username'),
-                'AppvPresidentDirector_At'     => $this->DateTime,
+                'Status_AppvFinancePerson' => 2,
+                'AppvFinancePerson_Name' => $this->session->userdata('sys_sba_nama'),
+                'AppvFinancePerson_By' => $this->session->userdata('sys_sba_username'),
+                'AppvFinancePerson_At' => $this->DateTime,
             ]);
             $this->help->record_history_approval($CBReq_No, $rejection_reason);
         }
@@ -100,7 +88,7 @@ class CbrAppPresidentDirector extends CI_Controller
             $this->db->trans_commit();
             return $this->help->Fn_resulting_response([
                 'code' => 200,
-                'msg' => 'Cash Book Requisition successfully Rejected !',
+                'msg' => 'Cash Book Requisition successfully Rejected by accouting person!',
             ]);
         }
     }
@@ -137,7 +125,7 @@ class CbrAppPresidentDirector extends CI_Controller
         $dir    = $requestData['order']['0']['dir'];
         $username = $this->session->userdata('sys_sba_username');
 
-        $sql = "SELECT  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date, UserDivision
+        $sql = "SELECT  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date
         FROM TAccCashBookReq_Header
         INNER JOIN TUserGroupL ON TAccCashBookReq_Header.Created_By = TUserGroupL.User_ID
         INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
@@ -148,18 +136,16 @@ class CbrAppPresidentDirector extends CI_Controller
         AND Approval_Status  = 3
         AND CBReq_Status = 3
         AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
-        AND IsAppvPresidentDirector = 1
-        AND Status_AppvPresidentDirector = 0
-        AND Ttrx_Cbr_Approval.AppvPresidentDirector_By = '$username'
+        AND IsAppvFinancePerson = 1 
+        AND Status_AppvFinancePerson = 0
         AND ((IsAppvStaff = 0)          or (IsAppvStaff = 1 and Status_AppvStaff = 1))
         AND ((IsAppvChief = 0)          or (IsAppvChief = 1 and Status_AppvChief = 1))
         AND ((IsAppvAsstManager = 0)    or (IsAppvAsstManager = 1 and Status_AppvAsstManager = 1))
         AND ((IsAppvManager = 0)        or (IsAppvManager = 1 and Status_AppvManager = 1))
         AND ((IsAppvSeniorManager = 0)  or (IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1))
         AND ((IsAppvGeneralManager = 0) or (IsAppvGeneralManager = 1 and Status_AppvGeneralManager = 1))
-        AND ((IsAppvAdditional = 0)     or (IsAppvAdditional = 1 and Status_AppvAdditional = 1))
-        AND ((IsAppvDirector = 0)       or (IsAppvDirector = 1 and Status_AppvDirector = 1))
-        AND ((IsAppvFinancePerson = 0)  or (IsAppvFinancePerson = 1 and Status_AppvFinancePerson = 1)) ";
+        AND ((IsAppvAdditional = 0)     or (IsAppvAdditional = 1 and Status_AppvAdditional = 1)) ";
+        // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
 
         $totalData = $this->db->query($sql)->num_rows();
         if (!empty($requestData['search']['value'])) {
@@ -198,7 +184,6 @@ class CbrAppPresidentDirector extends CI_Controller
             $nestedData['Update_By'] = $row['Update_By'];
             $nestedData['Currency_Id'] = $row['Currency_Id'];
             $nestedData['Approve_Date'] = $row['Approve_Date'];
-            $nestedData['UserDivision'] = $row['UserDivision'];
 
             $data[] = $nestedData;
         }

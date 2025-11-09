@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class CbrMonitoring extends CI_Controller
+class HistoryApproval_Accounting extends CI_Controller
 {
     private $Date;
     private $DateTime;
@@ -18,16 +18,9 @@ class CbrMonitoring extends CI_Controller
         $this->load->model('m_DataTable', 'M_Datatables');
     }
 
-    public function index()
-    {
-        $this->data['page_title'] = "Monitoring Cash Book Requisition";
-        $this->data['page_content'] = "cbr_app/monitoring";
-        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/monitoring.js"></script>';
+    public function index() {}
 
-        $this->load->view($this->layout, $this->data);
-    }
-
-    public function DT_Monitoring()
+    public function DT_List_History_Approval()
     {
         $requestData = $_REQUEST;
         $columns = array(
@@ -58,28 +51,9 @@ class CbrMonitoring extends CI_Controller
         $from   = $this->input->post('from');
         $until  = $this->input->post('until');
         $column_range  = $this->input->post('column_range');
-        $username = $this->session->userdata('sys_sba_userid');
+        $username = $this->session->userdata('sys_sba_username');
 
-        $sql = "Select distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date,
-        CASE WHEN Ttrx_Cbr_Approval.CBReq_No IS NOT NULL OR Ttrx_Cbr_Approval.CBReq_No != '' THEN 1 ELSE 0 END AS Has_Submitted_Approval,
-         Ttrx_Cbr_Approval.IsAppvStaff, Ttrx_Cbr_Approval.Status_AppvStaff, Ttrx_Cbr_Approval.AppvStaff_By, Ttrx_Cbr_Approval.AppvStaff_Name, Ttrx_Cbr_Approval.AppvStaff_At, Ttrx_Cbr_Approval.IsAppvChief, Ttrx_Cbr_Approval.Status_AppvChief, Ttrx_Cbr_Approval.AppvChief_By, Ttrx_Cbr_Approval.AppvChief_Name, Ttrx_Cbr_Approval.AppvChief_At, Ttrx_Cbr_Approval.IsAppvAsstManager, Ttrx_Cbr_Approval.Status_AppvAsstManager, Ttrx_Cbr_Approval.AppvAsstManager_By, Ttrx_Cbr_Approval.AppvAsstManager_Name, Ttrx_Cbr_Approval.AppvAsstManager_At, Ttrx_Cbr_Approval.IsAppvManager, Ttrx_Cbr_Approval.Status_AppvManager, Ttrx_Cbr_Approval.AppvManager_By, Ttrx_Cbr_Approval.AppvManager_Name, Ttrx_Cbr_Approval.AppvManager_At, Ttrx_Cbr_Approval.IsAppvSeniorManager, Ttrx_Cbr_Approval.Status_AppvSeniorManager, Ttrx_Cbr_Approval.AppvSeniorManager_By, Ttrx_Cbr_Approval.AppvSeniorManager_Name, Ttrx_Cbr_Approval.AppvSeniorManager_At, Ttrx_Cbr_Approval.IsAppvGeneralManager, Ttrx_Cbr_Approval.Status_AppvGeneralManager, Ttrx_Cbr_Approval.AppvGeneralManager_By, Ttrx_Cbr_Approval.AppvGeneralManager_Name, Ttrx_Cbr_Approval.AppvGeneralManager_At, Ttrx_Cbr_Approval.IsAppvDirector, Ttrx_Cbr_Approval.Status_AppvDirector, Ttrx_Cbr_Approval.AppvDirector_By, 
-         Ttrx_Cbr_Approval.IsAppvAdditional,Ttrx_Cbr_Approval.Status_AppvAdditional,Ttrx_Cbr_Approval.AppvAdditional_By,Ttrx_Cbr_Approval.AppvAdditional_Name,Ttrx_Cbr_Approval.AppvAdditional_At,
-         IsAppvFinancePerson,Status_AppvFinancePerson,AppvFinancePerson_By,AppvFinancePerson_Name,AppvFinancePerson_At,
-         Ttrx_Cbr_Approval.AppvDirector_Name, Ttrx_Cbr_Approval.AppvDirector_At, Ttrx_Cbr_Approval.IsAppvPresidentDirector, Ttrx_Cbr_Approval.Status_AppvPresidentDirector, Ttrx_Cbr_Approval.AppvPresidentDirector_By, Ttrx_Cbr_Approval.AppvPresidentDirector_Name, Ttrx_Cbr_Approval.AppvPresidentDirector_At, 
-          Ttrx_Cbr_Approval.IsAppvFinanceDirector, Ttrx_Cbr_Approval.Status_AppvFinanceDirector, Ttrx_Cbr_Approval.AppvFinanceDirector_By, Ttrx_Cbr_Approval.AppvFinanceDirector_Name, Ttrx_Cbr_Approval.AppvFinanceDirector_At, Ttrx_Cbr_Approval.UserName_User, Ttrx_Cbr_Approval.Rec_Created_At, Ttrx_Cbr_Approval.UserDivision, Ttrx_Cbr_Approval.Legitimate
-        FROM TAccCashBookReq_Header
-        INNER JOIN TUserGroupL ON TAccCashBookReq_Header.Created_By = TUserGroupL.User_ID
-        INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
-        LEFT OUTER JOIN Ttrx_Cbr_Approval ON TAccCashBookReq_Header.CBReq_No = Ttrx_Cbr_Approval.CBReq_No
-        WHERE TAccCashBookReq_Header.Type='D'
-        And $column_range >= {d '$from'}
-        And $column_range <= {d '$until'}
-        AND TAccCashBookReq_Header.Company_ID = 2 
-        AND isNull(isSPJ,0) = 0
-        AND Approval_Status  = 3
-        AND CBReq_Status = 3 
-        AND Created_By = '$username' ";
-        // -- AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
+        $sql = $this->help->generate_sql_accounting_history_approval($username, $column_range, $from, $until);
 
         $totalData = $this->db->query($sql)->num_rows();
         if (!empty($requestData['search']['value'])) {
@@ -95,8 +69,6 @@ class CbrMonitoring extends CI_Controller
         //----------------------------------------------------------------------------------
         $totalFiltered = $this->db->query($sql)->num_rows();
         $sql .= " ORDER BY $order $dir OFFSET " . $requestData['start'] . " ROWS FETCH NEXT " . $requestData['length'] . " ROWS ONLY ";
-        // var_dump($sql);
-        // die;
         $query = $this->db->query($sql);
         $data = array();
         foreach ($query->result_array() as $row) {
@@ -123,71 +95,62 @@ class CbrMonitoring extends CI_Controller
             $nestedData['IsAppvStaff'] = $row['IsAppvStaff'];
             $nestedData['Status_AppvStaff'] = $row['Status_AppvStaff'];
             $nestedData['AppvStaff_By'] = $row['AppvStaff_By'];
-            $nestedData['AppvStaff_Name'] = $row['AppvStaff_Name'] ?? '';
             $nestedData['AppvStaff_At'] = $row['AppvStaff_At'];
             $nestedData['IsAppvChief'] = $row['IsAppvChief'];
             $nestedData['Status_AppvChief'] = $row['Status_AppvChief'];
             $nestedData['AppvChief_By'] = $row['AppvChief_By'];
-            $nestedData['AppvChief_Name'] = $row['AppvChief_Name'] ?? '';
             $nestedData['AppvChief_At'] = $row['AppvChief_At'];
             $nestedData['IsAppvAsstManager'] = $row['IsAppvAsstManager'];
             $nestedData['Status_AppvAsstManager'] = $row['Status_AppvAsstManager'];
             $nestedData['AppvAsstManager_By'] = $row['AppvAsstManager_By'];
-            $nestedData['AppvAsstManager_Name'] = $row['AppvAsstManager_Name'] ?? '';
             $nestedData['AppvAsstManager_At'] = $row['AppvAsstManager_At'];
             $nestedData['IsAppvManager'] = $row['IsAppvManager'];
             $nestedData['Status_AppvManager'] = $row['Status_AppvManager'];
             $nestedData['AppvManager_By'] = $row['AppvManager_By'];
-            $nestedData['AppvManager_Name'] = $row['AppvManager_Name'] ?? '';
             $nestedData['AppvManager_At'] = $row['AppvManager_At'];
             $nestedData['IsAppvSeniorManager'] = $row['IsAppvSeniorManager'];
             $nestedData['Status_AppvSeniorManager'] = $row['Status_AppvSeniorManager'];
             $nestedData['AppvSeniorManager_By'] = $row['AppvSeniorManager_By'];
-            $nestedData['AppvSeniorManager_Name'] = $row['AppvSeniorManager_Name'] ?? '';
             $nestedData['AppvSeniorManager_At'] = $row['AppvSeniorManager_At'];
             $nestedData['IsAppvGeneralManager'] = $row['IsAppvGeneralManager'];
             $nestedData['Status_AppvGeneralManager'] = $row['Status_AppvGeneralManager'];
             $nestedData['AppvGeneralManager_By'] = $row['AppvGeneralManager_By'];
-            $nestedData['AppvGeneralManager_Name'] = $row['AppvGeneralManager_Name'] ?? '';
             $nestedData['AppvGeneralManager_At'] = $row['AppvGeneralManager_At'];
+
             $nestedData['IsAppvAdditional'] = $row['IsAppvAdditional'];
             $nestedData['Status_AppvAdditional'] = $row['Status_AppvAdditional'];
             $nestedData['AppvAdditional_By'] = $row['AppvAdditional_By'];
             $nestedData['AppvAdditional_At'] = $row['AppvAdditional_At'];
+
             $nestedData['IsAppvFinancePerson'] = $row['IsAppvFinancePerson'];
             $nestedData['Status_AppvFinancePerson'] = $row['Status_AppvFinancePerson'];
             $nestedData['AppvFinancePerson_By'] = $row['AppvFinancePerson_By'];
             $nestedData['AppvFinancePerson_Name'] = $row['AppvFinancePerson_Name'];
             $nestedData['AppvFinancePerson_At'] = $row['AppvFinancePerson_At'];
+
             $nestedData['IsAppvDirector'] = $row['IsAppvDirector'];
             $nestedData['Status_AppvDirector'] = $row['Status_AppvDirector'];
             $nestedData['AppvDirector_By'] = $row['AppvDirector_By'];
-            $nestedData['AppvDirector_Name'] = $row['AppvDirector_Name'] ?? '';
             $nestedData['AppvDirector_At'] = $row['AppvDirector_At'];
             $nestedData['IsAppvPresidentDirector'] = $row['IsAppvPresidentDirector'];
             $nestedData['Status_AppvPresidentDirector'] = $row['Status_AppvPresidentDirector'];
             $nestedData['AppvPresidentDirector_By'] = $row['AppvPresidentDirector_By'];
-            $nestedData['AppvPresidentDirector_Name'] = $row['AppvPresidentDirector_Name'] ?? '';
             $nestedData['AppvPresidentDirector_At'] = $row['AppvPresidentDirector_At'];
             // $nestedData['IsAppvFinanceStaff'] = $row['IsAppvFinanceStaff'];
             // $nestedData['Status_AppvFinanceStaff'] = $row['Status_AppvFinanceStaff'];
             // $nestedData['AppvFinanceStaff_By'] = $row['AppvFinanceStaff_By'];
-            // $nestedData['AppvFinanceStaff_Name'] = $row['AppvFinanceStaff_Name'] ?? '';
             // $nestedData['AppvFinanceStaff_At'] = $row['AppvFinanceStaff_At'];
             // $nestedData['IsAppvFinanceManager'] = $row['IsAppvFinanceManager'];
             // $nestedData['Status_AppvFinanceManager'] = $row['Status_AppvFinanceManager'];
             // $nestedData['AppvFinanceManager_By'] = $row['AppvFinanceManager_By'];
-            // $nestedData['AppvFinanceManager_Name'] = $row['AppvFinanceManager_Name'] ?? '';
             // $nestedData['AppvFinanceManager_At'] = $row['AppvFinanceManager_At'];
             $nestedData['IsAppvFinanceDirector'] = $row['IsAppvFinanceDirector'];
             $nestedData['Status_AppvFinanceDirector'] = $row['Status_AppvFinanceDirector'];
             $nestedData['AppvFinanceDirector_By'] = $row['AppvFinanceDirector_By'];
-            $nestedData['AppvFinanceDirector_Name'] = $row['AppvFinanceDirector_Name'] ?? '';
             $nestedData['AppvFinanceDirector_At'] = $row['AppvFinanceDirector_At'];
             $nestedData['UserName_User'] = $row['UserName_User'];
             $nestedData['Rec_Created_At'] = $row['Rec_Created_At'];
-            $nestedData['UserDivision'] =  $row['UserDivision'] ?? $this->session->userdata('sys_sba_department'); // 
-            $nestedData['Has_Submitted_Approval'] = $row['Has_Submitted_Approval'];
+            $nestedData['UserDivision'] = $row['UserDivision'];
             $nestedData['Legitimate'] = $row['Legitimate'];
 
             $data[] = $nestedData;

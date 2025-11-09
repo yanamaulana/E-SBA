@@ -24,7 +24,7 @@ class CbrAppDirector extends CI_Controller
         $this->data['page_content'] = "cbr_app/approval";
 
         $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/director.js?v=' . time() . '"></script>
-                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval.js?v=' . time() . '"></script>';
+                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval_dir.js?v=' . time() . '"></script>';
 
         $this->load->view($this->layout, $this->data);
     }
@@ -145,7 +145,8 @@ class CbrAppDirector extends CI_Controller
         AND ((IsAppvManager = 0)        or (IsAppvManager = 1 and Status_AppvManager = 1))
         AND ((IsAppvSeniorManager = 0)  or (IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1))
         AND ((IsAppvGeneralManager = 0) or (IsAppvGeneralManager = 1 and Status_AppvGeneralManager = 1))
-        AND ((IsAppvAdditional = 0)     or (IsAppvAdditional = 1 and Status_AppvAdditional = 1)) ";
+        AND ((IsAppvAdditional = 0)     or (IsAppvAdditional = 1 and Status_AppvAdditional = 1)) 
+        AND ((IsAppvFinancePerson = 0)  or (IsAppvFinancePerson = 1 and Status_AppvFinancePerson = 1)) ";
         // ORDER BY TAccCashBookReq_Header.Document_Date DESC,TAccCashBookReq_Header.CBReq_No DESC 
 
         $totalData = $this->db->query($sql)->num_rows();

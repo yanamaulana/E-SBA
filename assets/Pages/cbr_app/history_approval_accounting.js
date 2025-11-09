@@ -26,7 +26,7 @@ $(document).ready(function () {
                 [10, 30, 90, 1000]
             ],
             ajax: {
-                url: $('meta[name="base_url"]').attr('content') + "HistoryApproval/DT_List_History_Approval",
+                url: $('meta[name="base_url"]').attr('content') + "HistoryApproval_Accounting/DT_List_History_Approval",
                 dataType: "json",
                 type: "POST",
                 data: {
@@ -111,7 +111,7 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "IsAppvFinancePerson", name: "IsAppvFinancePerson", orderable: false, visible: false, render: function (data, type, row, meta) {
+                    data: "IsAppvFinancePerson", name: "IsAppvFinancePerson", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvFinancePerson);
                     }
                 },
@@ -139,7 +139,7 @@ $(document).ready(function () {
                 targets: 7
             }, {
                 className: "text-center dt-nowrap",
-                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]

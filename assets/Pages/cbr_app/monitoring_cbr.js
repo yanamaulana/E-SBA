@@ -188,7 +188,10 @@ $(document).ready(function () {
                 {
                     data: "IsAppvAsstManager",
                     name: "IsAppvAsstManager",
-                    visible: false,
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAsstManager);
+                    }
                 },
                 {
                     data: "IsAppvManager",
@@ -220,6 +223,14 @@ $(document).ready(function () {
                     orderable: false,
                     render: function (data, type, row, meta) {
                         return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAdditional);
+                    }
+                },
+                {
+                    data: "IsAppvFinancePerson",
+                    name: "IsAppvFinancePerson",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinancePerson);
                     }
                 },
                 {
@@ -273,6 +284,7 @@ $(document).ready(function () {
                     data.Status_AppvSeniorManager == '2' ||
                     data.Status_AppvGeneralManager == '2' ||
                     data.Status_AppvAdditional == '2' ||
+                    data.Status_AppvFinancePerson == '2' ||
                     data.Status_AppvDirector == '2' ||
                     data.Status_AppvPresidentDirector == '2' ||
                     data.Status_AppvFinanceDirector == '2') {

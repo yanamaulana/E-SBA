@@ -60,7 +60,7 @@ $(document).ready(function () {
                 { data: "curr_rate", name: "curr_rate", visible: false },
                 { data: "Approval_Status", name: "Approval_Status", visible: false },
                 {
-                    data: "CBReq_Status", name: "CBReq_Status", render: function (data) {
+                    data: "CBReq_Status", name: "CBReq_Status", visible: false, render: function (data) {
                         if (data == 3) {
                             return `<a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-custom-class="tooltip-dark" title="Close" class="badge badge-success btn-icon"><i class="text-white fas fa-file-archive"></i></a>`;
                         } else if (data == 2) {
@@ -91,22 +91,22 @@ $(document).ready(function () {
                 { data: "IsAppvChief", name: "IsAppvChief", visible: false },
                 { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
                 {
-                    data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvManager", name: "IsAppvManager", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvManager);
                     }
                 },
                 {
-                    data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvSeniorManager);
                     }
                 },
                 {
-                    data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvGeneralManager);
                     }
                 },
                 {
-                    data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvAdditional);
                     }
                 },
@@ -121,12 +121,12 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
                     }
                 },
                 {
-                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
+                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, visible: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
                     }
                 }
@@ -152,14 +152,10 @@ $(document).ready(function () {
             // autoWidth: true,
             responsive: false,
             "rowCallback": function (row, data) {
-                if (data.Status_AppvManager == '2' ||
-                    data.Status_AppvSeniorManager == '2' ||
-                    data.Status_AppvGeneralManager == '2' ||
+                if (data.Status_AppvManager == '2' || data.Status_AppvSeniorManager == '2' || data.Status_AppvGeneralManager == '2' ||
                     data.Status_AppvAdditional == '2' ||
                     data.Status_AppvFinancePerson == '2' ||
-                    data.Status_AppvDirector == '2' ||
-                    data.Status_AppvPresidentDirector == '2' ||
-                    data.Status_AppvFinanceDirector == '2') {
+                    data.Status_AppvDirector == '2' || data.Status_AppvPresidentDirector == '2' || data.Status_AppvFinanceDirector == '2') {
                     $('td', row).css('background-color', '#F8D7DA');
                 }
 

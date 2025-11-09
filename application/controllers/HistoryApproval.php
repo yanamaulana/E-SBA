@@ -122,6 +122,12 @@ class HistoryApproval extends CI_Controller
             $nestedData['AppvAdditional_By'] = $row['AppvAdditional_By'];
             $nestedData['AppvAdditional_At'] = $row['AppvAdditional_At'];
 
+            $nestedData['IsAppvFinancePerson'] = $row['IsAppvFinancePerson'];
+            $nestedData['Status_AppvFinancePerson'] = $row['Status_AppvFinancePerson'];
+            $nestedData['AppvFinancePerson_By'] = $row['AppvFinancePerson_By'];
+            $nestedData['AppvFinancePerson_Name'] = $row['AppvFinancePerson_Name'];
+            $nestedData['AppvFinancePerson_At'] = $row['AppvFinancePerson_At'];
+
             $nestedData['IsAppvDirector'] = $row['IsAppvDirector'];
             $nestedData['Status_AppvDirector'] = $row['Status_AppvDirector'];
             $nestedData['AppvDirector_By'] = $row['AppvDirector_By'];
@@ -145,6 +151,7 @@ class HistoryApproval extends CI_Controller
             $nestedData['UserName_User'] = $row['UserName_User'];
             $nestedData['Rec_Created_At'] = $row['Rec_Created_At'];
             $nestedData['UserDivision'] = $row['UserDivision'];
+            $nestedData['Legitimate'] = $row['Legitimate'];
 
             $data[] = $nestedData;
         }

@@ -336,7 +336,11 @@ $(document).ready(function () {
                 { data: "Approve_Date", name: "Approve_Date", visible: false },
                 { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
                 { data: "IsAppvChief", name: "IsAppvChief", visible: false },
-                { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
+                {
+                    data: "IsAppvAsstManager", name: "IsAppvAsstManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvAsstManager);
+                    }
+                },
                 {
                     data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvManager);
@@ -355,6 +359,11 @@ $(document).ready(function () {
                 {
                     data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvAdditional);
+                    }
+                },
+                {
+                    data: "IsAppvFinancePerson", name: "IsAppvFinancePerson", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvFinancePerson);
                     }
                 },
                 {
@@ -405,7 +414,7 @@ $(document).ready(function () {
             },
             "rowCallback": function (row, data) {
                 // console.log(data.Legitimate)
-                if (data.Status_AppvManager == '2' || data.Status_AppvSeniorManager == '2' || data.Status_AppvGeneralManager == '2' || data.Status_AppvAdditional == '2' || data.Status_AppvDirector == '2' || data.Status_AppvPresidentDirector == '2' || data.Status_AppvFinanceDirector == '2') {
+                if (data.Status_AppvManager == '2' || data.Status_AppvSeniorManager == '2' || data.Status_AppvGeneralManager == '2' || data.Status_AppvAdditional == '2' || data.Status_AppvFinancePerson == '2' || data.Status_AppvDirector == '2' || data.Status_AppvPresidentDirector == '2' || data.Status_AppvFinanceDirector == '2') {
                     $('td', row).css('background-color', '#F8D7DA');
                 }
 
@@ -792,6 +801,7 @@ $(document).ready(function () {
             url: $('meta[name="base_url"]').attr('content') + "MyCbr/m_list_cbr_attachment",
             data: {
                 CbrNo: $(this).val(),
+                auth_upload: 1,
             }, beforeSend: function () {
                 Swal.fire({
                     title: 'Loading....',
@@ -978,6 +988,11 @@ $(document).ready(function () {
             {
                 data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
                     return renderApprovalStatus(data, row.Status_AppvAdditional);
+                }
+            },
+            {
+                data: "IsAppvFinancePerson", name: "IsAppvFinancePerson", orderable: false, render: function (data, type, row, meta) {
+                    return renderApprovalStatus(data, row.Status_AppvFinancePerson);
                 }
             },
             {

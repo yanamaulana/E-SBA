@@ -187,7 +187,10 @@ $(document).ready(function () {
                 {
                     data: "IsAppvAsstManager",
                     name: "IsAppvAsstManager",
-                    visible: false,
+                    orderable: false,
+                    render: function (data, type, row) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAsstManager);
+                    }
                 },
                 {
                     data: "IsAppvManager",
@@ -219,6 +222,14 @@ $(document).ready(function () {
                     orderable: false,
                     render: function (data, type, row, meta) {
                         return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAdditional);
+                    }
+                },
+                {
+                    data: "IsAppvFinancePerson",
+                    name: "IsAppvFinancePerson",
+                    orderable: false,
+                    render: function (data, type, row, meta) {
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinancePerson);
                     }
                 },
                 {
@@ -267,9 +278,20 @@ $(document).ready(function () {
             // autoWidth: true,
             responsive: false,
             "rowCallback": function (row, data) {
-                // if (data.is_active == "0") {
-                // 	$('td', row).css('background-color', 'pink');
-                // }
+                if (data.Status_AppvManager == '2' ||
+                    data.Status_AppvSeniorManager == '2' ||
+                    data.Status_AppvGeneralManager == '2' ||
+                    data.Status_AppvAdditional == '2' ||
+                    data.Status_AppvFinancePerson == '2' ||
+                    data.Status_AppvDirector == '2' ||
+                    data.Status_AppvPresidentDirector == '2' ||
+                    data.Status_AppvFinanceDirector == '2') {
+                    $('td', row).css('background-color', '#F8D7DA');
+                }
+                console.log(data.Legitimate);
+                if (data.Legitimate == '1') {
+                    $('td', row).css('background-color', '#D4EDDA');
+                }
             },
             preDrawCallback: function () {
                 $("TableDataHistory tbody td").addClass("blurry");

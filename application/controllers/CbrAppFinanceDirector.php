@@ -24,7 +24,7 @@ class CbrAppFinanceDirector extends CI_Controller
         $this->data['page_content'] = "cbr_app/approval";
 
         $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/cbr_app/finance_director.js?v=' . time() . '"></script>
-                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval.js?v=' . time() . '"></script>';
+                                       <script src="' . base_url() . 'assets/Pages/cbr_app/history_approval_findir.js?v=' . time() . '"></script>';
 
         $this->load->view($this->layout, $this->data);
     }
@@ -180,6 +180,7 @@ class CbrAppFinanceDirector extends CI_Controller
                 AND ((IsAppvSeniorManager = 0) or (IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1))
                 AND ((IsAppvGeneralManager = 0) or (IsAppvGeneralManager = 1 and Status_AppvGeneralManager = 1))
                 AND ((IsAppvAdditional = 0) or (IsAppvAdditional = 1 and Status_AppvAdditional = 1))
+                AND ((IsAppvFinancePerson = 0)  or (IsAppvFinancePerson = 1 and Status_AppvFinancePerson = 1))
                 AND ((IsAppvDirector = 0) or (IsAppvDirector = 1 and Status_AppvDirector = 1))
                 AND (Status_AppvPresidentDirector = 1)) 
         OR ( IsAppvDirector = 1
@@ -191,7 +192,8 @@ class CbrAppFinanceDirector extends CI_Controller
                 AND ((IsAppvManager = 0) or (IsAppvManager = 1 and Status_AppvManager = 1))
                 AND ((IsAppvSeniorManager = 0) or (IsAppvSeniorManager = 1 and Status_AppvSeniorManager = 1))
                 AND ((IsAppvGeneralManager = 0) or (IsAppvGeneralManager = 1 and Status_AppvGeneralManager = 1))
-                AND ((IsAppvAdditional = 0) or (IsAppvAdditional = 1 and Status_AppvAdditional = 1)) ) ";
+                AND ((IsAppvAdditional = 0) or (IsAppvAdditional = 1 and Status_AppvAdditional = 1)) 
+                AND ((IsAppvFinancePerson = 0)  or (IsAppvFinancePerson = 1 and Status_AppvFinancePerson = 1)) ) ";
 
         $totalData = $this->db->query($sql)->num_rows();
         if (!empty($requestData['search']['value'])) {
