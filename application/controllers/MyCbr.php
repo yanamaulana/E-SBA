@@ -184,7 +184,7 @@ class MyCbr extends CI_Controller
         INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
         LEFT OUTER JOIN Ttrx_Cbr_Approval ON TAccCashBookReq_Header.CBReq_No = Ttrx_Cbr_Approval.CBReq_No
         WHERE TAccCashBookReq_Header.Type='D'
-        And TAccCashBookReq_Header.Document_Date >= {d '2023-10-01'}
+        And TAccCashBookReq_Header.Document_Date >= {d '2025-11-10'}
         AND TAccCashBookReq_Header.Company_ID = 2 
         AND isNull(isSPJ,0) = 0
         AND Approval_Status  = 3
