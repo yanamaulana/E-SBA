@@ -54,46 +54,61 @@ class Approval_Assignment extends CI_Controller
         $Approval = $this->input->post('Approval');
         $Array_Nik_Employee = $this->input->post('Employee');
 
-        // Cek apakah data sudah ada di database dengan looping array user nik employee
-        $msg = '';
-        $i = 0;
-        foreach ($Array_Nik_Employee as $Employee) {
-            $this->db->where('UserName_Employee', $Employee);
-            $query = $this->db->get($this->QviewTrx_Assignment_Approval_User);
-            if ($query->num_rows() > 0) {
-                $i++;
-                $Current_Assigment = $query->row();
-                if ($i == 1) {
-                    $msg .= 'The following employee(s) already assigned to approval step: ';
-                    $msg .= $Current_Assigment->First_Name . ' => ' . $Current_Assigment->Setting_Approval_Code . ', ';
-                } else {
-                    $msg .= $Current_Assigment->First_Name . ' => ' . $Current_Assigment->Setting_Approval_Code . ', ';
-                }
-            }
-        }
-        if ($msg != '') {
-            $response = [
-                'code' => 422,
-                'msg'  => $msg . ' . you need to remove them first before reassigning.',
-            ];
-            header('Content-Type: application/json');
-            echo json_encode($response);
-            return; // Hentikan eksekusi jika ada data yang sudah ada
-        }
+        // Data yang akan digunakan untuk INSERT/UPDATE
+        $audit_data = [
+            'SysId_Approval' => $Approval,
+            'Created_at' => $this->DateTime,
+            'Created_by' => $this->session->userdata('sys_sba_username'),
+        ];
 
+        $insert_count = 0;
+        $update_count = 0;
+        $msg_details = [];
 
         $this->db->trans_start();
-        // column tabel Ttrx_Assignment_Approval_User SysId, UserName_Employee, SysId_Approval, Created_at, Created_by;
+
+        // Loop melalui setiap employee yang dipilih
         foreach ($Array_Nik_Employee as $Employee) {
-            $this->db->insert($this->Ttrx_Assignment_Approval_User, [
+
+            // 1. Cek apakah employee sudah memiliki assignment
+            $Current_Assignment = $this->db->get_where($this->Ttrx_Assignment_Approval_User, [
                 'UserName_Employee' => $Employee,
-                'SysId_Approval' => $Approval,
-                'Created_at' => $this->DateTime,
-                'Created_by' => $this->session->userdata('sys_sba_username'),
-            ]);
+            ])->row();
+
+            if ($Current_Assignment) {
+                // A. UPDATE: Jika data sudah ada
+
+                // Cek apakah assignmentnya sama (Jika sama, tidak perlu update)
+                if ($Current_Assignment->SysId_Approval == $Approval) {
+                    // Catat sebagai updated, tapi lewati query UPDATE
+                    $update_count++;
+                    $msg_details[] = $Employee . ' (skipped: same assignment)';
+                    continue;
+                }
+
+                // Lakukan UPDATE
+                $this->db->where('UserName_Employee', $Employee)
+                    ->update($this->Ttrx_Assignment_Approval_User, $audit_data);
+
+                $update_count++;
+                $msg_details[] = $Employee . ' (updated)';
+            } else {
+                // B. INSERT: Jika data belum ada
+
+                $insert_data = $audit_data;
+                $insert_data['UserName_Employee'] = $Employee;
+
+                $this->db->insert($this->Ttrx_Assignment_Approval_User, $insert_data);
+
+                $insert_count++;
+                $msg_details[] = $Employee . ' (inserted)';
+            }
         }
+
         $error_msg = $this->db->error()["message"];
         $this->db->trans_complete();
+
+        // Final Response Handling
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             return $this->help->Fn_resulting_response([
@@ -101,10 +116,17 @@ class Approval_Assignment extends CI_Controller
                 'msg'  => $error_msg,
             ]);
         } else {
+            $final_msg = sprintf(
+                "Assignment successful: %d records inserted, %d records updated. (%s)",
+                $insert_count,
+                $update_count,
+                implode(', ', $msg_details)
+            );
+
             $this->db->trans_commit();
             return $this->help->Fn_resulting_response([
                 'code' => 200,
-                'msg' => "The approval step status has been successfully updated!",
+                'msg' => $final_msg,
             ]);
         }
     }
@@ -115,44 +137,61 @@ class Approval_Assignment extends CI_Controller
         $Approval = $this->input->post('Approval');
         $Nik_Employee = $this->input->post('Employee');
 
-        //cek jika data sudah ada
+        // Cek jika data sudah ada
         $Current_Assigment = $this->db->get_where($this->Ttrx_Assignment_Approval_User, [
             'UserName_Employee' => $Nik_Employee,
         ])->row();
 
-        if ($Current_Assigment->SysId_Approval == $Approval) {
+        // 1. Cek Duplikasi (Jika sudah ada dan SysId_Approval sama)
+        if ($Current_Assigment != NULL && $Current_Assigment->SysId_Approval == $Approval) {
             return $this->help->Fn_resulting_response([
                 'code' => 422,
                 'msg'  => 'You are already assigned to this approval step.',
             ]);
         }
 
-        $this->db->trans_start();
-
-        $this->db->where('UserName_Employee', $Nik_Employee)->delete($this->Ttrx_Assignment_Approval_User);
-
-        $this->db->insert($this->Ttrx_Assignment_Approval_User, [
-            'UserName_Employee' => $Nik_Employee,
+        // Data yang akan digunakan untuk INSERT atau UPDATE
+        $data_assignment = [
             'SysId_Approval' => $Approval,
             'Created_at' => $this->DateTime,
             'Created_by' => $this->session->userdata('sys_sba_username'),
-        ]);
+        ];
+
+        $this->db->trans_start();
+
+        if ($Current_Assigment) {
+            // 2. JIKA DATA SUDAH ADA (UPDATE)
+            // Kita hanya update SysId_Approval dan timestamp, tidak perlu update UserName_Employee
+            $update = $this->db->where('UserName_Employee', $Nik_Employee)
+                ->update($this->Ttrx_Assignment_Approval_User, $data_assignment);
+
+            $msg = "The approval step status has been successfully updated!";
+        } else {
+            // 3. JIKA DATA BELUM ADA (INSERT)
+            $data_assignment['UserName_Employee'] = $Nik_Employee; // Tambahkan NIK hanya saat INSERT
+            $insert = $this->db->insert($this->Ttrx_Assignment_Approval_User, $data_assignment);
+
+            $msg = "The approval step status has been successfully created!";
+        }
 
         $error_msg = $this->db->error()["message"];
         $this->db->trans_complete();
+
+        // Perbaikan: Pastikan transaksi gagal jika status FALSE
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             return $this->help->Fn_resulting_response([
                 'code' => 505,
                 'msg'  => $error_msg,
             ]);
-        } else {
-            $this->db->trans_commit();
-            return $this->help->Fn_resulting_response([
-                'code' => 200,
-                'msg' => "The approval step status has been successfully updated!",
-            ]);
         }
+
+        // Transaksi berhasil
+        $this->db->trans_commit();
+        return $this->help->Fn_resulting_response([
+            'code' => 200,
+            'msg' => $msg,
+        ]);
     }
 
     public function delete()
