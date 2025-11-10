@@ -620,7 +620,7 @@ class MyCbr extends CI_Controller
             $nestedData = array();
 
             $nestedData['iteration'] = $i;
-            $nestedData['attachment'] = "<a target='_blank' href='" . base_url() . "assets/Files/AttachmentCbr/" . $li->Year_Upload . "/" . $li->AttachmentType . "/" . $li->Attachment_FileName . "'>" . $li->Attachment_FileName . "</a>";
+            $nestedData['attachment'] = "<a target='_blank' href='" . base_url() . "assets/Files/AttachmentCbr/" . $li->Year_Upload . "/" . $li->AttachmentType_Code . "/" . $li->Attachment_FileName . "'>" . $li->Attachment_FileName . "</a>";
             $nestedData['AttachmentType'] = $li->AttachmentType;
             $nestedData['Note'] = $li->Note;
 
