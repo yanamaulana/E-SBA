@@ -540,7 +540,7 @@ class MonitoringCbr extends CI_Controller
             $nestedData['AppvFinanceDirector_At'] = $row['AppvFinanceDirector_At'];
             $nestedData['UserName_User'] = $row['UserName_User'];
             $nestedData['Rec_Created_At'] = $row['Rec_Created_At'];
-            $nestedData['UserDivision'] =  $row['UserDivision'] ?? $this->session->userdata('sys_sba_department'); // 
+            $nestedData['UserDivision'] =  $row['UserDivision'] ?? '-'; // 
             $nestedData['Has_Submitted_Approval'] = $row['Has_Submitted_Approval'];
             $nestedData['Legitimate'] = $row['Legitimate'];
 
