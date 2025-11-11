@@ -291,9 +291,9 @@ class MyCbr extends CI_Controller
         And $column_range <= {d '$until'}
         AND TAccCashBookReq_Header.Company_ID = 2 
         AND isNull(isSPJ,0) = 0
+        AND (isClose = 0 OR isClose IS NULL)
         AND Approval_Status  = 3
         AND CBReq_Status = 3
-        AND isClose <> 1
         AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
         AND Created_By = '$username' ";
 

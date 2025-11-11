@@ -90,7 +90,11 @@ $(document).ready(function () {
                 { data: "Approve_Date", name: "Approve_Date", visible: false },
                 { data: "IsAppvStaff", name: "IsAppvStaff", visible: false },
                 { data: "IsAppvChief", name: "IsAppvChief", visible: false },
-                { data: "IsAppvAsstManager", name: "IsAppvAsstManager", visible: false },
+                {
+                    data: "IsAppvAsstManager", name: "IsAppvAsstManager", orderable: false, render: function (data, type, row, meta) {
+                        return renderApprovalStatus(data, row.Status_AppvManager);
+                    },
+                },
                 {
                     data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvManager);
