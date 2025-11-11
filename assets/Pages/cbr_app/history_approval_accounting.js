@@ -92,47 +92,47 @@ $(document).ready(function () {
                 { data: "IsAppvChief", name: "IsAppvChief", visible: false },
                 {
                     data: "IsAppvAsstManager", name: "IsAppvAsstManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvManager);
+                        return renderApprovalStatus(data, row.Status_AppvManager) + ' <br/> ' + row.AppvAsstManager_Name;
                     },
                 },
                 {
                     data: "IsAppvManager", name: "IsAppvManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvManager);
+                        return renderApprovalStatus(data, row.Status_AppvManager) + ' <br/> ' + row.AppvManager_Name;
                     }
                 },
                 {
                     data: "IsAppvSeniorManager", name: "IsAppvSeniorManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvSeniorManager);
+                        return renderApprovalStatus(data, row.Status_AppvSeniorManager) + ' <br/> ' + row.AppvSeniorManager_Name;
                     }
                 },
                 {
                     data: "IsAppvGeneralManager", name: "IsAppvGeneralManager", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvGeneralManager);
+                        return renderApprovalStatus(data, row.Status_AppvGeneralManager) + ' <br/> ' + row.AppvGeneralManager_Name;
                     }
                 },
                 {
                     data: "IsAppvAdditional", name: "IsAppvAdditional", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvAdditional);
+                        return renderApprovalStatus(data, row.Status_AppvAdditional) + ' <br/> ' + row.AppvAdditional_Name;
                     }
                 },
                 {
                     data: "IsAppvFinancePerson", name: "IsAppvFinancePerson", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvFinancePerson);
+                        return renderApprovalStatus(data, row.Status_AppvFinancePerson) + ' <br/> ' + row.AppvFinancePerson_Name;
                     }
                 },
                 {
                     data: "IsAppvDirector", name: "IsAppvDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvDirector);
+                        return renderApprovalStatus(data, row.Status_AppvDirector) + ' <br/> ' + row.AppvDirector_Name;
                     }
                 },
                 {
                     data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
+                        return renderApprovalStatus(data, row.Status_AppvPresidentDirector) + ' <br/> ' + row.AppvPresidentDirector_Name;
                     }
                 },
                 {
                     data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
-                        return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
+                        return renderApprovalStatus(data, row.Status_AppvFinanceDirector) + ' <br/> ' + row.AppvFinanceDirector_Name;
                     }
                 }
             ],

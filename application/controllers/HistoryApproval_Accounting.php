@@ -103,37 +103,44 @@ class HistoryApproval_Accounting extends CI_Controller
             $nestedData['IsAppvAsstManager'] = $row['IsAppvAsstManager'];
             $nestedData['Status_AppvAsstManager'] = $row['Status_AppvAsstManager'];
             $nestedData['AppvAsstManager_By'] = $row['AppvAsstManager_By'];
+            $nestedData['AppvAsstManager_Name'] = $row['AppvAsstManager_Name'] ?? '';
             $nestedData['AppvAsstManager_At'] = $row['AppvAsstManager_At'];
             $nestedData['IsAppvManager'] = $row['IsAppvManager'];
             $nestedData['Status_AppvManager'] = $row['Status_AppvManager'];
             $nestedData['AppvManager_By'] = $row['AppvManager_By'];
+            $nestedData['AppvManager_Name'] = $row['AppvManager_Name'] ?? '';
             $nestedData['AppvManager_At'] = $row['AppvManager_At'];
             $nestedData['IsAppvSeniorManager'] = $row['IsAppvSeniorManager'];
             $nestedData['Status_AppvSeniorManager'] = $row['Status_AppvSeniorManager'];
             $nestedData['AppvSeniorManager_By'] = $row['AppvSeniorManager_By'];
+            $nestedData['AppvSeniorManager_Name'] = $row['AppvSeniorManager_Name'] ?? '';
             $nestedData['AppvSeniorManager_At'] = $row['AppvSeniorManager_At'];
             $nestedData['IsAppvGeneralManager'] = $row['IsAppvGeneralManager'];
             $nestedData['Status_AppvGeneralManager'] = $row['Status_AppvGeneralManager'];
+            $nestedData['AppvGeneralManager_Name'] = $row['AppvGeneralManager_Name'] ?? '';
             $nestedData['AppvGeneralManager_By'] = $row['AppvGeneralManager_By'];
             $nestedData['AppvGeneralManager_At'] = $row['AppvGeneralManager_At'];
 
             $nestedData['IsAppvAdditional'] = $row['IsAppvAdditional'];
             $nestedData['Status_AppvAdditional'] = $row['Status_AppvAdditional'];
+            $nestedData['AppvAdditional_Name'] = $row['AppvAdditional_Name'] ?? '';
             $nestedData['AppvAdditional_By'] = $row['AppvAdditional_By'];
             $nestedData['AppvAdditional_At'] = $row['AppvAdditional_At'];
 
             $nestedData['IsAppvFinancePerson'] = $row['IsAppvFinancePerson'];
             $nestedData['Status_AppvFinancePerson'] = $row['Status_AppvFinancePerson'];
             $nestedData['AppvFinancePerson_By'] = $row['AppvFinancePerson_By'];
-            $nestedData['AppvFinancePerson_Name'] = $row['AppvFinancePerson_Name'];
+            $nestedData['AppvFinancePerson_Name'] = $row['AppvFinancePerson_Name'] ?? '';
             $nestedData['AppvFinancePerson_At'] = $row['AppvFinancePerson_At'];
 
             $nestedData['IsAppvDirector'] = $row['IsAppvDirector'];
             $nestedData['Status_AppvDirector'] = $row['Status_AppvDirector'];
             $nestedData['AppvDirector_By'] = $row['AppvDirector_By'];
+            $nestedData['AppvDirector_Name'] = $row['AppvDirector_Name'] ?? '';
             $nestedData['AppvDirector_At'] = $row['AppvDirector_At'];
             $nestedData['IsAppvPresidentDirector'] = $row['IsAppvPresidentDirector'];
             $nestedData['Status_AppvPresidentDirector'] = $row['Status_AppvPresidentDirector'];
+            $nestedData['AppvPresidentDirector_Name'] = $row['AppvPresidentDirector_Name'] ?? '';
             $nestedData['AppvPresidentDirector_By'] = $row['AppvPresidentDirector_By'];
             $nestedData['AppvPresidentDirector_At'] = $row['AppvPresidentDirector_At'];
             // $nestedData['IsAppvFinanceStaff'] = $row['IsAppvFinanceStaff'];
@@ -147,6 +154,7 @@ class HistoryApproval_Accounting extends CI_Controller
             $nestedData['IsAppvFinanceDirector'] = $row['IsAppvFinanceDirector'];
             $nestedData['Status_AppvFinanceDirector'] = $row['Status_AppvFinanceDirector'];
             $nestedData['AppvFinanceDirector_By'] = $row['AppvFinanceDirector_By'];
+            $nestedData['AppvFinanceDirector_Name'] = $row['AppvFinanceDirector_Name'] ?? '';
             $nestedData['AppvFinanceDirector_At'] = $row['AppvFinanceDirector_At'];
             $nestedData['UserName_User'] = $row['UserName_User'];
             $nestedData['Rec_Created_At'] = $row['Rec_Created_At'];
