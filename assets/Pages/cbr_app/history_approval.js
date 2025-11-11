@@ -83,6 +83,7 @@ $(document).ready(function () {
                 },
                 { data: "Creation_DateTime", name: "Creation_DateTime", visible: false },
                 { data: "Created_By", name: "Created_By", visible: false },
+                { data: "UserDivision", name: "UserDivision", orderable: false },
                 { data: "First_Name", name: "First_Name", orderable: false },
                 { data: "Last_Update", name: "Last_Update", visible: false },
                 { data: "Acc_ID", name: "Acc_ID", visible: false },
