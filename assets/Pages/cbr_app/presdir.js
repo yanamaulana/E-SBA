@@ -152,7 +152,7 @@ $(document).ready(function () {
         ],
         columnDefs: [{
             className: "text-center",
-            targets: [0, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13],
+            targets: [0, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15],
         }, {
             className: "details-control pr-4 dt-nowrap",
             targets: [1]

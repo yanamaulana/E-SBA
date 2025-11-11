@@ -35,7 +35,7 @@
                     <div class="row mb-3">
                         <label for="attachment" class="col-sm-3 col-form-label"><b>Choose Attachment :</b></label>
                         <div class="col-sm-9 fv-row">
-                            <input type="file" accept="image/jpeg,image/png,application/pdf" required class="form-control form-control-sm" name="attachment" id="attachment" placeholder="Choose file attachment....">
+                            <input type="file" accept="image/jpeg,image/png,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required class="form-control form-control-sm" name="attachment" id="attachment" placeholder="Choose file attachment....">
                         </div>
                     </div>
                     <div class="row mb-3">
