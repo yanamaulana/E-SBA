@@ -125,7 +125,7 @@ class CbrAppDirector extends CI_Controller
         $dir    = $requestData['order']['0']['dir'];
         $username = $this->session->userdata('sys_sba_username');
 
-        $sql = "SELECT  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date
+        $sql = "SELECT  distinct TAccCashBookReq_Header.CBReq_No, Type, Document_Date, Document_Number, TAccCashBookReq_Header.Acc_ID, Descript, Amount, baseamount, curr_rate, Approval_Status, CBReq_Status, Paid_Status, Creation_DateTime, Created_By, First_Name AS Created_By_Name, Last_Update, Update_By, TAccCashBookReq_Header.Currency_Id, TAccCashBookReq_Header.Approve_Date, UserDivision
         FROM TAccCashBookReq_Header
         INNER JOIN TUserGroupL ON TAccCashBookReq_Header.Created_By = TUserGroupL.User_ID
         INNER JOIN TUserPersonal ON TAccCashBookReq_Header.Created_By = TUserPersonal.User_ID
@@ -186,6 +186,7 @@ class CbrAppDirector extends CI_Controller
             $nestedData['Update_By'] = $row['Update_By'];
             $nestedData['Currency_Id'] = $row['Currency_Id'];
             $nestedData['Approve_Date'] = $row['Approve_Date'];
+            $nestedData['UserDivision'] = $row['UserDivision'];
 
             $data[] = $nestedData;
         }

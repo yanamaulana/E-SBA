@@ -128,8 +128,17 @@ $(document).ready(function () {
             visible: false
         },
         {
+            data: "UserDivision",
+            name: "UserDivision",
+        },
+        {
             data: "First_Name",
             name: "First_Name",
+        },
+        {
+            data: "Last_Update",
+            name: "Last_Update",
+            visible: false
         },
         {
             data: "Last_Update",
