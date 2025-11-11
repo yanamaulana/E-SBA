@@ -293,6 +293,7 @@ class MyCbr extends CI_Controller
         AND isNull(isSPJ,0) = 0
         AND Approval_Status  = 3
         AND CBReq_Status = 3
+        AND isClose <> 1
         AND Ttrx_Cbr_Approval.CBReq_No IS NOT NULL
         AND Created_By = '$username' ";
 
