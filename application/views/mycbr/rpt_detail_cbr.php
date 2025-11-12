@@ -289,9 +289,19 @@ function format_rupiah($angka)
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
-                    <td class="text-center" style="width: 7%;"><?= 'DIRECTOR' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'FINANCE DIRECTOR' ?></td>
-                    <td class="text-center" style="width: 7%;"><?= 'PRESIDENT DIRECTOR' ?></td>
+                    <td class="text-center" style="width: 7%;">
+                        <?php if ($TrxApproval->Status_AppvDirector == 1 && $TrxApproval->AppvDirector_By == '90112'): ?>
+                            FINANCE DIRECTOR
+                        <?php elseif ($TrxApproval->Status_AppvDirector == 1 && $TrxApproval->AppvDirector_By != '90112'):  ?>
+                            CHECKED
+                        <?php else: ?>
+                            <?= '' ?>
+                        <?php endif; ?>
+                    </td>
+                    <td class="text-center" style="width: 7%;">
+                        <?= ($TrxApproval->Status_AppvFinanceDirector == 1) ? strtoupper('FINANCE DIRECTOR') : '' ?>
+                    </td>
+                    <td class="text-center" style="width: 7%;"><?= 'MANAGING DIRECTOR' ?></td>
 
                     <td class="text-center" rowspan="3" style="width: 1%;"></td>
 
