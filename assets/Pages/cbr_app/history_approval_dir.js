@@ -122,12 +122,12 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, visible: false, render: function (data, type, row, meta) {
+                    data: "IsAppvPresidentDirector", name: "IsAppvPresidentDirector", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvPresidentDirector);
                     }
                 },
                 {
-                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, visible: false, render: function (data, type, row, meta) {
+                    data: "IsAppvFinanceDirector", name: "IsAppvFinanceDirector", orderable: false, render: function (data, type, row, meta) {
                         return renderApprovalStatus(data, row.Status_AppvFinanceDirector);
                     }
                 }
@@ -140,7 +140,7 @@ $(document).ready(function () {
                 targets: 7
             }, {
                 className: "text-center dt-nowrap",
-                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+                targets: [0, 3, 4, 5, 6, 11, 12, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]
