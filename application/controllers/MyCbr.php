@@ -1192,6 +1192,12 @@ class MyCbr extends CI_Controller
                 "AppvFinanceDirector_By" => $RulesApproval->FinanceDirector_Person ?: NULL,
                 "AppvFinanceDirector_At" => NULL,
 
+
+                'IsAppvFinancePerson' => 1,
+                'Status_AppvFinancePerson' => 0,
+                'AppvFinancePerson_By' => NULL,
+                'AppvFinancePerson_Name' => NULL,
+
                 "Doc_Legitimate_Pos_On" =>  $RulesApproval->Doc_Legitimate_Pos_On,
                 // "UserName_User" => $this->session->userdata('sys_sba_username'),
                 // "UserDivision" => $this->session->userdata('sys_sba_department'),
