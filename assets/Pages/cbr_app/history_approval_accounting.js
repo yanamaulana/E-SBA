@@ -853,6 +853,8 @@ $(document).ready(function () {
     });
 
     function addTerminRow(amount = 0, date = '', status = 0, cbrCurrency, amountType = 'AP') {
+        // Tambahkan nol di depan desimal dari database tanpa mengubah presisi nominal.
+        amount = String(amount).replace(/^\./, '0.');
         const rowCount = $('.termin-row').length + 1;
         const isDisabled = (status == 1 || status == 2) ? 'disabled' : '';
         const normalizedAmountType = normalizeAmountType(amountType);
