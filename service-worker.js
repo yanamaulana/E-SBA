@@ -1,9 +1,10 @@
-const CACHE_NAME = 'esba-static-v5';
+const CACHE_NAME = 'esba-static-v6';
 const OFFLINE_URL = './offline.html';
 
 const STATIC_ASSETS = [
     './offline.html',
-    './assets/E-SBA_assets/web-logo/logo-mobile.svg',
+    './assets/E-SBA_assets/web-logo/favicon-ori-192x192.png',
+    './assets/E-SBA_assets/web-logo/favicon-ori-512x512.png',
     './assets/Metronic/dist/assets/css/style.bundle.css',
     './assets/Metronic/dist/assets/plugins/global/plugins.bundle.css',
     './assets/Metronic/dist/assets/js/scripts.bundle.js',
