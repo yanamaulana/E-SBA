@@ -11,13 +11,13 @@
 	"lang": "id-ID",
 	"icons": [
 		{
-			"src": "assets/E-SBA_assets/web-logo/esba-icon-192.svg",
+			"src": "assets/E-SBA_assets/web-logo/logo-mobile.svg",
 			"sizes": "192x192",
 			"type": "image/svg+xml",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "assets/E-SBA_assets/web-logo/esba-icon-512.svg",
+			"src": "assets/E-SBA_assets/web-logo/logo-mobile.svg",
 			"sizes": "512x512",
 			"type": "image/svg+xml",
 			"purpose": "any maskable"
