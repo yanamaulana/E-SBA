@@ -6,6 +6,10 @@
     <meta name="description" content="<?= $this->config->item('app_name') ?>" />
     <meta name="keywords" content="<?= $this->config->item('app_name') ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d6efd">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta charset="utf-8" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
@@ -13,6 +17,7 @@
     <meta property="og:url" content="<?= base_url() ?>" />
     <meta property="og:site_name" content="<?= $this->config->item('app_name') ?>" />
     <link rel="canonical" href="<?= base_url() ?>" />
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
     <link rel="shortcut icon" href="<?= base_url() ?>assets/E-SBA_assets/web-logo/favicon.ico" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -71,6 +76,17 @@
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/custom/authentication/sign-in/general.js"></script>
     <script src="<?= base_url() ?>assets/global-assets/jquery-validation/jquery.validate.js"></script>
     <script src="<?= base_url() ?>assets/login-script/index.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>', {
+                    scope: '<?= rtrim(base_url(), '/') ?>/'
+                }).catch(function(error) {
+                    console.error('ESBA service worker registration failed:', error);
+                });
+            });
+        }
+    </script>
     <?php if ($this->session->flashdata('error')) : ?>
         <script>
             Swal.fire({

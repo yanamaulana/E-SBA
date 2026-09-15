@@ -4,6 +4,11 @@
 <head>
     <title><?= $page_title ?></title>
     <meta name="base_url" content="<?= base_url() ?>">
+    <meta name="theme-color" content="#0d6efd">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
     <meta name="description" content="E-Samick Support System" />
     <meta name="keywords" content="E-Samick Support System" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -689,6 +694,17 @@
                 }
             }
 
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>', {
+                    scope: '<?= rtrim(base_url(), '/') ?>/'
+                }).catch(function(error) {
+                    console.error('ESBA service worker registration failed:', error);
+                });
+            });
         }
     </script>
 </body>
