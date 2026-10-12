@@ -20,6 +20,7 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade active show" id="tab-1" role="tabpanel">
                             <form action="javascript:void(0)" id="form-attachment">
+                <?php $this->load->view('partials/csrf_field'); ?>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="exampleFormControlInput1" class="form-label">Upload Profile Picture</label>

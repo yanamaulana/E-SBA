@@ -9,6 +9,7 @@
     </div>
     <div class="card-body">
         <form id="formUploadFaktur" method="post" enctype="multipart/form-data">
+                <?php $this->load->view('partials/csrf_field'); ?>
             <div class="mb-3">
                 <label for="fileExcel" class="form-label">Pilih File Excel</label>
                 <input class="form-control" type="file" id="fileExcel" name="file_excel" accept=".xls, .xlsx" required>

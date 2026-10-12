@@ -29,6 +29,7 @@
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
                 <div class="w-lg-600px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <form class="form w-100" novalidate="novalidate" id="kt_sign_up_form">
+                <?php $this->load->view('partials/csrf_field'); ?>
                         <div class="mb-10 text-center">
                             <h1 class="text-dark mb-3">Create an Account</h1>
                             <div class="text-gray-400 fw-bold fs-4">Already have an account?
@@ -167,6 +168,7 @@
         var hostUrl = "assets/";
     </script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/global/plugins.bundle.js"></script>
+    <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/scripts.bundle.js"></script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/custom/authentication/sign-in/general.js"></script>
     <script src="<?= base_url() ?>assets/global-assets/jquery-validation/jquery.validate.js"></script>

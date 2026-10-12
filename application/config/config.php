@@ -235,7 +235,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -393,7 +393,7 @@ $config['encryption_key'] = '5@m1ckXY4n4';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session';
+$config['sess_cookie_name'] = 'esba_session';
 $config['sess_samesite'] = 'Lax';
 $config['sess_expiration'] = 14400;
 $config['sess_save_path'] = NULL;
@@ -420,7 +420,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix']    = '';
 $config['cookie_domain']    = '';
 $config['cookie_path']        = '/';
-$config['cookie_secure']    = FALSE;
+$config['cookie_secure']    = true;
 $config['cookie_httponly']     = FALSE;
 $config['cookie_samesite']     = 'Lax';
 
@@ -466,11 +466,13 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-$config['csrf_protection'] = FALSE;
-$config['csrf_token_name'] = 'csrf_test_name';
-$config['csrf_cookie_name'] = 'csrf_cookie_name';
+$config['csrf_protection'] = TRUE;
+$config['csrf_token_name'] = 'esba_csrf_token';
+$config['csrf_cookie_name'] = 'esba_csrf_cookie';
 $config['csrf_expire'] = 7200;
-$config['csrf_regenerate'] = TRUE;
+// Keep the token stable for concurrent AJAX requests and multiple browser tabs.
+// CSRF verification and the cookie expiry above remain enabled.
+$config['csrf_regenerate'] = FALSE;
 $config['csrf_exclude_uris'] = array();
 
 /*

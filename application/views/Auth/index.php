@@ -36,6 +36,7 @@
                 </a>
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
                     <form id="form-login" method="post" action="<?= base_url('Auth/post_login') ?>" class="form w-100" novalidate="novalidate">
+                <?php $this->load->view('partials/csrf_field'); ?>
                         <div class="text-center mb-10">
                             <h2 class="text-dark mb-3">Login to <?= $this->config->item('app_name_short')   ?></h2>
                             <div class="text-gray-600 fw-bold fs-4">By <?= $this->config->item('company_name') ?></div>
@@ -72,6 +73,7 @@
         var hostUrl = "assets/";
     </script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/global/plugins.bundle.js"></script>
+    <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/scripts.bundle.js"></script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/custom/authentication/sign-in/general.js"></script>
     <script src="<?= base_url() ?>assets/global-assets/jquery-validation/jquery.validate.js"></script>

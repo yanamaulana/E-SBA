@@ -7,6 +7,7 @@
             </div>
             <div class="modal-body">
                 <form id="form-attachment" enctype="multipart/form-data" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
                     <input type="hidden" name="CbrNo" id="CbrNo" value="<?= $CbrNo; ?>">
                     <style>
                         /* Pastikan dropdown Select2 berada di atas modal */

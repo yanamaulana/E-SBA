@@ -196,6 +196,7 @@ $qItem = $this->db->query($sqlItem)->result();
     <div class="header-blue">List of Item (Finished Goods)</div>
 
     <form name="frmSearch" id="frmSearch" method="post" action="<?= current_url() ?>">
+                <?php $this->load->view('partials/csrf_field'); ?>
         <input type="hidden" name="selPage" id="selPage" value="<?= $selPage ?>">
 
         <input type="hidden" name="txtTerms" value="<?= $custDetail->PaymentTerms ?? '' ?>">
@@ -321,6 +322,7 @@ $qItem = $this->db->query($sqlItem)->result();
     </form>
 
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/global/plugins.bundle.js"></script>
+    <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/scripts.bundle.js"></script>
 
     <script>

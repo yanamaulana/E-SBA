@@ -1,5 +1,6 @@
 <div class="card card-flush overflow-hidden h-xl-100">
     <form name="frmNew" id="frmNew" action="" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
         <div class="container-fluid py-3">
             <div class="row">
                 <div class="col-md-6">

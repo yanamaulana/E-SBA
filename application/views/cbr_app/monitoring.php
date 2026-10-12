@@ -5,6 +5,7 @@
                 <div class="py-5">
                     <div class="row">
                         <form action="#" method="post" id="filter-data">
+                <?php $this->load->view('partials/csrf_field'); ?>
                             <div class="row">
                                 <div class="col-xl-2 py-2 col-md-2">
                                     <div class="input-group">

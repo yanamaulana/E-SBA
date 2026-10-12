@@ -104,6 +104,7 @@
         <!-- Form Pencarian Tanggal -->
         <!-- Pastikan action mengarah ke rute controller Anda -->
         <form action="<?= site_url('report/view_report') ?>" method="POST">
+                <?php $this->load->view('partials/csrf_field'); ?>
             <label for="attendance_date"><strong>Pilih Tanggal Absensi:</strong></label>
             <input type="date" id="attendance_date" name="attendance_date" value="<?= isset($tanggal_h) ? $tanggal_h : date('Y-m-d') ?>" required>
             <button type="submit">View Report</button>

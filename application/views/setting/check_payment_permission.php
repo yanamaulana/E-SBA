@@ -40,6 +40,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="main-form" class="form-horizontal" action="javascript:void(0)">
+                <?php $this->load->view('partials/csrf_field'); ?>
                         <div class="row">
                             <label for="username" class="col-sm-12 col-form-label col-form-label">Input Valid NIK/User Name :</label>
                             <div class="input-group">

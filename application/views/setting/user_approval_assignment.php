@@ -11,6 +11,7 @@
             </div>
             <div class="card-body">
                 <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
+                <?php $this->load->view('partials/csrf_field'); ?>
                     <div class="form-group row">
                         <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Step Approval Name :</label>
                         <div class="col-sm-5">

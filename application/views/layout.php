@@ -28,6 +28,7 @@
     <link href="<?= base_url() ?>assets/Metronic/dist/assets/css/custom.css" rel="stylesheet" type="text/css" />
     <link href="<?= base_url() ?>assets/global-assets/custom-table.css" rel="stylesheet" type="text/css" />
     <script src="<?= base_url() ?>assets/global-assets/jquery/jquery.min.js"></script>
+    <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/global-assets/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css"></script>
 </head>
 
@@ -646,6 +647,7 @@
         var hostUrl = "<?= base_url() ?>assets/Metronic/dist/assets/";
     </script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/global/plugins.bundle.js"></script>
+    <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/scripts.bundle.js"></script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/custom/datatables/datatables.bundle.js"></script>

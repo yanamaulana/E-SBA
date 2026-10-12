@@ -3,6 +3,7 @@
     <div class="col-xl-12">
         <div class="card card-flush overflow-hidden h-xl-100">
             <form id="main-form" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
                 <div class="card-body pt-0">
                     <div class="py-5">
                         <div class="row g-5 mt-5">

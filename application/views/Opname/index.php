@@ -3,6 +3,7 @@
     <div class="col-xl-12">
         <div class="card card-flush overflow-hidden h-xl-100">
             <form action="" target="popup" id="FormReport" action="<?= base_url() ?>Report/Sales/Rpt_OstSO_v_Bom_v_StokMtrl" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
                 <div class="card-body pt-0">
                     <div class="py-5">
                         <div class="row g-5 mt-5">

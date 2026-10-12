@@ -32,6 +32,7 @@
                         <div class="tab-pane fade active show" id="kt_tab_pane_4" role="tabpanel">
                             <div class="pb-5 table-responsive">
                                 <form action="#" id="form-submission" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
                                     <div id="summary-container" class="alert alert-secondary d-none mb-3">
                                         <div class="d-flex align-items-center">
                                             <span class="svg-icon svg-icon-2hx svg-icon-primary me-3">
@@ -115,6 +116,7 @@
                         <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel">
                             <div class="pb-5 table-responsive">
                                 <form action="#" id="form-resubmission" method="post">
+                <?php $this->load->view('partials/csrf_field'); ?>
                                     <table id="TableDataResubmission" class="table-sm align-middle display compact table-rounded table-striped table-bordered border dataTable no-footer dt-inline">
                                         <thead style="background-color: #3B6D8C;">
                                             <tr class="text-white fw-bolder text-uppercase">
@@ -167,6 +169,7 @@
                         <div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel">
                             <div class="row">
                                 <form action="#" method="post" id="filter-data">
+                <?php $this->load->view('partials/csrf_field'); ?>
                                     <div class="row">
                                         <div class="col-xl-2 py-2 col-md-2">
                                             <div class="input-group">

@@ -23,6 +23,7 @@
                     </div>
                 </div>
                 <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
+                <?php $this->load->view('partials/csrf_field'); ?>
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
                             <label class="form-label pr-5">Step Approval Name :</label>

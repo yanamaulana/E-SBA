@@ -11,6 +11,7 @@
             </div>
             <div class="card-body">
                 <form id="main-form" class="form-horizontal" enctype="multipart/form-data" action="javascript:void(0)">
+                <?php $this->load->view('partials/csrf_field'); ?>
                     <input type="hidden" name="SysId" id="SysId" value="<?= $setting->SysId ?>">
                     <div class="row">
                         <div class="col-lg-4 col-md-6">
