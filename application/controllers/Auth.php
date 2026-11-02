@@ -73,13 +73,14 @@ class Auth extends CI_Controller
 
         $employee = null;
         $is_dir = 0;
-        if ($sqlemployee->num_rows() > 0) {
-            $employee = $sqlemployee->row_array();
-        } elseif ($SqlIsBod->num_rows() > 0) {
+        // Explicit ESBA profiles take precedence over the employee's HR profile.
+        if ($SqlIsBod->num_rows() > 0) {
             $employee = $SqlIsBod->row_array();
             if ($employee['Division_Name'] == 'Board Of Directors') { // Use == for comparison
                 $is_dir = 1;
             }
+        } elseif ($sqlemployee->num_rows() > 0) {
+            $employee = $sqlemployee->row_array();
         } else {
             return $this->help->Fn_resulting_response(["code" => 404, "msg" => "Your job position data was not found in the HR system. !"]);
         }
