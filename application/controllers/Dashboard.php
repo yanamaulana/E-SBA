@@ -29,22 +29,91 @@ class Dashboard extends CI_Controller
         if ($this->session->userdata('sys_sba_jabatan') == 'President Director') {
             $this->data['page_content'] = "Dashboard/index_presdir";
             $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Pages/Dashboard/index.js?v=' . time() . '""></script>';
+            $this->data['Awaiting_Approvals'] = $this->dash_help->get_Count_Awaiting_Approvals($username);
+            $this->data['Approved'] = $this->dash_help->get_Count_After_Approvals($username, 1);
+            $this->data['Rejected'] = $this->dash_help->get_Count_After_Approvals($username, 2);
+            $this->data['Amount_Approved'] = $this->dash_help->get_Amount_Approved($username);
+            $table_data = $this->dash_help->get_Division_Summary(0, $username, $this->year, $this->month);
+            $this->data['currencies'] = $table_data['currencies'];
+            $this->data['divisions'] = $table_data['divisions'];
         } else {
             $this->data['page_content'] = "Dashboard/index";
-            $this->data['script_page'] =  '';
+            $this->data['script_page'] = '<script src="' . base_url('assets/Pages/Dashboard/general.js') . '?v=' . filemtime(FCPATH . 'assets/Pages/Dashboard/general.js') . '"></script>';
+            $this->data['dashboard_divisions'] = $this->general_divisions();
+            $this->data['dashboard_year'] = (int) $this->year;
+            $this->data['dashboard_month'] = (int) $this->month;
         }
 
         $this->data['date'] = date('Y-m-d');
-        $this->data['Awaiting_Approvals'] = $this->dash_help->get_Count_Awaiting_Approvals($username);
-        $this->data['Approved'] = $this->dash_help->get_Count_After_Approvals($username, 1);
-        $this->data['Rejected'] = $this->dash_help->get_Count_After_Approvals($username, 2);
-        $this->data['Amount_Approved'] = $this->dash_help->get_Amount_Approved($username);
-
-        $table_data = $this->dash_help->get_Division_Summary(0, $username, $this->year, $this->month);
-        $this->data['currencies'] = $table_data['currencies'];
-        $this->data['divisions']  = $table_data['divisions'];
-
         $this->load->view($this->layout, $this->data);
+    }
+
+    private function general_divisions()
+    {
+        $divisions = array_merge(
+            [(string) $this->session->userdata('sys_sba_department')],
+            explode(',', (string) $this->session->userdata('sys_cbr_divs'))
+        );
+        return array_values(array_unique(array_filter(array_map('trim', $divisions), function ($division) {
+            return $division !== '';
+        })));
+    }
+
+    public function general_data()
+    {
+        $divisions = $this->general_divisions();
+        $division = $this->input->get('division');
+        if ($division === null || $division === '') {
+            $division = $divisions[0] ?? '';
+        }
+        // The browser may only select divisions already granted by the login session.
+        if (!is_string($division) || !in_array($division, $divisions, true)) {
+            return $this->general_json(['message' => 'Divisi tidak tersedia untuk akun ini.'], 403);
+        }
+        $from = $this->input->get('from_month') ?? 1;
+        $to = $this->input->get('to_month') ?? (int) $this->month;
+        if (!is_scalar($from) || !is_scalar($to) ||
+            filter_var($from, FILTER_VALIDATE_INT) === false ||
+            filter_var($to, FILTER_VALIDATE_INT) === false ||
+            (int) $from < 1 || (int) $to > (int) $this->month || (int) $from > (int) $to) {
+            return $this->general_json(['message' => 'Pilih rentang Januari sampai bulan berjalan.'], 422);
+        }
+        $currency = $this->input->get('currency');
+        if ($currency !== null && (!is_string($currency) || strlen($currency) > 12)) {
+            return $this->general_json(['message' => 'Pilihan mata uang tidak valid.'], 422);
+        }
+        try {
+            $data = $this->dash_help->get_general_dashboard($division, (int) $this->year, (int) $from, (int) $to, $currency);
+            return $this->general_json($data);
+        } catch (InvalidArgumentException $error) {
+            return $this->general_json(['message' => $error->getMessage()], 422);
+        } catch (RuntimeException $error) {
+            log_message('error', 'General dashboard: ' . $error->getMessage());
+            return $this->general_json(['message' => 'Data dashboard belum dapat dimuat. Silakan coba lagi.'], 500);
+        }
+    }
+
+    public function general_year_data()
+    {
+        $divisions = $this->general_divisions();
+        $division = $this->input->get('division') ?? ($divisions[0] ?? '');
+        if (!is_string($division) || !in_array($division, $divisions, true)) {
+            return $this->general_json(['message' => 'Divisi tidak tersedia untuk akun ini.'], 403);
+        }
+        try {
+            return $this->general_json($this->dash_help->get_general_year_status($division, (int) $this->year));
+        } catch (RuntimeException $error) {
+            log_message('error', 'Annual division dashboard: ' . $error->getMessage());
+            return $this->general_json(['message' => 'Ringkasan tahunan belum dapat dimuat. Silakan coba lagi.'], 500);
+        }
+    }
+
+    private function general_json($data, $status = 200)
+    {
+        return $this->output->set_status_header($status)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_header('Cache-Control: no-store')
+            ->set_output(json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE));
     }
 
     public function get_history_data()

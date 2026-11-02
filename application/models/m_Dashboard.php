@@ -6,6 +6,159 @@ class m_Dashboard extends CI_Model
         parent::__construct();
     }
 
+    public function get_general_dashboard($division, $year, $fromMonth, $toMonth, $currency = null)
+    {
+        $yearStart = sprintf('%04d-01-01', $year);
+        $tomorrow = date('Y-m-d', strtotime('tomorrow'));
+        $currencySql = "COALESCE(NULLIF(UPPER(LTRIM(RTRIM(H.Currency_ID))), ''), 'N/A')";
+        // EXISTS avoids multiplying a header's amount by approval or payment-term rows.
+        $where = "H.Type = 'D' AND H.Company_ID = 2
+            AND ISNULL(H.isSPJ, 0) = 0 AND ISNULL(H.isClose, 0) = 0
+            AND H.Approval_Status = 3 AND H.CBReq_Status = 3
+            AND H.Document_Date >= ? AND H.Document_Date < ?
+            AND EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A
+                WHERE A.CBReq_No = H.CBReq_No AND A.UserDivision = ?)";
+        $rows = $this->general_query("SELECT MONTH(H.Document_Date) AS Month_Number,
+                $currencySql AS Currency_ID, H.Paid_Status,
+                COUNT(*) AS Document_Count, SUM(ISNULL(H.Amount, 0)) AS Total_Amount
+            FROM TAccCashBookReq_Header H WHERE $where
+            GROUP BY MONTH(H.Document_Date), $currencySql, H.Paid_Status",
+            [$yearStart, $tomorrow, $division]);
+
+        $currencies = array_values(array_unique(array_column($rows, 'Currency_ID')));
+        sort($currencies);
+        if (!$currencies) {
+            $currencies = ['IDR'];
+        }
+        if ($currency === null || $currency === '') {
+            $currency = in_array('IDR', $currencies, true) ? 'IDR' : $currencies[0];
+        }
+        if (!in_array($currency, $currencies, true)) {
+            throw new InvalidArgumentException('Mata uang tidak tersedia untuk divisi ini.');
+        }
+
+        $monthly = [];
+        for ($month = $fromMonth; $month <= $toMonth; $month++) {
+            $monthly[$month] = ['month' => $month, 'count' => 0, 'amount' => 0.0];
+        }
+        $summary = ['count' => 0, 'amount' => 0.0, 'average' => 0.0, 'paid_percentage' => 0.0];
+        $payments = ['NP' => 0, 'HP' => 0, 'FP' => 0, 'OTHER' => 0];
+        foreach ($rows as $row) {
+            $month = (int) $row['Month_Number'];
+            if ($row['Currency_ID'] !== $currency || !isset($monthly[$month])) {
+                continue;
+            }
+            $count = (int) $row['Document_Count'];
+            $amount = (float) $row['Total_Amount'];
+            $monthly[$month]['count'] += $count;
+            $monthly[$month]['amount'] += $amount;
+            $summary['count'] += $count;
+            $summary['amount'] += $amount;
+            $payments[$this->general_payment_status($row['Paid_Status'])] += $count;
+        }
+        if ($summary['count'] > 0) {
+            $summary['average'] = $summary['amount'] / $summary['count'];
+            $summary['paid_percentage'] = round(100 * $payments['FP'] / $summary['count'], 1);
+        }
+        $periodStart = sprintf('%04d-%02d-01', $year, $fromMonth);
+        $periodEnd = (new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $toMonth)))
+            ->modify('+1 month')->format('Y-m-d');
+        $periodEnd = min($periodEnd, $tomorrow);
+        $recent = $this->general_query("SELECT TOP (8) H.CBReq_No,
+                CONVERT(varchar(10), H.Document_Date, 23) AS Document_Date,
+                H.Descript, H.Amount, H.Paid_Status
+            FROM TAccCashBookReq_Header H WHERE $where AND $currencySql = ?
+            ORDER BY H.Document_Date DESC, H.CBReq_No DESC",
+            [$periodStart, $periodEnd, $division, $currency]);
+        foreach ($recent as &$document) {
+            $document['Amount'] = (float) $document['Amount'];
+            $document['Paid_Status'] = $this->general_payment_status($document['Paid_Status']);
+        }
+        unset($document);
+
+        return [
+            'division' => $division, 'year' => $year,
+            'from_month' => $fromMonth, 'to_month' => $toMonth,
+            'currency' => $currency, 'currencies' => $currencies,
+            'updated_at' => date('d M Y, H:i'),
+            'summary' => $summary, 'payments' => $payments,
+            'monthly' => array_values($monthly), 'recent' => $recent,
+        ];
+    }
+
+    private function general_payment_status($value)
+    {
+        $status = strtoupper(trim((string) $value));
+        if ($status === '') {
+            return 'NP';
+        }
+        return in_array($status, ['NP', 'HP', 'FP'], true) ? $status : 'OTHER';
+    }
+
+    public function get_general_year_status($division, $year)
+    {
+        // Unsubmitted documents have no UserDivision yet. Resolve their creators
+        // using the same NonHR-first division rule used by Auth.
+        $hr = $this->load->database('HR', true);
+        $employees = $this->general_query('SELECT Emp_No FROM HRQviewEmployeeDetail WHERE Division_Name = ?', [$division], $hr);
+        $employeeNames = array_fill_keys(array_map('strval', array_column($employees, 'Emp_No')), true);
+        $users = $this->general_query('SELECT U.User_ID, U.User_Name, N.UserID AS NonHR_ID, N.Division_Name
+            FROM ERPQview_User_Employee U LEFT JOIN Tmst_User_NonHR N ON N.UserID = U.User_ID', []);
+        $creatorIds = [];
+        foreach ($users as $user) {
+            $matches = $user['NonHR_ID'] !== null
+                ? $user['Division_Name'] === $division
+                : isset($employeeNames[(string) $user['User_Name']]);
+            if ($matches && filter_var($user['User_ID'], FILTER_VALIDATE_INT) !== false) {
+                $creatorIds[] = (int) $user['User_ID'];
+            }
+        }
+        // Only validated integer IDs from the database enter this list (no request input).
+        $creatorSql = $creatorIds ? 'H.Created_By IN (' . implode(',', array_unique($creatorIds)) . ')' : '1 = 0';
+        $rejected = [];
+        foreach (['Staff', 'Chief', 'AsstManager', 'Manager', 'SeniorManager', 'GeneralManager', 'Additional', 'Director', 'PresidentDirector', 'FinancePerson', 'FinanceDirector'] as $step) {
+            $rejected[] = "(R.IsAppv$step = 1 AND R.Status_Appv$step = 2)";
+        }
+        $rejectionSql = implode(' OR ', $rejected);
+        $rows = $this->general_query("SELECT S.Status_Key, COUNT(*) AS Document_Count FROM (
+            SELECT CASE
+                WHEN H.isClose = 1 THEN 'void'
+                WHEN NOT EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A WHERE A.CBReq_No = H.CBReq_No) THEN 'unsubmitted'
+                WHEN EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval R WHERE R.CBReq_No = H.CBReq_No AND ($rejectionSql)) THEN 'rejected'
+                WHEN EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A WHERE A.CBReq_No = H.CBReq_No AND A.Legitimate = 1) THEN 'approved'
+                ELSE 'in_progress' END AS Status_Key
+            FROM TAccCashBookReq_Header H
+            WHERE H.Type = 'D' AND H.Company_ID = 2 AND ISNULL(H.isSPJ, 0) = 0
+                AND H.Document_Date >= ? AND H.Document_Date < ?
+                AND (H.isClose = 1 OR (H.Approval_Status = 3 AND H.CBReq_Status = 3
+                    AND (EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A WHERE A.CBReq_No = H.CBReq_No)
+                         OR H.Paid_Status IN ('NP', 'HP'))))
+                AND (EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A WHERE A.CBReq_No = H.CBReq_No AND A.UserDivision = ?)
+                    OR (NOT EXISTS (SELECT 1 FROM Ttrx_Cbr_Approval A WHERE A.CBReq_No = H.CBReq_No) AND ($creatorSql)))
+            ) S GROUP BY S.Status_Key", [sprintf('%04d-01-01', $year), date('Y-m-d', strtotime('tomorrow')), $division]);
+        $counts = ['void' => 0, 'unsubmitted' => 0, 'approved' => 0, 'in_progress' => 0, 'rejected' => 0];
+        foreach ($rows as $row) {
+            $counts[$row['Status_Key']] = (int) $row['Document_Count'];
+        }
+        return ['division' => $division, 'year' => $year, 'counts' => $counts, 'total' => array_sum($counts)];
+    }
+
+    private function general_query($sql, $bindings, $connection = null)
+    {
+        $connection = $connection ?? $this->db;
+        $debug = $connection->db_debug;
+        $connection->db_debug = false;
+        try {
+            $query = $connection->query($sql, $bindings);
+            if ($query === false) {
+                throw new RuntimeException('Unable to read division CBR metrics.');
+            }
+            return $query->result_array();
+        } finally {
+            $connection->db_debug = $debug;
+        }
+    }
+
     public function get_Count_Awaiting_Approvals($username)
     {
         // Menggunakan Query Binding untuk keamanan dan JOIN ke tabel termin
