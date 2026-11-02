@@ -15,7 +15,7 @@ class Navigation extends CI_Controller
     {
         $this->data['page_title'] = "Samick Report Navigation";
         $this->data['page_content'] = "Report/navigation";
-        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Report/navigation.js"></script>';
+        $this->data['script_page'] =  '<script src="' . base_url() . 'assets/Report/navigation.js?v=' . filemtime(FCPATH . 'assets/Report/navigation.js') . '"></script>';
 
         $this->load->view($this->layout, $this->data);
     }

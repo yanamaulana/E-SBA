@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const misPanelLink = $('#mis-panel-link');
+    const misPanelLink = $('.mis-panel-link');
     const validationKey = 'misPanelValidatedTimestamp';
     const validationDuration = 2 * 60 * 60 * 1000; // 2 jam dalam milidetik
 

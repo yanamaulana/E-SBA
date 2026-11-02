@@ -36,3 +36,108 @@
    tr.shown td.details-control {
        background: url('../../../../global-assets/DataTables/img/details_close.png') no-repeat left center;
    }
+
+/* Report landing page: fill the content area without nested card padding. */
+.report-navigation {
+    min-width: 0;
+}
+
+.report-navigation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+.report-navigation-card {
+    min-width: 0;
+    border-color: #e4e6ef;
+}
+
+.report-navigation-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 12px;
+    min-height: 88px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eff2f5;
+}
+
+.report-navigation-card .card-header img {
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.report-navigation-card .card-title {
+    min-width: 0;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.report-navigation-card .card-body {
+    padding: 8px;
+}
+
+.report-navigation-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #3f4254;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.report-navigation-link span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.report-navigation-link i {
+    flex-shrink: 0;
+    color: #a1a5b7;
+    font-size: 10px;
+}
+
+.report-navigation-link:hover,
+.report-navigation-link:focus-visible {
+    color: #009ef7;
+    background: #f1faff;
+}
+
+.report-navigation-link:focus-visible {
+    outline: 2px solid #009ef7;
+    outline-offset: -2px;
+}
+
+@media (max-width: 1199.98px) {
+    .report-navigation-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .report-navigation-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .report-navigation-card .card-header {
+        min-height: 72px;
+        padding: 10px 12px;
+    }
+
+    .report-navigation-card .card-header img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .report-navigation > .d-flex > .btn {
+        min-height: 44px;
+    }
+}
