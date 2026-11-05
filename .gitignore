@@ -36,3 +36,14 @@ application/config/database.php
 /assets/Files/
 /assets/Metronic/
 /assets/global-assets/
+
+# Cashbook uploads are served through the authenticated controller.
+/application/uploads/cashbook/*
+!/application/uploads/cashbook/.htaccess
+
+# Keep the Cashbook user guide; other generated files remain local.
+/output/*
+!/output/pdf/
+/output/pdf/*
+!/output/pdf/Panduan_Upload_Bukti_Bayar_ESBA.pdf
+/tmp/

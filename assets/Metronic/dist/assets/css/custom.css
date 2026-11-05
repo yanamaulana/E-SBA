@@ -25,6 +25,29 @@
        background-color: #f2f2f2;
    }
 
+   /* Highlight void cashbook rows without overriding text or badge colors. */
+   table.dataTable tbody tr.cashbook-void > td {
+       background-color: #fcd9e2 !important;
+   }
+
+   /* One DataTable row per header, with aligned detail lines on the right. */
+   table.dataTable tbody td.cashbook-detail-cell {
+       padding: 0 !important;
+       vertical-align: top;
+   }
+
+   .cashbook-detail-cell .cashbook-detail-line {
+       min-height: 32px;
+       padding: 7px 10px;
+       line-height: 18px;
+       white-space: nowrap;
+       border-bottom: 1px solid #dee2e6;
+   }
+
+   .cashbook-detail-cell .cashbook-detail-line:last-child {
+       border-bottom: 0;
+   }
+
 
 
    td.details-control {

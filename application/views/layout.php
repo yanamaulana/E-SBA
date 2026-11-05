@@ -227,6 +227,12 @@
                                         <span class="menu-title ml-2">&nbsp;Accounting&nbsp;Person&nbsp;Approval</span>
                                     </a>
                                 </div>
+                                <div class="menu-item" data-bs-toggle="tooltip" title="List Of Cahbook Entry">
+                                    <a class="menu-link <?= ($Menu == 'CashbookEntry') ? 'active' : null ?>" href="<?= base_url('CashbookEntry') ?>">
+                                        <span class="menu-icon"><span class="svg-icon svg-icon-muted svg-icon-2qx"><i class="fas fa-book fs-3"></i></span></span>
+                                        <span class="menu-title ml-2">List Of Cahbook Entry</span>
+                                    </a>
+                                </div>
                             <?php endif; ?>
 
 
