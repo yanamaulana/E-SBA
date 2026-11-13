@@ -19,7 +19,7 @@ $categories = [
     ]],
 ];
 $isAdmin = $this->session->userdata('sys_sba_isAdm') == true;
-if ($isAdmin || $this->session->userdata('sys_sba_NIK') == '09466' || $this->session->userdata('sys_sba_NIK') == '09460') {
+if ($isAdmin || $this->session->userdata('sys_sba_NIK') == '29319' || $this->session->userdata('sys_sba_NIK') == '09460') {
     $categories[] = ['title' => 'HR Report', 'image' => 'undraw_team-page_q5am.png', 'links' => [
         ['ReportPemakaianCuti', 'Pemakaian Cuti Terkini'],
         ['InformasiKaryawan', 'Master Data Karyawan & Photo'],

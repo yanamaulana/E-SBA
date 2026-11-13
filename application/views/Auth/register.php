@@ -170,7 +170,6 @@
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/global/plugins.bundle.js"></script>
     <?php $this->load->view('partials/csrf_script'); ?>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/scripts.bundle.js"></script>
-    <script src="<?= base_url() ?>assets/Metronic/dist/assets/js/custom/authentication/sign-in/general.js"></script>
     <script src="<?= base_url() ?>assets/global-assets/jquery-validation/jquery.validate.js"></script>
     <script src="<?= base_url() ?>assets/Metronic/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
     <script src="<?= base_url() ?>assets/login-script/register.js"></script>
