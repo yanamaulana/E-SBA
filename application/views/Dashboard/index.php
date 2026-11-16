@@ -1,6 +1,7 @@
 <?php
 $monthNames = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 $initialDivision = $dashboard_divisions[0] ?? '';
+$is_auditor = strcasecmp(trim((string) $this->session->userdata('sys_sba_jabatan')), 'Auditor') === 0;
 ?>
 <section class="division-dashboard" id="division-dashboard"
     data-endpoint="<?= base_url('Dashboard/general_data') ?>"
@@ -41,8 +42,13 @@ $initialDivision = $dashboard_divisions[0] ?? '';
             <p>Halo, <?= html_escape($this->session->userdata('sys_sba_nama') ?: 'rekan Samick') ?>. Telusuri tren bulanan dan posisi pembayaran CBR dalam satu tampilan.</p>
         </div>
         <div class="dd-hero-actions">
+            <?php if ($is_auditor): ?>
+                <a class="btn btn-sm btn-primary" href="<?= base_url('CashbookEntry') ?>">List Of Cahbook Entry <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i></a>
+                <a class="dd-hero-link" href="<?= base_url('MonitoringCbr') ?>">Cash Book Requisition</a>
+            <?php else: ?>
             <a class="btn btn-sm btn-primary" href="<?= base_url('MyCbr') ?>">Pengajuan saya <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i></a>
             <a class="dd-hero-link" href="<?= base_url('Report/Navigation') ?>">Reports &amp; Tools</a>
+            <?php endif; ?>
         </div>
     </div>
 

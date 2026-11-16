@@ -59,6 +59,7 @@
                 $isSalesPerson = $this->session->userdata('sys_sba_isSalesPerson');
                 $sess_dept = $this->session->userdata('sys_sba_department');
                 $sess_jabatan = $this->session->userdata('sys_sba_jabatan');
+                $is_auditor = strcasecmp(trim((string) $sess_jabatan), 'Auditor') === 0;
                 $PayemntCheckPermission = $this->session->userdata('sys_sba_PayemntCheckPermission');
                 $Menu = $this->uri->segment(1);
                 $SubMenu = $this->uri->segment(2);
@@ -66,6 +67,20 @@
                 <div class="aside-menu flex-column-fluid">
                     <div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
                         <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+                            <?php if ($is_auditor): ?>
+                                <?php foreach ([
+                                    ['Dashboard', 'Dashboard', 'fas fa-chart-pie'],
+                                    ['CashbookEntry', 'List Of Cahbook Entry', 'fas fa-book'],
+                                    ['MonitoringCbr', 'Cash Book Requisition', 'fas fa-receipt'],
+                                ] as [$route, $label, $icon]): ?>
+                                    <div class="menu-item">
+                                        <a class="menu-link <?= strcasecmp((string) $Menu, $route) === 0 ? 'active' : '' ?>" href="<?= base_url($route) ?>">
+                                            <span class="menu-icon"><i class="<?= $icon ?> fs-3" aria-hidden="true"></i></span>
+                                            <span class="menu-title"><?= html_escape($label) ?></span>
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                             <div class="menu-item">
                                 <div class="menu-content pb-2">
                                     <span class="menu-section text-muted text-uppercase fs-8 ls-1">Main Menu</span>
@@ -414,6 +429,7 @@
                                         <span class="menu-title ml-2">Tool</span>
                                     </a>
                                 </div>
+                            <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>

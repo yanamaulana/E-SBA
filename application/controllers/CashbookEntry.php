@@ -7,9 +7,10 @@ class CashbookEntry extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
-        // Match the Accounting Person Approval menu, including direct AJAX access.
+        // Allow Accounting, administrators and the explicit Auditor position, including AJAX access.
         if ($this->session->userdata('sys_sba_isAdm') != true &&
-            $this->session->userdata('sys_sba_department') !== 'Accounting') {
+            $this->session->userdata('sys_sba_department') !== 'Accounting' &&
+            strcasecmp(trim((string) $this->session->userdata('sys_sba_jabatan')), 'Auditor') !== 0) {
             show_error('Anda tidak memiliki akses ke List Of Cahbook Entry.', 403);
         }
         $this->load->model('m_CashbookEntry', 'cashbook');
