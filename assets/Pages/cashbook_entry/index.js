@@ -288,10 +288,11 @@ $(function () {
     function updateUploadControls() {
         $('#attachment-add').prop('disabled', uploadBusy || $('#attachment-upload-rows .attachment-upload-row').length >= uploadLimits.max_files);
         $('#attachment-upload-rows input, #attachment-upload-rows textarea, #attachment-upload-rows button, #attachment-save').prop('disabled', uploadBusy);
+        $('#attachment-list .attachment-delete').prop('disabled', uploadBusy);
         $(attachmentModal).find('[data-bs-dismiss="modal"]').prop('disabled', uploadBusy);
     }
     function addUploadRow() {
-        if (uploadBusy || $('#attachment-upload-rows .attachment-upload-row').length >= uploadLimits.max_files) return;
+        if (!$('#attachment-upload-rows').length || uploadBusy || $('#attachment-upload-rows .attachment-upload-row').length >= uploadLimits.max_files) return;
         $('#attachment-upload-rows').append(
             '<div class="attachment-upload-row row g-3 align-items-start border rounded p-3 mb-3">' +
             '<div class="col-md-5"><label class="form-label w-100">File<input type="file" name="files[]" class="form-control form-control-sm mt-2" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp" required></label></div>' +
@@ -309,13 +310,27 @@ $(function () {
             if ($('#attachment-journal').val() !== journal) return;
             const list = $('#attachment-list').empty();
             if (!response.data.length) { list.text('Belum ada lampiran.'); return; }
+            const savedTable = $('<table class="table table-sm table-bordered table-striped align-middle mb-0 cashbook-saved-attachments"><thead><tr><th class="text-start">File</th><th class="text-end">Ukuran</th><th class="text-start">Catatan</th><th class="text-start">Diunggah oleh</th><th class="text-center">Waktu Upload</th></tr></thead><tbody></tbody></table>');
+            if (options.canDeleteAttachments) savedTable.find('thead tr').append('<th class="text-center">Aksi</th>');
+            const body = savedTable.find('tbody');
             response.data.forEach(function (file) {
-                const item = $('<div class="border rounded p-3 mb-2"></div>');
-                $('<a target="_blank" rel="noopener" class="fw-bold"></a>').attr('href', file.url).text(file.Original_Name).appendTo(item);
-                $('<div class="text-muted fs-8 mt-1"></div>').text((Number(file.File_Size) / 1024).toFixed(1) + ' KB | ' + file.Created_By + ' | ' + file.Created_At).appendTo(item);
-                $('<div class="mt-2 text-break"></div>').css('white-space', 'pre-wrap').text(file.Notes || '-').appendTo(item);
-                list.append(item);
+                const item = $('<tr></tr>');
+                $('<td class="text-start text-break"></td>').append(
+                    $('<a target="_blank" rel="noopener"></a>').attr('href', file.url).text(file.Original_Name)
+                ).appendTo(item);
+                $('<td class="text-nowrap text-end"></td>').text((Number(file.File_Size) / 1024).toFixed(1) + ' KB').appendTo(item);
+                $('<td class="text-start text-break"></td>').css('white-space', 'pre-wrap').text(file.Notes || '-').appendTo(item);
+                $('<td class="text-start"></td>').text(file.Created_By).appendTo(item);
+                $('<td class="text-center text-nowrap"></td>').text(file.Created_At).appendTo(item);
+                if (options.canDeleteAttachments) {
+                    $('<td class="text-center"></td>').append(
+                        $('<button type="button" class="btn btn-sm btn-light-danger attachment-delete py-1 px-2">Hapus</button>')
+                            .data('id', file.Attachment_ID).data('filename', file.Original_Name).prop('disabled', uploadBusy)
+                    ).appendTo(item);
+                }
+                body.append(item);
             });
+            list.append(savedTable);
         }).fail(function (xhr, status) {
             if (status !== 'abort' && $('#attachment-journal').val() === journal) {
                 $('#attachment-list').text('Daftar lampiran belum dapat dimuat.');
@@ -335,6 +350,39 @@ $(function () {
         addUploadRow();
         bootstrap.Modal.getOrCreateInstance(attachmentModal).show();
         loadAttachments(header.JournalH_Code);
+    });
+    $('#attachment-list').on('click', '.attachment-delete', function () {
+        if (uploadBusy || !options.canDeleteAttachments) return;
+        const button = $(this);
+        const journal = $('#attachment-journal').val();
+        uploadBusy = true;
+        updateUploadControls();
+        Swal.fire({
+            title: 'Hapus lampiran?',
+            text: button.data('filename'),
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then(function (result) {
+            if (!result.isConfirmed) {
+                uploadBusy = false;
+                updateUploadControls();
+                return;
+            }
+            $.ajax({
+                url: $('meta[name="base_url"]').attr('content') + 'CashbookEntry/delete_attachment',
+                type: 'POST', dataType: 'json', data: { id: button.data('id') }
+            }).done(function (response) {
+                attachmentMessage(response.message, true);
+                loadAttachments(journal);
+            }).fail(function (xhr) {
+                attachmentMessage(xhr.responseJSON && xhr.responseJSON.error || 'Lampiran gagal dihapus.');
+            }).always(function () {
+                uploadBusy = false;
+                updateUploadControls();
+            });
+        });
     });
     $('#attachment-add').on('click', addUploadRow);
     $('#attachment-upload-rows').on('click', '.attachment-remove', function () {

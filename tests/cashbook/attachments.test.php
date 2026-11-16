@@ -19,6 +19,7 @@ class TestRows {
     public function result_array() { return $this->rows; }
 }
 class TestDb {
+    public $attachments = [];
     public $db_debug = true, $calls = [], $committed = false, $rolledBack = false, $failInsert = 0;
     private $insertCount = 0;
     public $header = ['Company_ID'=>2, 'JournalH_Code'=>'BDJ-test', 'CashBookType'=>'bd', 'CashBookDate'=>'2026-08-10 12:30:00'];
@@ -29,6 +30,25 @@ class TestDb {
     public function query($sql, $bindings) {
         $this->calls[] = [$sql, $bindings];
         if (strpos($sql, 'INSERT INTO') !== false) { return ++$this->insertCount !== $this->failInsert; }
+        if (strpos($sql, 'UPDATE A SET is_delete') !== false) {
+            foreach ($this->attachments as &$file) {
+                if ($file['Company_ID'] === $bindings[1] && $file['Attachment_ID'] === $bindings[2] && !$file['is_delete']) {
+                    $file['is_delete'] = 1;
+                    $file['deleted_by'] = $bindings[0];
+                    $file['deleted_at'] = '2026-11-16 12:00:00';
+                    return new TestRows([$file]);
+                }
+            }
+            return new TestRows([]);
+        }
+        if (strpos($sql, 'FROM dbo.Ttrx_Cashbook_Attachment') !== false) {
+            $byId = strpos($sql, 'A.Attachment_ID = ?') !== false;
+            $activeOnly = strpos($sql, 'is_delete = 0') !== false;
+            return new TestRows(array_values(array_filter($this->attachments, function ($file) use ($bindings, $byId, $activeOnly) {
+                return $file['Company_ID'] === $bindings[0] &&
+                    $file[$byId ? 'Attachment_ID' : 'JournalH_Code'] === $bindings[1] && (!$activeOnly || !$file['is_delete']);
+            })));
+        }
         return new TestRows($this->header ? [$this->header] : []);
     }
 }
@@ -106,7 +126,25 @@ try {
     try { $model->save('missing',$files,$notes,'accounting-user',$storage); throw new LogicException('Missing header accepted'); }
     catch (OutOfBoundsException $expected) {}
     check(filesIn($temp . '/uploads') === $savedFiles, 'Unknown header must not save files');
-    echo "Attachment tests passed: folder dates/types, PDF/images, notes, validation, unique files, transactions, rollback cleanup and scoped headers.\n";
+    $model->db = new TestDb();
+    $model->db->attachments = [
+        ['Attachment_ID'=>'1', 'Company_ID'=>2, 'JournalH_Code'=>'BDJ-test', 'is_delete'=>0],
+        ['Attachment_ID'=>'2', 'Company_ID'=>3, 'JournalH_Code'=>'BDJ-test', 'is_delete'=>0],
+    ];
+    check(count($model->listing('BDJ-test')) === 1, 'Only company attachments listed');
+    $model->soft_delete('1', 'deleting-user');
+    check($model->listing('BDJ-test') === [], 'Deleted attachment excluded from list');
+    check($model->db->attachments[0]['deleted_by'] === 'deleting-user' && !empty($model->db->attachments[0]['deleted_at']), 'Deletion audit stored');
+    foreach (['1', '2', '999'] as $id) {
+        try { $model->soft_delete($id, 'another-user'); throw new LogicException('Unavailable attachment deleted'); }
+        catch (OutOfBoundsException $expected) {}
+    }
+    check($model->db->attachments[0]['deleted_by'] === 'deleting-user', 'Repeated deletion must preserve original audit');
+    try { $model->find('1'); throw new LogicException('Deleted file still accessible'); }
+    catch (OutOfBoundsException $expected) {}
+    rejects(function () use ($model) { $model->soft_delete([], 'user'); }, 'Invalid ID accepted');
+    check(filesIn($temp . '/uploads') === $savedFiles, 'Soft deletion retains physical files');
+    echo "Attachment tests passed, including soft deletion, audit preservation and active-only listing/download.\n";
 } finally {
     // Remove only the randomly named temporary test directory created above.
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($temp, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $item) {

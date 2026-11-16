@@ -129,6 +129,23 @@ class CashbookEntry extends CI_Controller
         } catch (Throwable $e) { return $this->attachment_error($e); }
     }
 
+    public function delete_attachment()
+    {
+        if ($this->input->method() !== 'post') {
+            return $this->output->set_status_header(405)->set_header('Allow: POST')
+                ->set_content_type('application/json')->set_output(json_encode(['error'=>'Gunakan POST untuk menghapus.']));
+        }
+        if (strcasecmp(trim((string) $this->session->userdata('sys_sba_jabatan')), 'Auditor') === 0) {
+            return $this->output->set_status_header(403)->set_content_type('application/json')
+                ->set_output(json_encode(['error'=>'Auditor hanya dapat melihat lampiran.']));
+        }
+        $this->attachment_services();
+        try {
+            $this->attachments->soft_delete($this->input->post('id', false), $this->session->userdata('sys_sba_username'));
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['message'=>'Lampiran berhasil dihapus.']));
+        } catch (Throwable $e) { return $this->attachment_error($e); }
+    }
+
     public function attachment_file($id = '')
     {
         $this->attachment_services();

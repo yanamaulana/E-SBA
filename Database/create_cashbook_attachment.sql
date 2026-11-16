@@ -23,4 +23,11 @@ BEGIN
     CREATE INDEX IX_CashbookAttachment_Header
         ON dbo.Ttrx_Cashbook_Attachment (Company_ID, JournalH_Code, Attachment_ID);
 END;
+IF COL_LENGTH('dbo.Ttrx_Cashbook_Attachment', 'is_delete') IS NULL
+    ALTER TABLE dbo.Ttrx_Cashbook_Attachment ADD is_delete bit NOT NULL
+        CONSTRAINT DF_CashbookAttachment_IsDelete DEFAULT (0) WITH VALUES;
+IF COL_LENGTH('dbo.Ttrx_Cashbook_Attachment', 'deleted_at') IS NULL
+    ALTER TABLE dbo.Ttrx_Cashbook_Attachment ADD deleted_at datetime2(0) NULL;
+IF COL_LENGTH('dbo.Ttrx_Cashbook_Attachment', 'deleted_by') IS NULL
+    ALTER TABLE dbo.Ttrx_Cashbook_Attachment ADD deleted_by nvarchar(100) NULL;
 COMMIT TRANSACTION;

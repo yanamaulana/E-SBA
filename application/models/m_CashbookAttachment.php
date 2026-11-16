@@ -33,7 +33,7 @@ class m_CashbookAttachment extends CI_Model
     {
         $this->header($code);
         return $this->query('SELECT Attachment_ID, Original_Name, Mime_Type, File_Size, Notes, Created_By, Created_At
-            FROM dbo.Ttrx_Cashbook_Attachment WHERE Company_ID = ? AND JournalH_Code = ?
+            FROM dbo.Ttrx_Cashbook_Attachment WHERE Company_ID = ? AND JournalH_Code = ? AND is_delete = 0
             ORDER BY Attachment_ID DESC', [$this->companyId, $code])->result_array();
     }
 
@@ -42,9 +42,22 @@ class m_CashbookAttachment extends CI_Model
         if (!is_string($id) || !ctype_digit($id)) { throw new InvalidArgumentException('ID lampiran tidak valid.'); }
         $file = $this->query('SELECT A.* FROM dbo.Ttrx_Cashbook_Attachment A
             INNER JOIN TAccCashBookHeader H ON H.Company_ID = A.Company_ID AND H.JournalH_Code = A.JournalH_Code
-            WHERE A.Company_ID = ? AND A.Attachment_ID = ?', [$this->companyId, $id])->row_array();
+            WHERE A.Company_ID = ? AND A.Attachment_ID = ? AND A.is_delete = 0', [$this->companyId, $id])->row_array();
         if (!$file) { throw new OutOfBoundsException('Lampiran tidak ditemukan.'); }
         return $file;
+    }
+
+    public function soft_delete($id, $username)
+    {
+        if (!is_string($id) || !ctype_digit($id)) { throw new InvalidArgumentException('ID lampiran tidak valid.'); }
+        if (!is_string($username) || trim($username) === '') { throw new InvalidArgumentException('Username penghapus tidak valid.'); }
+        $deleted = $this->query('UPDATE A SET is_delete = 1, deleted_at = SYSDATETIME(), deleted_by = ?
+            OUTPUT INSERTED.Attachment_ID
+            FROM dbo.Ttrx_Cashbook_Attachment A
+            INNER JOIN TAccCashBookHeader H ON H.Company_ID = A.Company_ID AND H.JournalH_Code = A.JournalH_Code
+            WHERE A.Company_ID = ? AND A.Attachment_ID = ? AND A.is_delete = 0',
+            [$username, $this->companyId, $id])->row_array();
+        if (!$deleted) { throw new OutOfBoundsException('Lampiran tidak ditemukan atau sudah dihapus.'); }
     }
 
     public function save($code, $files, $notes, $username, $storage)

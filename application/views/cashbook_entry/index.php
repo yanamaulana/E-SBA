@@ -1,4 +1,5 @@
 <?php
+$isAuditor = strcasecmp(trim((string) $this->session->userdata('sys_sba_jabatan')), 'Auditor') === 0;
 $statusLabels = [
     'ehrmnew' => 'New',
     'new' => 'New',
@@ -26,6 +27,23 @@ foreach ($statuses as $status) {
     $statusOptions[$key][(string) $status['STATUS_CODE']] = $label;
 }
 ?>
+<style>
+    #attachment-list .cashbook-saved-attachments {
+        font-size: 11px;
+        line-height: 1.3;
+    }
+    #attachment-list .cashbook-saved-attachments th,
+    #attachment-list .cashbook-saved-attachments td {
+        padding: 3px 6px;
+        border: 1px solid #d5dce2;
+    }
+    #attachment-list .cashbook-saved-attachments thead th {
+        background-color: #3B6D8C;
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+</style>
 <div class="card shadow-sm">
     <div class="card-header">
         <h3 class="card-title fw-bold">List Of Cahbook Entry</h3>
@@ -158,11 +176,12 @@ foreach ($statuses as $status) {
                 </div>
                 <div id="attachment-message" class="alert d-none" role="status"></div>
                 <h5 class="mb-3">Saved Attachments</h5>
-                <div id="attachment-list" class="mb-5" aria-live="polite"></div>
-                <hr>
+                <div id="attachment-list" class="table-responsive mb-3" aria-live="polite"></div>
                 <form id="cashbook-attachment-form" enctype="multipart/form-data">
                     <?php $this->load->view('partials/csrf_field'); ?>
                     <input type="hidden" name="journal" id="attachment-journal">
+                    <?php if (!$isAuditor): ?>
+                    <hr>
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Upload Attachments</h5>
                         <button type="button" id="attachment-add" class="btn btn-sm btn-light-primary"><i class="fas fa-plus"></i> Add File</button>
@@ -176,6 +195,7 @@ foreach ($statuses as $status) {
                     <div class="d-flex justify-content-end mt-4">
                         <button type="submit" id="attachment-save" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Save Attachments</button>
                     </div>
+                    <?php endif; ?>
                 </form>
             </div>
             <div class="modal-footer">
@@ -190,5 +210,6 @@ foreach ($statuses as $status) {
         'currencies' => array_column($currencies, 'Currency_ID'),
         'statuses' => $statusOptions,
         'uploadLimits' => $upload_limits,
+        'canDeleteAttachments' => !$isAuditor,
     ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
 </script>

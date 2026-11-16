@@ -105,13 +105,30 @@ $(document).ready(function () {
                 cancelButtonText: 'Batal',
                 didOpen: () => {
                     const confirmButton = Swal.getConfirmButton();
-                    const employeeSelect = document.getElementById('swal-employee');
+                    const employeeSelect = $('#swal-employee');
                     confirmButton.disabled = true; // Tombol konfirmasi nonaktif di awal
 
-                    // Aktifkan tombol jika karyawan dipilih
-                    employeeSelect.addEventListener('change', () => {
-                        confirmButton.disabled = !employeeSelect.value;
+                    employeeSelect.select2({
+                        theme: 'bootstrap5',
+                        width: '100%',
+                        dropdownParent: $(Swal.getPopup()),
+                        placeholder: '-- Pilih Karyawan --',
+                        allowClear: true,
+                        minimumResultsForSearch: 0
                     });
+
+                    // Select2 memicu event change melalui jQuery.
+                    employeeSelect.on('change.employeeAccess', () => {
+                        confirmButton.disabled = !employeeSelect.val();
+                        Swal.resetValidationMessage();
+                    });
+                },
+                willClose: () => {
+                    const employeeSelect = $('#swal-employee');
+                    employeeSelect.off('.employeeAccess');
+                    if (employeeSelect.hasClass('select2-hidden-accessible')) {
+                        employeeSelect.select2('destroy');
+                    }
                 },
                 preConfirm: () => {
                     const employeeId = document.getElementById('swal-employee').value;
