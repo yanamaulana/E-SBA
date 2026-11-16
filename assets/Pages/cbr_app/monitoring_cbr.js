@@ -13,6 +13,19 @@ $(document).ready(function () {
 
     $('.date-picker').flatpickr();
 
+    function renderApprovalDateTime(value) {
+        if (value == null) {
+            return '<span class="approval-datetime">-</span>';
+        }
+
+        const dateTime = value.replace('T', ' ');
+        const date = $('<span>').text(dateTime.slice(0, 10)).html();
+        const time = $('<span>').text(dateTime.slice(11, 16)).html();
+        return '<span class="approval-datetime">' + date + '<br/>' + time + '</span>';
+    }
+
+    let detailResizeObserver;
+
     function Fn_Initialized_DataTable() {
         $("#TableDataHistory").DataTable({
             destroy: true,
@@ -22,8 +35,8 @@ $(document).ready(function () {
             dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
             select: false,
             "lengthMenu": [
-                [10, 25, 50, 100, 9999],
-                [10, 25, 50, 100, 9999]
+                [25, 50, 100, 9999],
+                [25, 50, 100, 9999]
             ],
             ajax: {
                 url: $('meta[name="base_url"]').attr('content') + "MonitoringCbr/DT_Monitoring_global",
@@ -197,40 +210,45 @@ $(document).ready(function () {
                     data: "IsAppvAsstManager",
                     name: "IsAppvAsstManager",
                     orderable: false,
+                    visible: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAsstManager) + ' <br/> ' + row.AppvAsstManager_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAsstManager) + ' <br/> ' + renderApprovalDateTime(row.AppvAsstManager_At);
                     }
                 },
                 {
                     data: "IsAppvManager",
                     name: "IsAppvManager",
+                    visible: false,
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvManager) + ' <br/> ' + row.AppvManager_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvManager) + ' <br/> ' + renderApprovalDateTime(row.AppvManager_At);
                     }
                 },
                 {
                     data: "IsAppvSeniorManager",
                     name: "IsAppvSeniorManager",
+                    visible: false,
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvSeniorManager) + ' <br/> ' + row.AppvSeniorManager_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvSeniorManager) + ' <br/> ' + renderApprovalDateTime(row.AppvSeniorManager_At);
                     }
                 },
                 {
                     data: "IsAppvGeneralManager",
                     name: "IsAppvGeneralManager",
+                    visible: false,
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvGeneralManager) + ' <br/> ' + row.AppvGeneralManager_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvGeneralManager) + ' <br/> ' + renderApprovalDateTime(row.AppvGeneralManager_At);
                     }
                 },
                 {
                     data: "IsAppvAdditional",
                     name: "IsAppvAdditional",
+                    visible: false,
                     orderable: false,
                     render: function (data, type, row, meta) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAdditional) + ' <br/> ' + row.AppvAdditional_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvAdditional) + ' <br/> ' + renderApprovalDateTime(row.AppvAdditional_At);
                     }
                 },
                 {
@@ -238,7 +256,7 @@ $(document).ready(function () {
                     name: "IsAppvFinancePerson",
                     orderable: false,
                     render: function (data, type, row, meta) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinancePerson) + ' <br/> ' + row.AppvFinancePerson_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinancePerson) + ' <br/> ' + renderApprovalDateTime(row.AppvFinancePerson_At);
                     }
                 },
                 {
@@ -246,7 +264,7 @@ $(document).ready(function () {
                     name: "IsAppvDirector",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvDirector) + ' <br/> ' + row.AppvDirector_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvDirector) + ' <br/> ' + renderApprovalDateTime(row.AppvDirector_At);
                     }
                 },
                 {
@@ -254,7 +272,7 @@ $(document).ready(function () {
                     name: "IsAppvFinanceDirector",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinanceDirector) + ' <br/> ' + row.AppvFinanceDirector_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvFinanceDirector) + ' <br/> ' + renderApprovalDateTime(row.AppvFinanceDirector_At);
                     }
                 },
                 {
@@ -262,26 +280,27 @@ $(document).ready(function () {
                     name: "IsAppvPresidentDirector",
                     orderable: false,
                     render: function (data, type, row) {
-                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvPresidentDirector) + ' <br/> ' + row.AppvPresidentDirector_At;
+                        return renderApprovalStatusWithName(row.Has_Submitted_Approval, data, row.Status_AppvPresidentDirector) + ' <br/> ' + renderApprovalDateTime(row.AppvPresidentDirector_At);
                     }
                 },
                 {
                     data: "Payment_Plan_Date",
                     name: "Payment_Plan_Date",
+                    className: "payment-plan-date",
                 }
             ],
             order: [
                 [3, "DESC"]
             ],
             columnDefs: [{
-                width: 220,
-                targets: 7
-            }, {
-                className: "text-center dt-nowrap",
-                targets: [0, 2, 4, 5, 6, 7, 12, 13, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                className: "text-center",
+                targets: [0, 2, 4, 5, 6, 12, 13, 16, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
             }, {
                 className: "details-control pr-4 dt-nowrap",
                 targets: [1]
+            }, {
+                className: "text-end",
+                targets: [7, 11]
             }],
             // orderCellsTop: true,
             // fixedColumns: true,
@@ -343,6 +362,12 @@ $(document).ready(function () {
                     var url = $('meta[name="base_url"]').attr('content') + 'MonitoringCbr/export_excel?from=' + from + '&until=' + until + '&column_range=' + column_range + '&employee=' + employee;
                     window.open(url, '_blank');
                 }
+            }, {
+                extend: 'colvis',
+                text: '<i class="fas fa-columns fs-2"></i> Pengaturan Kolom',
+                titleAttr: 'Tampilkan atau sembunyikan kolom',
+                className: 'btn btn-light-primary',
+                columns: ':not(:first-child)'
             },
                 // {
                 //     text: `<i class="far fa-file-pdf fs-2"></i>`,
@@ -357,6 +382,21 @@ $(document).ready(function () {
                 // }
             ],
         }).buttons().container().appendTo('TableDataHistory_wrapper .col-md-6:eq(0)');
+
+        const table = $('#TableDataHistory').DataTable();
+        const scrollBody = table.settings()[0].nScrollBody;
+        const detailContainer = document.querySelector('.cbr-monitoring-table');
+        if (detailResizeObserver) {
+            detailResizeObserver.disconnect();
+        }
+        if (scrollBody && detailContainer) {
+            const updateDetailWidth = function () {
+                detailContainer.style.setProperty('--cbr-detail-width', Math.max(0, scrollBody.clientWidth - 8) + 'px');
+            };
+            updateDetailWidth();
+            detailResizeObserver = new ResizeObserver(updateDetailWidth);
+            detailResizeObserver.observe(scrollBody);
+        }
     }
 
     document.querySelectorAll('a[data-bs-toggle="tab"]').forEach((el) => {
@@ -382,7 +422,9 @@ $(document).ready(function () {
             tr.removeClass('shown');
         } else {
             // Open this row (the format() function would return the data to be shown)
-            row.child(format(row.data())).show();
+            const detail = $('<div class="cbr-child-panel"><div class="cbr-child-scroll" tabindex="0" role="region" aria-label="Detail CBR, geser untuk melihat seluruh kolom"><div class="cbr-child-content"></div></div></div>');
+            detail.find('.cbr-child-content').html(format(row.data()));
+            row.child(detail).show();
             tr.addClass('shown');
             getInsDetail(row.data().CBReq_No, row.data().Document_Number);
         }
