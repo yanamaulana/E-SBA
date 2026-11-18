@@ -20,6 +20,42 @@ class MonitoringCbr extends CI_Controller
         $this->load->model('m_DataTable', 'M_Datatables');
     }
 
+    private function bdj_attachment_error($error)
+    {
+        $status = $error instanceof InvalidArgumentException ? 400 : ($error instanceof OutOfBoundsException ? 404 : 500);
+        if ($status === 500) { log_message('error', 'Monitoring BDJ attachment: ' . $error->getMessage()); }
+        return $this->output->set_status_header($status)->set_content_type('application/json')
+            ->set_output(json_encode(['error' => $status === 500 ? 'Lampiran BDJ gagal dimuat.' : $error->getMessage()]));
+    }
+
+    public function bdj_attachments()
+    {
+        $this->load->model('m_CashbookAttachment', 'bdjAttachments');
+        try {
+            $rows = $this->bdjAttachments->listing($this->input->get('journal', false));
+            foreach ($rows as &$row) {
+                $row['url'] = base_url('MonitoringCbr/bdj_attachment_file/' . $row['Attachment_ID']);
+            }
+            unset($row);
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['data' => $rows]));
+        } catch (Throwable $e) { return $this->bdj_attachment_error($e); }
+    }
+
+    public function bdj_attachment_file($id = '')
+    {
+        $this->load->model('m_CashbookAttachment', 'bdjAttachments');
+        $this->load->library('Cashbook_attachment_files');
+        try {
+            $file = $this->bdjAttachments->find((string) $id);
+            $content = file_get_contents($this->cashbook_attachment_files->resolve($file['Relative_Path']));
+            if ($content === false) { throw new RuntimeException('File tidak dapat dibaca.'); }
+            return $this->output->set_content_type($file['Mime_Type'])
+                ->set_header('X-Content-Type-Options: nosniff')->set_header('Cache-Control: private, no-store')
+                ->set_header('Content-Disposition: inline; filename="attachment.' . pathinfo($file['Relative_Path'], PATHINFO_EXTENSION) .
+                    '"; filename*=UTF-8\'\'' . rawurlencode($file['Original_Name']))->set_output($content);
+        } catch (Throwable $e) { return $this->bdj_attachment_error($e); }
+    }
+
     public function index()
     {
         $this->data['page_title'] = "CBR - Global Monitoring";

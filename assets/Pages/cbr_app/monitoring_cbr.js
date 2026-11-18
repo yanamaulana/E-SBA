@@ -35,8 +35,8 @@ $(document).ready(function () {
             dom: '<"row mb-3"<"col-sm-12"B>><"row"<"col-sm-11"f><"col-sm-1"l>>rtip',
             select: false,
             "lengthMenu": [
-                [25, 50, 100, 9999],
-                [25, 50, 100, 9999]
+                [15, 10, 50, 100, 9999],
+                [15, 10, 50, 100, 9999]
             ],
             ajax: {
                 url: $('meta[name="base_url"]').attr('content') + "MonitoringCbr/DT_Monitoring_global",
@@ -601,6 +601,20 @@ $(document).ready(function () {
                                             <tbody id="tbody_bdj_${d.CBReq_No}"></tbody>
                                         </table>
                                     </div>
+                                    <h6 class="mt-3 mb-2">List Upload BDJ</h6>
+                                    <div class="table-responsive overflow-auto">
+                                        <table class="table-sm table-bordered rounded-sm" style="width:100%;">
+                                            <thead>
+                                                <tr class="bg-dark">
+                                                    <th class="text-center">BDJ</th>
+                                                    <th class="text-center">File</th>
+                                                    <th class="text-center">Ukuran</th>
+                                                    <th class="text-center">Catatan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_bdj_upload_${d.CBReq_No}"><tr><td colspan="4">Memuat lampiran BDJ...</td></tr></tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>`;
@@ -619,6 +633,40 @@ $(document).ready(function () {
 
         window.open($('meta[name="base_url"]').attr('content') + `MyCbr/get_detail_bdj/${bdj}`, `RptBdj-${bdj}`, 'width=800,height=600');
     })
+
+    function loadBdjUploads(requestNo, journals) {
+        const body = $(document.getElementById('tbody_bdj_upload_' + requestNo)).empty();
+        const codes = [...new Set((journals || []).map(item => item.JournalH_Code).filter(Boolean))];
+        if (!codes.length) {
+            body.append('<tr><td colspan="4">Belum ada BDJ untuk CBR ini.</td></tr>');
+            return;
+        }
+        codes.forEach(function (journal) {
+            const loading = $('<tr></tr>').append($('<td colspan="4"></td>').text(journal + ': memuat lampiran...')).appendTo(body);
+            $.ajax({
+                url: $('meta[name="base_url"]').attr('content') + 'MonitoringCbr/bdj_attachments',
+                data: { journal: journal }, dataType: 'json'
+            }).done(function (response) {
+                if (!response.data.length) {
+                    loading.find('td').text(journal + ': belum ada lampiran.');
+                    return;
+                }
+                response.data.forEach(function (file) {
+                    const row = $('<tr></tr>');
+                    $('<td class="text-start text-nowrap"></td>').text(journal).appendTo(row);
+                    $('<td class="text-start text-break"></td>').append(
+                        $('<a target="_blank" rel="noopener"></a>').attr('href', file.url).text(file.Original_Name)
+                    ).appendTo(row);
+                    $('<td class="text-end text-nowrap"></td>').text((Number(file.File_Size) / 1024).toFixed(1) + ' KB').appendTo(row);
+                    $('<td class="text-start text-break"></td>').css('white-space', 'pre-wrap').text(file.Notes || '-').appendTo(row);
+                    row.insertBefore(loading);
+                });
+                loading.remove();
+            }).fail(function () {
+                loading.find('td').text(journal + ': lampiran gagal dimuat. Tutup dan buka kembali detail untuk mencoba lagi.');
+            });
+        });
+    }
 
     function getInsDetail(Req_No, Ref_no) {
         $.ajax({
@@ -708,6 +756,7 @@ $(document).ready(function () {
                     tbody_attachment.append(`<tr><td colspan="4">This Cash Book Requisition doesnt have attachment file !</td></tr>`);
                 }
 
+                loadBdjUploads(Req_No, response.code_bdj == 200 ? response.dataBdjs : []);
                 var tbody_bdj = $("#tbody_bdj_" + Req_No);
                 if (response.code_bdj == 200) {
                     $.each(response.dataBdjs, function (index, bdj) {
@@ -728,6 +777,8 @@ $(document).ready(function () {
 
 
             }, error: function (xhr, status, error) {
+                $(document.getElementById('tbody_bdj_upload_' + Req_No)).empty()
+                    .append('<tr><td colspan="4">Lampiran BDJ gagal dimuat. Buka kembali detail untuk mencoba lagi.</td></tr>');
                 var statusCode = xhr.status;
                 var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText ? xhr.responseText : "Terjadi kesalahan: " + error;
                 Swal.fire({
