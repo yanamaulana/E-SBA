@@ -6,7 +6,30 @@ class Vpr_audit_model extends CI_Model
     private const FUNCTION_ID = 'ERSTD08128';
     public const NO_ACCESS_FINDING = 'Tidak ada izin tercatat sebelum input';
 
-    public function exceptions(DateTimeImmutable $start, DateTimeImmutable $end)
+    public function report(DateTimeImmutable $start, DateTimeImmutable $end): array
+    {
+        $rows = $this->exceptions($start, $end);
+        $reports = [];
+        $users = [];
+        $itemCount = 0;
+        while ($row = $rows->unbuffered_row('array')) {
+            $number = $row['VPR_NUMBER'];
+            if (!isset($reports[$number])) {
+                $reports[$number] = ['header' => $row, 'items' => []];
+            }
+            if ($row['ITEM_CODE'] !== null) {
+                $reports[$number]['items'][] = $row;
+                $itemCount++;
+            }
+            if ((int) $row['USER_ADD'] > 0) {
+                $users[$row['USER_ADD']] = true;
+            }
+        }
+        $rows->free_result();
+        return ['reports' => $reports, 'userCount' => count($users), 'itemCount' => $itemCount];
+    }
+
+    private function exceptions(DateTimeImmutable $start, DateTimeImmutable $end)
     {
         $sql = "
             WITH activities AS (
@@ -43,12 +66,17 @@ class Vpr_audit_model extends CI_Model
             WHERE GrantLog.Access_End IS NULL OR H.DATE_ADD >= GrantLog.Access_End
             ORDER BY H.DATE_ADD DESC, H.VPR_NUMBER, D.ITEM_CODE, D.Dimension_ID";
 
-        $query = $this->db->query($sql, [
-            $start->format('Ymd'), $end->modify('+1 day')->format('Ymd'), self::NO_ACCESS_FINDING, self::FUNCTION_ID,
-        ]);
-
+        $debug = $this->db->db_debug;
+        $this->db->db_debug = false;
+        try {
+            $query = $this->db->query($sql, [
+                $start->format('Ymd'), $end->modify('+1 day')->format('Ymd'), self::NO_ACCESS_FINDING, self::FUNCTION_ID,
+            ]);
+        } finally {
+            $this->db->db_debug = $debug;
+        }
         if ($query === false) {
-            show_error('Data audit Vendor Pricing Request tidak dapat dibaca.', 500);
+            throw new RuntimeException('Data audit Vendor Pricing Request tidak dapat dibaca.');
         }
         return $query;
     }
