@@ -1,4 +1,6 @@
 <?php
+$isAdmin = $this->session->userdata('sys_sba_isAdm') == true;
+$vprAuditLink = ['Report/Vpr_audit', 'Audit Akses Vendor Pricing Request', false];
 $categories = [
     ['title' => 'Sales & Marketing', 'image' => 'undraw_Marketing_re_7f1g.png', 'links' => [
         ['Report/Sales/sales_order_report?SelCurr=IDR', 'Sales Order Report'],
@@ -13,12 +15,12 @@ $categories = [
         ['Report/Logistic/index_price_comparison_last_v_this_year', 'Item Price Comparison'],
         ['Report/Logistic/upload_tax_invoice', 'Upload Faktur Pajak'],
         ['ScriptTool/update_costcenter', 'Repair VIN Cost Center'],
+        ...($isAdmin ? [$vprAuditLink] : []),
     ]],
     ['title' => 'RND Guitar', 'image' => 'undraw_researching_49yy.png', 'links' => [
         ['Report/RND/guitar_report', 'BOM Detail Report'],
     ]],
 ];
-$isAdmin = $this->session->userdata('sys_sba_isAdm') == true;
 if ($isAdmin || $this->session->userdata('sys_sba_NIK') == '29319' || $this->session->userdata('sys_sba_NIK') == '09460') {
     $categories[] = ['title' => 'HR Report', 'image' => 'undraw_team-page_q5am.png', 'links' => [
         ['ReportPemakaianCuti', 'Pemakaian Cuti Terkini'],
@@ -28,6 +30,7 @@ if ($isAdmin || $this->session->userdata('sys_sba_NIK') == '29319' || $this->ses
 if ($isAdmin) {
     $categories[] = ['title' => 'MIS Panel', 'image' => 'Mis.png', 'restricted' => true, 'links' => [
         ['Report/MIS/ERP_AccessPermission', 'ERP Access Permission'],
+        $vprAuditLink,
         ['Report/MIS/PreviewListCbrApproval_lastStep', 'Preview List Approval'],
     ]];
 }
@@ -51,9 +54,11 @@ if ($isAdmin) {
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled m-0">
-                        <?php foreach ($category['links'] as $link): ?>
+                        <?php foreach ($category['links'] as $link):
+                            $requiresPassword = $link[2] ?? !empty($category['restricted']);
+                        ?>
                             <li>
-                                <a href="<?= base_url($link[0]) ?>" class="report-navigation-link<?= !empty($category['restricted']) ? ' mis-panel-link' : '' ?>">
+                                <a href="<?= base_url($link[0]) ?>" class="report-navigation-link<?= $requiresPassword ? ' mis-panel-link' : '' ?>">
                                     <span><?= html_escape($link[1]) ?></span>
                                     <i class="fas fa-chevron-right" aria-hidden="true"></i>
                                 </a>

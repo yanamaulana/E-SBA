@@ -1,6 +1,11 @@
 <div class="card">
-    <div class="card-header">
+    <div class="card-header align-items-center">
         <h3 class="card-title">Manajemen Hak Akses ERP</h3>
+        <?php if ($this->session->userdata('sys_sba_isAdm')): ?>
+            <div class="card-toolbar">
+                <a class="btn btn-sm btn-light-primary" href="<?= site_url('Report/Vpr_audit') ?>">Audit Akses VPR</a>
+            </div>
+        <?php endif; ?>
     </div>
     <div class="card-body">
         <div class="row mb-4">

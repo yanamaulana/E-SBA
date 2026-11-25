@@ -108,7 +108,7 @@ class MIS extends CI_Controller
             $changedAt = time();
             $log_data = [
                 'UserGroupFuncL_ID' => $id,
-                'UserAsk' => $employeeId,
+                'UserAsk'           => $employeeId,
                 'Previous_Access'   => 'read',
                 'New_Access'        => 'delete',
                 'Changed_By'        => $this->session->userdata('sys_sba_userid'),
