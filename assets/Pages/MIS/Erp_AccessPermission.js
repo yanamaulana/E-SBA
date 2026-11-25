@@ -93,10 +93,15 @@ $(document).ready(function () {
             Swal.fire({
                 title: 'Konfirmasi Pemberian Akses',
                 html: `
-                    <p>Anda akan memberikan akses.</p>
-                    <p>Pilih karyawan yang bertanggung jawab atas pemberian akses ini:</p>
                     <select id="swal-employee" class="form-select">
                         ${employeeOptions}
+                    </select>
+                    <select id="swal-access-duration" class="form-select mt-2">
+                        <option value="180" selected>3 jam</option>
+                        <option value="360">6 jam</option>
+                        <option value="120">2 jam</option>
+                        <option value="60">1 jam</option>
+                        <option value="30">0,5 jam</option>
                     </select>
                 `,
                 icon: 'warning',
@@ -136,12 +141,15 @@ $(document).ready(function () {
                         Swal.showValidationMessage('Harap pilih seorang karyawan');
                         return false;
                     }
-                    return employeeId;
+                    return {
+                        employeeId: employeeId,
+                        durationMinutes: document.getElementById('swal-access-duration').value
+                    };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Panggil AJAX dengan menyertakan ID karyawan
-                    ajaxUpdatePermission(id, hasAccess, sw, result.value);
+                    ajaxUpdatePermission(id, hasAccess, sw, result.value.employeeId, result.value.durationMinutes);
                 } else {
                     // Kembalikan switch jika dibatalkan
                     sw.prop('checked', false);
@@ -172,7 +180,7 @@ $(document).ready(function () {
     });
 
     // Fungsi helper untuk AJAX agar tidak duplikat kode
-    function ajaxUpdatePermission(id, hasAccess, switchElement, employeeId = null) {
+    function ajaxUpdatePermission(id, hasAccess, switchElement, employeeId = null, durationMinutes = 180) {
         let ajaxData = {
             id: id,
             access: hasAccess
@@ -180,6 +188,9 @@ $(document).ready(function () {
 
         if (employeeId) {
             ajaxData.employee_id = employeeId;
+        }
+        if (hasAccess) {
+            ajaxData.duration_minutes = durationMinutes;
         }
 
         $.ajax({

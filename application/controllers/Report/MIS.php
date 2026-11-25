@@ -70,6 +70,13 @@ class MIS extends CI_Controller
         $id = $this->input->post('id');
         $access = $this->input->post('access'); // 'true' atau 'false'
         $employeeId = $this->input->post('employee_id');
+        $durationMinutes = $this->input->post('duration_minutes') ?? '180';
+        $durationLabels = ['180' => '3 jam', '360' => '6 jam', '120' => '2 jam', '60' => '1 jam', '30' => '0,5 jam'];
+
+        if ($access === 'true' && (!is_string($durationMinutes) || !isset($durationLabels[$durationMinutes]))) {
+            echo json_encode(['status' => 'error', 'message' => 'Durasi akses tidak valid.']);
+            return;
+        }
 
         if (empty($id)) {
             echo json_encode(['status' => 'error', 'message' => 'ID tidak valid.']);
@@ -98,15 +105,15 @@ class MIS extends CI_Controller
         // LOGIKA: Hanya catat log jika hak akses dinaikkan dari 'read' ke 'delete'
         if ($access === 'true' && $previous_access === 'read') {
             $is_temporary = true;
-            $revert_duration = '+3 hours'; // Durasi akses sementara sesuai contoh Anda
+            $changedAt = time();
             $log_data = [
                 'UserGroupFuncL_ID' => $id,
                 'UserAsk' => $employeeId,
                 'Previous_Access'   => 'read',
                 'New_Access'        => 'delete',
                 'Changed_By'        => $this->session->userdata('sys_sba_userid'),
-                'Changed_At'        => date('Y-m-d H:i:s'),
-                'Revert_At'         => date('Y-m-d H:i:s', strtotime($revert_duration)),
+                'Changed_At'        => date('Y-m-d H:i:s', $changedAt),
+                'Revert_At'         => date('Y-m-d H:i:s', $changedAt + (int) $durationMinutes * 60),
                 'Is_Reverted'       => 0
             ];
             $this->db->insert('TblTemporaryAccessLog', $log_data);
@@ -122,7 +129,7 @@ class MIS extends CI_Controller
             $this->db->trans_commit();
             $success_message = 'Hak akses diubah menjadi ' . $new_access_text . '.';
             if ($is_temporary) {
-                $success_message = 'Hak akses sementara diubah menjadi ' . $new_access_text . '. Akan kembali otomatis dalam +-3 jam.';
+                $success_message = 'Hak akses sementara diubah menjadi ' . $new_access_text . '. Durasi akses: ' . $durationLabels[$durationMinutes] . '.';
             }
             $message = ['status' => 'success', 'message' => $success_message];
         }
