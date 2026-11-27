@@ -75,7 +75,13 @@ class EmailVprAudit extends CI_Controller
         $mail->setFrom($mail->Username, 'ESBA Reports');
 
         $mail->addAddress('siky@samick.co.id');
-        foreach (['account@samick.co.id', 'accountsam@samick.co.id', 'logistics@samick.co.id'] as $recipient) {
+        foreach (
+            [
+                'account@samick.co.id',
+                'accountsam@samick.co.id',
+                'logistics@samick.co.id'
+            ] as $recipient
+        ) {
             $mail->addCC($recipient);
         }
         $period = $start . ' s.d. ' . $end;
@@ -84,8 +90,12 @@ class EmailVprAudit extends CI_Controller
             . 'Terlampir laporan akses Vendor Pricing Request untuk periode ' . $period . ".\r\n"
             . 'Jumlah VPR yang perlu ditinjau: ' . $findings . ".\r\n\r\n"
             . "Terima kasih.\r\nESBA";
-        $mail->addStringAttachment($attachment, Vpr_audit_excel::filename($start, $end),
-            PHPMailer::ENCODING_BASE64, Vpr_audit_excel::MIME_TYPE);
+        $mail->addStringAttachment(
+            $attachment,
+            Vpr_audit_excel::filename($start, $end),
+            PHPMailer::ENCODING_BASE64,
+            Vpr_audit_excel::MIME_TYPE
+        );
         return $mail;
     }
 
