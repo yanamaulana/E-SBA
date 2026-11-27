@@ -6,6 +6,7 @@ $categories = [
         ['Report/Sales/sales_order_report?SelCurr=IDR', 'Sales Order Report'],
         ['Report/Sales/ostpo_rawmaterial', 'Raw Material Outstanding PO'],
         ['Report/Sales/index_hpp', 'Sales HPP Report'],
+        ['Report/GuitarBalanceReport', 'Guitar Order Balance Summary'],
     ]],
     ['title' => 'Stock Opname', 'image' => 'undraw_conference_call_b0w6.png', 'links' => [
         ['Opname/index', 'Tool Generating Qty Opname'],
